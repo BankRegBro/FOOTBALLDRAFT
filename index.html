@@ -355,16 +355,16 @@ h1.title .b{
    grade: peak/career eliteness, ~55-99
    ============================================================ */
 
-const DECADE_LABEL = { "80s":"1980s","90s":"1990s","00s":"2000s","10s":"2010s","20s":"2020s" };
-const DECADE_ORDER = ["80s","90s","00s","10s","20s"];
+const DECADE_LABEL = { "60s":"1960s","70s":"1970s","80s":"1980s","90s":"1990s","00s":"2000s","10s":"2010s","20s":"2020s" };
+const DECADE_ORDER = ["60s","70s","80s","90s","00s","10s","20s"];
 
 // Slots that must be filled. w = real-NFL positional value weight.
 const SLOTS = [
   { key:"QB",  label:"Quarterback",   pos:"QB", w:3.00 },
   { key:"RB",  label:"Running Back",  pos:"RB", w:1.05 },
-  { key:"WR1", label:"Wide Receiver", pos:"WR", w:1.05 },
-  { key:"WR2", label:"Wide Receiver", pos:"WR", w:1.00 },
-  { key:"WR3", label:"Wide Receiver", pos:"WR", w:0.90 },
+  { key:"WR1", label:"Wide Receiver 1", pos:"WR", w:1.05 },
+  { key:"WR2", label:"Wide Receiver 2", pos:"WR", w:1.00 },
+  { key:"WR3", label:"Wide Receiver 3", pos:"WR", w:0.90 },
   { key:"TE",  label:"Tight End",     pos:"TE", w:0.90 },
   { key:"LT",  label:"Left Tackle",   pos:"OL", w:1.25 },
   { key:"LG",  label:"Left Guard",    pos:"OL", w:0.80 },
@@ -383,6 +383,8 @@ const T = (...players) => players; // tiny helper for readability
 
 const DATA = {
 "Arizona Cardinals": {
+  "60s": T(["Jackie Smith","TE",86,"St. Louis"],["Sonny Randle","WR",80],["Charley Johnson","QB",76],["John David Crow","RB",80,"1960-64"],["Bobby Joe Conrad","WR",76]),
+  "70s": T(["Jim Hart","QB",80,"St. Louis"],["Mel Gray","WR",84],["Terry Metcalf","RB",80],["Dan Dierdorf","OL",92],["Conrad Dobler","OL",84],["Jim Otis","RB",76],["Jackie Smith","TE",82]),
   "80s": T(["Neil Lomax","QB",80,"St. Louis / Phoenix"],["Roy Green","WR",84],["Ottis Anderson","RB",84,"St. Louis"],["Stump Mitchell","RB",74],["J.T. Smith","WR",78],["Luis Sharpe","OL",80],["Pat Tilley","WR",72]),
   "90s": T(["Jake Plummer","QB",80],["Boomer Esiason","QB",76],["Larry Centers","RB",80],["Garrison Hearst","RB",76],["Rob Moore","WR",82],["Frank Sanders","WR",78],["Dave Krieg","QB",74]),
   "00s": T(["Kurt Warner","QB",91],["Larry Fitzgerald","WR",94],["Anquan Boldin","WR",88],["Edgerrin James","RB",82],["Steve Breaston","WR",74],["Leonard Davis","OL",80],["Matt Leinart","QB",68]),
@@ -390,6 +392,8 @@ const DATA = {
   "20s": T(["Kyler Murray","QB",84],["DeAndre Hopkins","WR",90],["James Conner","RB",80],["Marquise Brown","WR",78],["Trey McBride","TE",82],["Marvin Harrison Jr.","WR",82],["Christian Kirk","WR",76]),
 },
 "Atlanta Falcons": {
+  "60s": T(["Tommy McDonald","WR",76,"1967"],["Randy Johnson","QB",66],["Junior Coffey","RB",70]),
+  "70s": T(["Steve Bartkowski","QB",80,"from 1975"],["Wallace Francis","WR",80],["Alfred Jenkins","WR",78],["Jim Mitchell","TE",76],["Haskel Stanback","RB",72],["William Andrews","RB",78,"1979"]),
   "80s": T(["Steve Bartkowski","QB",80],["Gerald Riggs","RB",82],["William Andrews","RB",84],["Mike Kenn","OL",86],["Stacey Bailey","WR",70],["Billy Johnson","WR",72]),
   "90s": T(["Chris Chandler","QB",80],["Jeff George","QB",78],["Jamal Anderson","RB",84],["Andre Rison","WR",84],["Terance Mathis","WR",80],["Bert Emanuel","WR",76],["Chris Miller","QB",74]),
   "00s": T(["Michael Vick","QB",84],["Matt Ryan","QB",84,"from 2008"],["Warrick Dunn","RB",82],["Michael Turner","RB",84],["Roddy White","WR",88],["Alge Crumpler","TE",82],["Tony Gonzalez","TE",90,"2009"]),
@@ -403,6 +407,8 @@ const DATA = {
   "20s": T(["Lamar Jackson","QB",95],["Mark Andrews","TE",88],["Derrick Henry","RB",92,"2024"],["J.K. Dobbins","RB",80],["Zay Flowers","WR",82],["Ronnie Stanley","OL",86],["Mark Ingram","RB",78],["Marquise Brown","WR",78]),
 },
 "Buffalo Bills": {
+  "60s": T(["Jack Kemp","QB",82],["Cookie Gilchrist","RB",82],["O.J. Simpson","RB",84,"1969"],["Elbert Dubenion","WR",80],["Billy Shaw","OL",86],["Paul Costa","TE",70]),
+  "70s": T(["O.J. Simpson","RB",94],["Joe Ferguson","QB",80],["Joe DeLamielleure","OL",90],["Reggie McKenzie","OL",82],["Bob Chandler","WR",78],["Jim Braxton","RB",72]),
   "80s": T(["Jim Kelly","QB",92,"from 1986"],["Thurman Thomas","RB",90,"from 1988"],["Andre Reed","WR",90],["Joe Cribbs","RB",80],["Kent Hull","OL",84]),
   "90s": T(["Jim Kelly","QB",92],["Thurman Thomas","RB",93],["Andre Reed","WR",90],["Kent Hull","OL",84],["Howard Ballard","OL",78],["Steve Tasker","WR",74]),
   "00s": T(["Drew Bledsoe","QB",84],["Willis McGahee","RB",84],["Eric Moulds","WR",86],["Lee Evans","WR",84],["Travis Henry","RB",78],["Marshawn Lynch","RB",86,"2007-09"],["Jason Peters","OL",90]),
@@ -416,6 +422,8 @@ const DATA = {
   "20s": T(["Christian McCaffrey","RB",90,"2020-22"],["Bryce Young","QB",72],["DJ Moore","WR",84],["Adam Thielen","WR",76,"from 2023"],["Chuba Hubbard","RB",78],["Sam Darnold","QB",72]),
 },
 "Chicago Bears": {
+  "60s": T(["Gale Sayers","RB",95,"from 1965"],["Mike Ditka","TE",90],["Johnny Morris","WR",80],["Billy Wade","QB",76],["Ronnie Bull","RB",70]),
+  "70s": T(["Walter Payton","RB",92,"from 1975"],["Gale Sayers","RB",88,"1970-71"],["Bobby Douglass","QB",70],["Roland Harper","RB",72],["James Scott","WR",74],["Mike Phipps","QB",68]),
   "80s": T(["Walter Payton","RB",99],["Jim McMahon","QB",80],["Willie Gault","WR",80],["Neal Anderson","RB",84,"from 1986"],["Jay Hilgenberg","OL",86],["Dennis McKinnon","WR",72],["Matt Suhey","RB",70]),
   "90s": T(["Jim Harbaugh","QB",78],["Erik Kramer","QB",76],["Neal Anderson","RB",82],["Curtis Conway","WR",80],["Bobby Engram","WR",76],["Jeff Graham","WR",74],["Rashaan Salaam","RB",70]),
   "00s": T(["Jay Cutler","QB",82,"2009"],["Rex Grossman","QB",70],["Thomas Jones","RB",82],["Matt Forte","RB",86,"2008-09"],["Cedric Benson","RB",76],["Muhsin Muhammad","WR",80],["Olin Kreutz","OL",88],["Bernard Berrian","WR",74]),
@@ -423,6 +431,8 @@ const DATA = {
   "20s": T(["Caleb Williams","QB",80],["Justin Fields","QB",76],["DJ Moore","WR",84],["Cole Kmet","TE",78],["D'Andre Swift","RB",78],["Keenan Allen","WR",80,"2024"],["Rome Odunze","WR",78],["David Montgomery","RB",78]),
 },
 "Cincinnati Bengals": {
+  "60s": T(["Greg Cook","QB",78,"1969"],["Paul Robinson","RB",78],["Bob Trumpy","TE",80],["Bob Johnson","OL",74]),
+  "70s": T(["Ken Anderson","QB",88],["Isaac Curtis","WR",84],["Bob Trumpy","TE",80],["Charlie Joiner","WR",80,"1972-75"],["Boobie Clark","RB",74],["Archie Griffin","RB",72]),
   "80s": T(["Boomer Esiason","QB",86],["Ken Anderson","QB",86],["Anthony Munoz","OL",99],["Cris Collinsworth","WR",84],["James Brooks","RB",82],["Eddie Brown","WR",80],["Max Montoya","OL",80],["Rodney Holman","TE",74]),
   "90s": T(["Jeff Blake","QB",76],["Boomer Esiason","QB",82],["Carl Pickens","WR",84],["Darnay Scott","WR",78],["Harold Green","RB",72],["Ki-Jana Carter","RB",66]),
   "00s": T(["Carson Palmer","QB",86],["Chad Johnson","WR",90],["T.J. Houshmandzadeh","WR",84],["Rudi Johnson","RB",80],["Corey Dillon","RB",84],["Willie Anderson","OL",88]),
@@ -430,6 +440,8 @@ const DATA = {
   "20s": T(["Joe Burrow","QB",92],["Ja'Marr Chase","WR",93],["Tee Higgins","WR",86],["Joe Mixon","RB",82],["Tyler Boyd","WR",78],["Chase Brown","RB",76]),
 },
 "Cleveland Browns": {
+  "60s": T(["Jim Brown","RB",99,"1960-65"],["Leroy Kelly","RB",88],["Paul Warfield","WR",88,"1964-69"],["Frank Ryan","QB",82],["Gary Collins","WR",80],["Gene Hickerson","OL",88],["Bill Nelsen","QB",76]),
+  "70s": T(["Brian Sipe","QB",82,"from 1974"],["Greg Pruitt","RB",82],["Ozzie Newsome","TE",88,"1978-79"],["Mike Pruitt","RB",78],["Reggie Rucker","WR",76],["Doug Dieken","OL",78],["Leroy Kelly","RB",80,"1970-73"]),
   "80s": T(["Bernie Kosar","QB",84],["Ozzie Newsome","TE",94],["Kevin Mack","RB",80],["Earnest Byner","RB",80],["Webster Slaughter","WR",80],["Brian Brennan","WR",74],["Cody Risien","OL",80]),
   "90s": T(["Bernie Kosar","QB",84,"1990-93"],["Vinny Testaverde","QB",82],["Eric Metcalf","RB",82],["Leroy Hoard","RB",74],["Michael Jackson","WR",78]),
   "00s": T(["Joe Thomas","OL",98,"from 2007"],["Kellen Winslow II","TE",82],["Braylon Edwards","WR",80],["Derek Anderson","QB",72],["Jamal Lewis","RB",82],["Tim Couch","QB",70],["Josh Cribbs","WR",76],["Reuben Droughns","RB",74]),
@@ -437,6 +449,8 @@ const DATA = {
   "20s": T(["Nick Chubb","RB",90],["Amari Cooper","WR",86],["David Njoku","TE",82],["Joel Bitonio","OL",92],["Kareem Hunt","RB",78],["Deshaun Watson","QB",72]),
 },
 "Dallas Cowboys": {
+  "60s": T(["Bob Hayes","WR",90],["Don Meredith","QB",82],["Don Perkins","RB",78],["Dan Reeves","RB",74],["Ralph Neely","OL",82],["Lance Rentzel","WR",74]),
+  "70s": T(["Roger Staubach","QB",94],["Tony Dorsett","RB",88,"1977-79"],["Drew Pearson","WR",86],["Calvin Hill","RB",82],["Rayfield Wright","OL",90],["Billy Joe DuPree","TE",80],["Robert Newhouse","RB",72]),
   "80s": T(["Tony Dorsett","RB",92],["Danny White","QB",80],["Tony Hill","WR",80],["Herschel Walker","RB",86,"1986-89"],["Doug Cosbie","TE",74],["Drew Pearson","WR",82]),
   "90s": T(["Troy Aikman","QB",92],["Emmitt Smith","RB",97],["Michael Irvin","WR",94],["Larry Allen","OL",97],["Jay Novacek","TE",84],["Daryl Johnston","RB",74],["Nate Newton","OL",84],["Alvin Harper","WR",80]),
   "00s": T(["Tony Romo","QB",86],["Terrell Owens","WR",90,"2006-08"],["Jason Witten","TE",92],["Marion Barber","RB",80],["Julius Jones","RB",74],["Flozell Adams","OL",86],["Miles Austin","WR",80],["Terry Glenn","WR",80]),
@@ -444,6 +458,8 @@ const DATA = {
   "20s": T(["Dak Prescott","QB",86],["CeeDee Lamb","WR",90],["Tony Pollard","RB",80],["Zack Martin","OL",94],["Tyron Smith","OL",88],["Ezekiel Elliott","RB",78],["Jake Ferguson","TE",76],["Amari Cooper","WR",82]),
 },
 "Denver Broncos": {
+  "60s": T(["Lionel Taylor","WR",84],["Floyd Little","RB",84,"from 1967"],["Frank Tripucka","QB",76],["Al Denson","WR",70]),
+  "70s": T(["Floyd Little","RB",84],["Haven Moses","WR",80],["Riley Odoms","TE",82],["Craig Morton","QB",80,"from 1977"],["Otis Armstrong","RB",78],["Rick Upchurch","WR",80]),
   "80s": T(["John Elway","QB",92,"from 1983"],["Sammy Winder","RB",76],["Steve Watson","WR",78],["Vance Johnson","WR",74],["Mark Jackson","WR",74],["Ricky Nattiel","WR",72]),
   "90s": T(["John Elway","QB",95],["Terrell Davis","RB",92,"from 1995"],["Shannon Sharpe","TE",94],["Rod Smith","WR",86],["Ed McCaffrey","WR",80],["Gary Zimmerman","OL",92],["Tom Nalen","OL",86]),
   "00s": T(["Jake Plummer","QB",80],["Jay Cutler","QB",82,"2006-08"],["Clinton Portis","RB",84],["Rod Smith","WR",86],["Brandon Marshall","WR",86],["Tom Nalen","OL",86],["Ryan Clady","OL",86]),
@@ -451,6 +467,8 @@ const DATA = {
   "20s": T(["Russell Wilson","QB",80,"2022-23"],["Courtland Sutton","WR",82],["Bo Nix","QB",76],["Javonte Williams","RB",78],["Jerry Jeudy","WR",78],["Garett Bolles","OL",84]),
 },
 "Detroit Lions": {
+  "60s": T(["Earl Morrall","QB",78,"1960-64"],["Milt Plum","QB",76],["Gail Cogdill","WR",78],["Nick Pietrosante","RB",72],["Terry Barr","WR",72]),
+  "70s": T(["Charlie Sanders","TE",84],["Greg Landry","QB",76],["Mel Farr","RB",74],["Ron Jessie","WR",76],["Steve Owens","RB",72],["Dexter Bussey","RB",70]),
   "80s": T(["Billy Sims","RB",86],["Eric Hipple","QB",68],["James Jones","RB",72],["Leonard Thompson","WR",72],["Chuck Long","QB",64]),
   "90s": T(["Barry Sanders","RB",99],["Herman Moore","WR",90],["Scott Mitchell","QB",76],["Brett Perriman","WR",80],["Johnnie Morton","WR",78],["Lomas Brown","OL",88],["Kevin Glover","OL",84]),
   "00s": T(["Jon Kitna","QB",78],["Roy Williams","WR",82],["Calvin Johnson","WR",92,"2007-09"],["Kevin Jones","RB",74],["Jeff Backus","OL",80],["Joey Harrington","QB",66],["Charles Rogers","WR",66]),
@@ -458,6 +476,8 @@ const DATA = {
   "20s": T(["Jared Goff","QB",86],["Amon-Ra St. Brown","WR",88],["Jahmyr Gibbs","RB",84],["Sam LaPorta","TE",84],["David Montgomery","RB",80],["Penei Sewell","OL",92],["Frank Ragnow","OL",88],["Jameson Williams","WR",78]),
 },
 "Green Bay Packers": {
+  "60s": T(["Bart Starr","QB",92],["Jim Taylor","RB",92],["Paul Hornung","RB",86],["Forrest Gregg","OL",94],["Jerry Kramer","OL",90],["Jim Ringo","OL",86],["Boyd Dowler","WR",78],["Carroll Dale","WR",78]),
+  "70s": T(["John Brockington","RB",80],["Lynn Dickey","QB",76,"from 1976"],["MacArthur Lane","RB",74],["Steve Odom","WR",72],["Barty Smith","RB",70]),
   "80s": T(["James Lofton","WR",90],["Lynn Dickey","QB",76],["Paul Coffman","TE",74],["John Jefferson","WR",80],["Gerry Ellis","RB",70],["Eddie Lee Ivery","RB",72]),
   "90s": T(["Brett Favre","QB",96],["Sterling Sharpe","WR",90],["Dorsey Levens","RB",80],["Edgar Bennett","RB",76],["Antonio Freeman","WR",84],["Robert Brooks","WR",80],["Mark Chmura","TE",78],["Frank Winters","OL",80]),
   "00s": T(["Brett Favre","QB",92],["Aaron Rodgers","QB",86,"2008-09"],["Ahman Green","RB",88],["Donald Driver","WR",84],["Greg Jennings","WR",86],["Javon Walker","WR",80],["Chad Clifton","OL",84],["Ryan Grant","RB",76]),
@@ -470,6 +490,8 @@ const DATA = {
   "20s": T(["C.J. Stroud","QB",86],["Nico Collins","WR",84],["Stefon Diggs","WR",82,"2024"],["Tank Dell","WR",78],["Dalton Schultz","TE",76],["Laremy Tunsil","OL",88],["Dameon Pierce","RB",74],["Joe Mixon","RB",80,"2024"]),
 },
 "Indianapolis Colts": {
+  "60s": T(["Johnny Unitas","QB",98,"Baltimore"],["Lenny Moore","RB",90],["Raymond Berry","WR",90],["John Mackey","TE",92],["Jim Parker","OL",92],["Jimmy Orr","WR",80],["Tom Matte","RB",78]),
+  "70s": T(["Bert Jones","QB",86,"Baltimore, from 1973"],["Lydell Mitchell","RB",82],["Johnny Unitas","QB",84,"1970-72"],["Roger Carr","WR",78],["Raymond Chester","TE",80],["Glenn Doughty","WR",72]),
   "80s": T(["Eric Dickerson","RB",94,"1987-89"],["Chris Hinton","OL",84],["Bill Brooks","WR",78],["Albert Bentley","RB",72],["Jack Trudeau","QB",66]),
   "90s": T(["Marshall Faulk","RB",94,"1994-98"],["Marvin Harrison","WR",94,"from 1996"],["Peyton Manning","QB",90,"1998-99"],["Jim Harbaugh","QB",80],["Ken Dilger","TE",74],["Tarik Glenn","OL",82],["Jeff George","QB",76]),
   "00s": T(["Peyton Manning","QB",98],["Marvin Harrison","WR",96],["Reggie Wayne","WR",90],["Edgerrin James","RB",90],["Dallas Clark","TE",84],["Joseph Addai","RB",78],["Jeff Saturday","OL",88],["Tarik Glenn","OL",84],["Pierre Garcon","WR",76]),
@@ -483,6 +505,8 @@ const DATA = {
   "20s": T(["Trevor Lawrence","QB",82],["Travis Etienne","RB",82],["Christian Kirk","WR",80],["Calvin Ridley","WR",82,"from 2023"],["Evan Engram","TE",82],["Brian Thomas Jr.","WR",82],["Cam Robinson","OL",78]),
 },
 "Kansas City Chiefs": {
+  "60s": T(["Len Dawson","QB",90],["Otis Taylor","WR",86],["Mike Garrett","RB",78],["Jim Tyrer","OL",86],["Fred Arbanas","TE",78],["Ed Budde","OL",82],["Curtis McClinton","RB",72]),
+  "70s": T(["Len Dawson","QB",84,"1970-75"],["Otis Taylor","WR",82],["Ed Podolak","RB",76],["MacArthur Lane","RB",74],["Jim Tyrer","OL",82]),
   "80s": T(["Bill Kenney","QB",72],["Christian Okoye","RB",82,"from 1987"],["Stephone Paige","WR",76],["Carlos Carson","WR",78],["Henry Marshall","WR",70]),
   "90s": T(["Joe Montana","QB",90,"1993-94"],["Marcus Allen","RB",82,"1993-97"],["Tony Gonzalez","TE",92,"from 1997"],["Will Shields","OL",92],["Steve Bono","QB",76],["Christian Okoye","RB",80],["Willie Davis","WR",74]),
   "00s": T(["Trent Green","QB",84],["Priest Holmes","RB",90],["Larry Johnson","RB",86],["Tony Gonzalez","TE",96],["Willie Roaf","OL",94],["Will Shields","OL",92],["Dante Hall","WR",76],["Eddie Kennison","WR",76]),
@@ -490,6 +514,8 @@ const DATA = {
   "20s": T(["Patrick Mahomes","QB",99],["Travis Kelce","TE",95],["Tyreek Hill","WR",93,"2020-21"],["Isiah Pacheco","RB",80],["Rashee Rice","WR",80],["Creed Humphrey","OL",88],["Joe Thuney","OL",88],["JuJu Smith-Schuster","WR",76],["Xavier Worthy","WR",78]),
 },
 "Las Vegas Raiders": {
+  "60s": T(["Daryle Lamonica","QB",84,"Oakland, from 1967"],["Fred Biletnikoff","WR",86],["Jim Otto","OL",90],["Clem Daniels","RB",80],["Art Powell","WR",80],["Gene Upshaw","OL",88,"from 1967"],["Hewritt Dixon","RB",74]),
+  "70s": T(["Ken Stabler","QB",90,"Oakland"],["Cliff Branch","WR",86],["Fred Biletnikoff","WR",86],["Dave Casper","TE",88],["Gene Upshaw","OL",94],["Art Shell","OL",92],["Mark van Eeghen","RB",76],["Marv Hubbard","RB",72]),
   "80s": T(["Marcus Allen","RB",92,"Los Angeles"],["Todd Christensen","TE",84],["Jim Plunkett","QB",82],["Bo Jackson","RB",88,"1987-89"],["Cliff Branch","WR",82],["Don Mosebar","OL",82]),
   "90s": T(["Tim Brown","WR",92],["Jeff Hostetler","QB",76],["Napoleon Kaufman","RB",76],["Steve Wisniewski","OL",88],["Rich Gannon","QB",84,"1999"],["Jeff George","QB",76]),
   "00s": T(["Rich Gannon","QB",88],["Tim Brown","WR",88],["Jerry Rice","WR",90,"2001-04"],["Randy Moss","WR",90,"2005-06"],["Charlie Garner","RB",78],["Zach Miller","TE",78],["Darren McFadden","RB",78],["JaMarcus Russell","QB",58]),
@@ -497,6 +523,8 @@ const DATA = {
   "20s": T(["Davante Adams","WR",93],["Josh Jacobs","RB",84],["Darren Waller","TE",84],["Derek Carr","QB",82],["Hunter Renfrow","WR",78],["Jakobi Meyers","WR",78],["Brock Bowers","TE",84]),
 },
 "Los Angeles Chargers": {
+  "60s": T(["Lance Alworth","WR",94,"San Diego"],["John Hadl","QB",82],["Paul Lowe","RB",80],["Keith Lincoln","RB",80],["Ron Mix","OL",90],["Gary Garrison","WR",78]),
+  "70s": T(["Dan Fouts","QB",86,"San Diego, from 1973"],["Charlie Joiner","WR",84,"from 1976"],["John Hadl","QB",80,"1970-72"],["Russ Washington","OL",80],["Gary Garrison","WR",74]),
   "80s": T(["Dan Fouts","QB",92,"San Diego"],["Kellen Winslow","TE",94],["Charlie Joiner","WR",84],["Wes Chandler","WR",84],["Chuck Muncie","RB",80],["Gary Anderson","RB",74],["Lionel James","RB",72]),
   "90s": T(["Stan Humphreys","QB",78],["Natrone Means","RB",80],["Tony Martin","WR",78],["Ronnie Harmon","RB",72],["Gary Brown","RB",70]),
   "00s": T(["LaDainian Tomlinson","RB",97],["Philip Rivers","QB",90,"from 2006"],["Drew Brees","QB",86,"2001-05"],["Antonio Gates","TE",94],["Vincent Jackson","WR",82],["Nick Hardwick","OL",82],["Malcom Floyd","WR",74]),
@@ -504,6 +532,8 @@ const DATA = {
   "20s": T(["Justin Herbert","QB",90],["Keenan Allen","WR",88],["Austin Ekeler","RB",84],["Mike Williams","WR",80],["Rashawn Slater","OL",86],["Gerald Everett","TE",74],["Joshua Palmer","WR",74]),
 },
 "Los Angeles Rams": {
+  "60s": T(["Roman Gabriel","QB",84,"Los Angeles"],["Dick Bass","RB",80],["Jack Snow","WR",78],["Tom Mack","OL",90,"from 1966"],["Les Josephson","RB",72],["Bernie Casey","WR",74]),
+  "70s": T(["Lawrence McCutcheon","RB",82,"Los Angeles"],["Harold Jackson","WR",84],["Tom Mack","OL",90],["James Harris","QB",78],["Pat Haden","QB",76],["Jackie Slater","OL",82,"from 1976"]),
   "80s": T(["Eric Dickerson","RB",96,"Los Angeles"],["Henry Ellard","WR",86],["Jackie Slater","OL",90],["Jim Everett","QB",80,"1986-89"],["Charles White","RB",74],["Ron Brown","WR",68]),
   "90s": T(["Isaac Bruce","WR",90,"from 1994"],["Kurt Warner","QB",94,"1999"],["Marshall Faulk","RB",94,"1999"],["Torry Holt","WR",86,"1999"],["Jerome Bettis","RB",86,"1993-95"],["Orlando Pace","OL",96,"from 1997"],["Jim Everett","QB",80]),
   "00s": T(["Marshall Faulk","RB",94],["Torry Holt","WR",90],["Isaac Bruce","WR",86],["Kurt Warner","QB",92],["Marc Bulger","QB",80],["Steven Jackson","RB",88,"from 2004"],["Orlando Pace","OL",94]),
@@ -511,6 +541,8 @@ const DATA = {
   "20s": T(["Matthew Stafford","QB",88],["Cooper Kupp","WR",93],["Puka Nacua","WR",86],["Kyren Williams","RB",82],["Robert Woods","WR",80],["Cam Akers","RB",76],["Tyler Higbee","TE",76]),
 },
 "Miami Dolphins": {
+  "60s": T(["Bob Griese","QB",84,"1967-69"],["Larry Csonka","RB",82,"1968-69"],["Jim Kiick","RB",74],["Howard Twilley","WR",72],["Norm Evans","OL",76]),
+  "70s": T(["Bob Griese","QB",90],["Larry Csonka","RB",90],["Paul Warfield","WR",92],["Mercury Morris","RB",80],["Larry Little","OL",92],["Jim Langer","OL",90],["Bob Kuechenberg","OL",84],["Nat Moore","WR",80],["Jim Kiick","RB",76]),
   "80s": T(["Dan Marino","QB",98],["Mark Clayton","WR",87],["Mark Duper","WR",86],["Dwight Stephenson","OL",95],["Nat Moore","WR",78],["Tony Nathan","RB",74]),
   "90s": T(["Dan Marino","QB",97],["Irving Fryar","WR",84],["O.J. McDuffie","WR",80],["Keith Jackson","TE",84],["Richmond Webb","OL",88],["Keith Sims","OL",80],["Bernie Parmalee","RB",72]),
   "00s": T(["Ricky Williams","RB",88],["Ronnie Brown","RB",84],["Chris Chambers","WR",82],["Chad Pennington","QB",80],["Jay Fiedler","QB",74],["Randy McMichael","TE",78]),
@@ -518,6 +550,8 @@ const DATA = {
   "20s": T(["Tua Tagovailoa","QB",86],["Tyreek Hill","WR",95],["Jaylen Waddle","WR",89],["Raheem Mostert","RB",80],["De'Von Achane","RB",82],["Terron Armstead","OL",89],["Mike Gesicki","TE",79]),
 },
 "Minnesota Vikings": {
+  "60s": T(["Fran Tarkenton","QB",88,"1961-66"],["Bill Brown","RB",78],["Mick Tingelhoff","OL",86],["Dave Osborn","RB",72],["Gene Washington","WR",78,"from 1967"],["Tommy Mason","RB",74]),
+  "70s": T(["Fran Tarkenton","QB",92,"from 1972"],["Chuck Foreman","RB",86],["Ahmad Rashad","WR",84],["Ron Yary","OL",92],["Sammy White","WR",80],["John Gilliam","WR",80],["Mick Tingelhoff","OL",84]),
   "80s": T(["Anthony Carter","WR",84],["Tommy Kramer","QB",76],["Steve Jordan","TE",82],["Ted Brown","RB",74],["Wade Wilson","QB",72],["Darrin Nelson","RB",72]),
   "90s": T(["Cris Carter","WR",94],["Randy Moss","WR",94,"1998-99"],["Warren Moon","QB",86,"1994-96"],["Robert Smith","RB",86],["Randall Cunningham","QB",84,"1998"],["Jake Reed","WR",80],["Randall McDaniel","OL",94],["Brad Johnson","QB",78]),
   "00s": T(["Adrian Peterson","RB",92,"from 2007"],["Daunte Culpepper","QB",84],["Randy Moss","WR",96],["Brett Favre","QB",88,"2009"],["Steve Hutchinson","OL",96],["Bryant McKinnie","OL",84],["Sidney Rice","WR",80],["Chester Taylor","RB",74],["Percy Harvin","WR",80]),
@@ -525,6 +559,8 @@ const DATA = {
   "20s": T(["Justin Jefferson","WR",95],["Kirk Cousins","QB",84],["Dalvin Cook","RB",84],["T.J. Hockenson","TE",82],["Aaron Jones","RB",80,"2024"],["Jordan Addison","WR",80],["Christian Darrisaw","OL",86],["Sam Darnold","QB",80,"2024"]),
 },
 "New England Patriots": {
+  "60s": T(["Babe Parilli","QB",80,"Boston"],["Gino Cappelletti","WR",84,"Boston"],["Jim Nance","RB",82],["Larry Garron","RB",72]),
+  "70s": T(["Steve Grogan","QB",80,"from 1975"],["Sam Cunningham","RB",80],["John Hannah","OL",96,"from 1973"],["Russ Francis","TE",82],["Jim Plunkett","QB",76,"1971-75"],["Leon Gray","OL",84],["Darryl Stingley","WR",74]),
   "80s": T(["John Hannah","OL",98],["Stanley Morgan","WR",86],["Steve Grogan","QB",78],["Craig James","RB",78],["Irving Fryar","WR",82,"from 1984"],["Tony Eason","QB",74]),
   "90s": T(["Drew Bledsoe","QB",86],["Curtis Martin","RB",90,"1995-97"],["Ben Coates","TE",88],["Terry Glenn","WR",84],["Bruce Armstrong","OL",86]),
   "00s": T(["Tom Brady","QB",97],["Randy Moss","WR",96,"2007-09"],["Wes Welker","WR",88],["Corey Dillon","RB",84],["Deion Branch","WR",80],["Logan Mankins","OL",90],["Matt Light","OL",82],["Kevin Faulk","RB",74],["Troy Brown","WR",80]),
@@ -532,6 +568,8 @@ const DATA = {
   "20s": T(["Drake Maye","QB",79],["Mac Jones","QB",74],["Rhamondre Stevenson","RB",80],["Hunter Henry","TE",80],["Jakobi Meyers","WR",78],["Kendrick Bourne","WR",76]),
 },
 "New Orleans Saints": {
+  "60s": T(["Billy Kilmer","QB",78],["Danny Abramowicz","WR",80],["Jim Taylor","RB",72,"1967"]),
+  "70s": T(["Archie Manning","QB",82],["Chuck Muncie","RB",80,"from 1976"],["Wes Chandler","WR",82,"1978-79"],["Tony Galbreath","RB",74],["Henry Childs","TE",74]),
   "80s": T(["Bobby Hebert","QB",76],["Dalton Hilliard","RB",76],["Rueben Mayes","RB",76],["Eric Martin","WR",82],["Hoby Brenner","TE",70],["Stan Brock","OL",76]),
   "90s": T(["Willie Roaf","OL",94],["Jim Everett","QB",78],["Eric Martin","WR",80],["Mario Bates","RB",72],["Quinn Early","WR",74],["Michael Haynes","WR",72]),
   "00s": T(["Drew Brees","QB",94,"from 2006"],["Deuce McAllister","RB",84],["Reggie Bush","RB",82],["Marques Colston","WR",86],["Joe Horn","WR",84],["Jahri Evans","OL",90],["Jeremy Shockey","TE",80],["Pierre Thomas","RB",76],["Aaron Brooks","QB",78]),
@@ -539,6 +577,8 @@ const DATA = {
   "20s": T(["Alvin Kamara","RB",86],["Chris Olave","WR",82],["Michael Thomas","WR",84],["Drew Brees","QB",90,"2020"],["Taysom Hill","QB",76],["Erik McCoy","OL",84],["Rashid Shaheed","WR",76],["Ryan Ramczyk","OL",86]),
 },
 "New York Giants": {
+  "60s": T(["Y.A. Tittle","QB",90,"1961-64"],["Frank Gifford","WR",84],["Del Shofner","WR",82],["Homer Jones","WR",80],["Roosevelt Brown","OL",88],["Tucker Frederickson","RB",72]),
+  "70s": T(["Fran Tarkenton","QB",88,"1970-71"],["Ron Johnson","RB",80],["Bob Tucker","TE",78],["Craig Morton","QB",78,"1974-76"],["Doug Kotar","RB",70]),
   "80s": T(["Phil Simms","QB",84],["Joe Morris","RB",82],["Mark Bavaro","TE",86],["Lionel Manuel","WR",72],["Maurice Carthon","RB",68],["Stacy Robinson","WR",68]),
   "90s": T(["Rodney Hampton","RB",82],["Phil Simms","QB",82],["Amani Toomer","WR",82,"from 1996"],["Tiki Barber","RB",84,"1997-99"],["Jeff Hostetler","QB",74],["Dave Brown","QB",68],["Chris Calloway","WR",74]),
   "00s": T(["Eli Manning","QB",86],["Tiki Barber","RB",88],["Plaxico Burress","WR",84],["Amani Toomer","WR",82],["Brandon Jacobs","RB",78],["Jeremy Shockey","TE",84],["Hakeem Nicks","WR",80],["Ahmad Bradshaw","RB",76]),
@@ -546,6 +586,8 @@ const DATA = {
   "20s": T(["Saquon Barkley","RB",88],["Daniel Jones","QB",74],["Andrew Thomas","OL",86],["Malik Nabers","WR",84],["Darius Slayton","WR",76],["Sterling Shepard","WR",72]),
 },
 "New York Jets": {
+  "60s": T(["Joe Namath","QB",90,"from 1965"],["Don Maynard","WR",90],["Matt Snell","RB",78],["George Sauer","WR",80],["Emerson Boozer","RB",76],["Winston Hill","OL",84]),
+  "70s": T(["Joe Namath","QB",84],["John Riggins","RB",84,"1971-75"],["Richard Caster","TE",80],["Winston Hill","OL",82],["Don Maynard","WR",80]),
   "80s": T(["Al Toon","WR",86],["Ken O'Brien","QB",80],["Freeman McNeil","RB",82],["Wesley Walker","WR",82],["Mickey Shuler","TE",74]),
   "90s": T(["Curtis Martin","RB",90,"1998-99"],["Vinny Testaverde","QB",82],["Keyshawn Johnson","WR",86],["Wayne Chrebet","WR",80],["Boomer Esiason","QB",80],["Adrian Murrell","RB",76]),
   "00s": T(["Curtis Martin","RB",91],["Chad Pennington","QB",80],["Nick Mangold","OL",92],["D'Brickashaw Ferguson","OL",86],["Laveranues Coles","WR",82],["Brett Favre","QB",88,"2008"],["Thomas Jones","RB",82],["Alan Faneca","OL",90],["Jerricho Cotchery","WR",78]),
@@ -553,6 +595,8 @@ const DATA = {
   "20s": T(["Aaron Rodgers","QB",88,"from 2023"],["Garrett Wilson","WR",87],["Breece Hall","RB",84],["Corey Davis","WR",76],["Zach Wilson","QB",68],["Allen Lazard","WR",74],["Tyler Conklin","TE",74]),
 },
 "Philadelphia Eagles": {
+  "60s": T(["Sonny Jurgensen","QB",84,"1960-63"],["Tommy McDonald","WR",84,"1960-63"],["Pete Retzlaff","TE",82],["Timmy Brown","RB",80],["Norm Snead","QB",74],["Ben Hawkins","WR",74]),
+  "70s": T(["Harold Carmichael","WR",86],["Wilbert Montgomery","RB",84,"1977-79"],["Ron Jaworski","QB",80,"from 1977"],["Charle Young","TE",82],["Roman Gabriel","QB",78,"1973-76"],["Stan Walters","OL",80]),
   "80s": T(["Randall Cunningham","QB",86,"from 1985"],["Wilbert Montgomery","RB",84],["Mike Quick","WR",86],["Ron Jaworski","QB",80],["Keith Byars","RB",78],["Keith Jackson","TE",84,"1988-89"]),
   "90s": T(["Randall Cunningham","QB",86],["Ricky Watters","RB",84],["Fred Barnett","WR",80],["Charlie Garner","RB",76],["Irving Fryar","WR",82,"1996-98"],["Duce Staley","RB",78],["Calvin Williams","WR",74]),
   "00s": T(["Donovan McNabb","QB",88],["Brian Westbrook","RB",88],["Terrell Owens","WR",92,"2004-05"],["DeSean Jackson","WR",84,"2008-09"],["Jason Peters","OL",90],["Tra Thomas","OL",84],["L.J. Smith","TE",72]),
@@ -560,6 +604,8 @@ const DATA = {
   "20s": T(["Jalen Hurts","QB",90],["A.J. Brown","WR",90],["DeVonta Smith","WR",86],["Saquon Barkley","RB",90,"2024"],["Dallas Goedert","TE",82],["Jason Kelce","OL",94],["Lane Johnson","OL",92],["Miles Sanders","RB",78],["Jordan Mailata","OL",84]),
 },
 "Pittsburgh Steelers": {
+  "60s": T(["John Henry Johnson","RB",84,"1960-65"],["Roy Jefferson","WR",80],["Buddy Dial","WR",78],["Bill Nelsen","QB",74],["Dick Hoak","RB",70]),
+  "70s": T(["Terry Bradshaw","QB",88],["Franco Harris","RB",90],["Lynn Swann","WR",88],["John Stallworth","WR",88],["Mike Webster","OL",92],["Rocky Bleier","RB",74],["Frank Lewis","WR",74]),
   "80s": T(["John Stallworth","WR",88],["Mike Webster","OL",96],["Franco Harris","RB",86,"1980-83"],["Terry Bradshaw","QB",88,"1980-83"],["Louis Lipps","WR",82],["Walter Abercrombie","RB",72]),
   "90s": T(["Jerome Bettis","RB",90,"from 1996"],["Dermontti Dawson","OL",94],["Barry Foster","RB",82],["Neil O'Donnell","QB",78],["Kordell Stewart","QB",78],["Yancey Thigpen","WR",80],["Hines Ward","WR",82,"1998-99"]),
   "00s": T(["Ben Roethlisberger","QB",90],["Hines Ward","WR",88],["Jerome Bettis","RB",88],["Willie Parker","RB",80],["Santonio Holmes","WR",82],["Heath Miller","TE",84],["Alan Faneca","OL",92],["Plaxico Burress","WR",82]),
@@ -567,6 +613,8 @@ const DATA = {
   "20s": T(["Najee Harris","RB",80],["George Pickens","WR",82],["Diontae Johnson","WR",80],["Pat Freiermuth","TE",78],["Russell Wilson","QB",80,"2024"],["Kenny Pickett","QB",70]),
 },
 "San Francisco 49ers": {
+  "60s": T(["John Brodie","QB",84],["Dave Parks","WR",80],["Ken Willard","RB",76],["Gene Washington","WR",80,"from 1969"],["John David Crow","RB",74,"1965-68"]),
+  "70s": T(["O.J. Simpson","RB",80,"1978-79"],["Gene Washington","WR",80],["Delvin Williams","RB",80],["Ted Kwalick","TE",78],["Freddie Solomon","WR",76],["John Brodie","QB",80,"1970-73"]),
   "80s": T(["Joe Montana","QB",99],["Jerry Rice","WR",98,"from 1985"],["Roger Craig","RB",90],["Dwight Clark","WR",84],["John Taylor","WR",84,"from 1986"],["Russ Francis","TE",76],["Randy Cross","OL",82],["Wendell Tyler","RB",76]),
   "90s": T(["Steve Young","QB",96],["Jerry Rice","WR",99],["Ricky Watters","RB",86],["John Taylor","WR",84],["Brent Jones","TE",84],["Terrell Owens","WR",86,"1996-99"],["Garrison Hearst","RB",84],["Harris Barton","OL",82]),
   "00s": T(["Frank Gore","RB",90,"from 2005"],["Terrell Owens","WR",90,"2000-03"],["Jeff Garcia","QB",84],["Vernon Davis","TE",84,"from 2006"],["Alex Smith","QB",74],["Joe Staley","OL",88],["Garrison Hearst","RB",80]),
@@ -574,6 +622,7 @@ const DATA = {
   "20s": T(["Christian McCaffrey","RB",92,"from 2022"],["George Kittle","TE",92],["Trent Williams","OL",96],["Deebo Samuel","WR",88],["Brandon Aiyuk","WR",86],["Brock Purdy","QB",84],["Jimmy Garoppolo","QB",80]),
 },
 "Seattle Seahawks": {
+  "70s": T(["Steve Largent","WR",86,"from 1976"],["Jim Zorn","QB",78],["Sherman Smith","RB",76],["Sam McCullum","WR",72]),
   "80s": T(["Steve Largent","WR",94],["Curt Warner","RB",84],["Dave Krieg","QB",80],["John L. Williams","RB",80,"from 1986"],["Daryl Turner","WR",72]),
   "90s": T(["Chris Warren","RB",84],["Joey Galloway","WR",84],["Brian Blades","WR",80],["Warren Moon","QB",84,"1997-98"],["Walter Jones","OL",94,"from 1997"],["John L. Williams","RB",78],["Rick Mirer","QB",68]),
   "00s": T(["Shaun Alexander","RB",90],["Matt Hasselbeck","QB",84],["Walter Jones","OL",96],["Steve Hutchinson","OL",94,"2000-05"],["Darrell Jackson","WR",80],["Bobby Engram","WR",74],["Deion Branch","WR",76]),
@@ -581,6 +630,7 @@ const DATA = {
   "20s": T(["DK Metcalf","WR",88],["Tyler Lockett","WR",84],["Geno Smith","QB",82],["Russell Wilson","QB",86,"2020-21"],["Kenneth Walker III","RB",82],["Jaxon Smith-Njigba","WR",82],["Noah Fant","TE",76]),
 },
 "Tampa Bay Buccaneers": {
+  "70s": T(["Doug Williams","QB",78,"from 1978"],["Ricky Bell","RB",78],["Jimmie Giles","TE",80,"from 1978"],["Morris Owens","WR",72],["Gary Huff","QB",66]),
   "80s": T(["James Wilder","RB",84],["Jimmie Giles","TE",78],["Kevin House","WR",74],["Steve DeBerg","QB",72],["Doug Williams","QB",80,"1980-82"],["Vinny Testaverde","QB",72,"1987-89"]),
   "90s": T(["Mike Alstott","RB",84,"from 1996"],["Warrick Dunn","RB",82,"1997-99"],["Trent Dilfer","QB",72],["Errict Rhett","RB",74],["Courtney Hawkins","WR",70],["Tony Mayberry","OL",80]),
   "00s": T(["Brad Johnson","QB",80],["Mike Alstott","RB",82],["Joey Galloway","WR",82],["Keenan McCardell","WR",80],["Keyshawn Johnson","WR",84],["Jeff Garcia","QB",80],["Cadillac Williams","RB",76],["Michael Pittman","RB",74]),
@@ -588,6 +638,8 @@ const DATA = {
   "20s": T(["Tom Brady","QB",94,"2020-22"],["Mike Evans","WR",90],["Chris Godwin","WR",86],["Baker Mayfield","QB",82,"from 2023"],["Rob Gronkowski","TE",88,"2020-21"],["Tristan Wirfs","OL",92],["Rachaad White","RB",78],["Leonard Fournette","RB",80]),
 },
 "Tennessee Titans": {
+  "60s": T(["George Blanda","QB",82,"Houston Oilers"],["Billy Cannon","RB",82],["Charley Hennigan","WR",84],["Charlie Tolar","RB",70],["Bill Groman","WR",76]),
+  "70s": T(["Earl Campbell","RB",92,"Houston Oilers, 1978-79"],["Dan Pastorini","QB",80],["Ken Burrough","WR",82],["Billy Johnson","WR",80],["Mike Barber","TE",74]),
   "80s": T(["Warren Moon","QB",90,"Houston Oilers"],["Earl Campbell","RB",92,"1980-84"],["Mike Munchak","OL",94],["Bruce Matthews","OL",96],["Drew Hill","WR",82],["Ernest Givins","WR",82],["Mike Rozier","RB",76]),
   "90s": T(["Steve McNair","QB",88,"from 1995"],["Eddie George","RB",88,"from 1996"],["Warren Moon","QB",90,"1990-93"],["Bruce Matthews","OL",96],["Frank Wycheck","TE",80],["Haywood Jeffires","WR",84],["Ernest Givins","WR",80]),
   "00s": T(["Steve McNair","QB",88],["Eddie George","RB",86],["Chris Johnson","RB",88,"2008-09"],["Derrick Mason","WR",84],["Frank Wycheck","TE",78],["Kevin Mawae","OL",90],["Vince Young","QB",76],["Bruce Matthews","OL",94,"2000-01"]),
@@ -595,6 +647,8 @@ const DATA = {
   "20s": T(["Derrick Henry","RB",93,"2020-23"],["A.J. Brown","WR",86,"2020-21"],["Ryan Tannehill","QB",80],["Julio Jones","WR",82,"2021"],["Tony Pollard","RB",78,"2024"],["Treylon Burks","WR",72]),
 },
 "Washington Commanders": {
+  "60s": T(["Sonny Jurgensen","QB",90,"Redskins, from 1964"],["Charley Taylor","WR",90],["Bobby Mitchell","WR",86],["Jerry Smith","TE",82],["Larry Brown","RB",80,"1969"]),
+  "70s": T(["Larry Brown","RB",84,"Redskins"],["Billy Kilmer","QB",80],["Charley Taylor","WR",86],["Sonny Jurgensen","QB",84,"1970-74"],["Roy Jefferson","WR",80],["Jerry Smith","TE",80]),
   "80s": T(["John Riggins","RB",88,"Redskins"],["Art Monk","WR",90],["Joe Theismann","QB",84,"1980-85"],["Gary Clark","WR",84],["Russ Grimm","OL",88],["Joe Jacoby","OL",86],["Doug Williams","QB",80,"1986-89"],["George Rogers","RB",78]),
   "90s": T(["Mark Rypien","QB",80,"Redskins"],["Art Monk","WR",86],["Gary Clark","WR",82],["Brian Mitchell","RB",76],["Terry Allen","RB",80],["Earnest Byner","RB",78],["Henry Ellard","WR",78]),
   "00s": T(["Clinton Portis","RB",86,"Redskins"],["Santana Moss","WR",82],["Chris Cooley","TE",80],["Chris Samuels","OL",88],["Mark Brunell","QB",76],["Jason Campbell","QB",74],["Ladell Betts","RB",72]),
@@ -727,7 +781,7 @@ function validTeams(){ return TEAMS.filter(function(t){ return DECADE_ORDER.some
 function validDecades(team){ return DECADE_ORDER.filter(function(d){ return poolIsValid(team,d); }); }
 function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
 function pad(n){ return (n<10?"0":"")+n; }
-function chipLabel(key){ return (key==="WR1"||key==="WR2"||key==="WR3")?"WR":key; }
+function chipLabel(key){ return key; }
 function abbr(team){ var p=team.split(" "); return p[p.length-1].slice(0,3).toUpperCase(); }
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
 
