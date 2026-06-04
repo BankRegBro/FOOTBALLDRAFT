@@ -1241,45 +1241,48 @@ function showResults(R,out){
 }
 
 /* ---- high-score / hall of fame ----
+   Six separate top-5 boards, one per (difficulty x era) segment.
    Storage, in priority order, degrading gracefully (never crashes):
    1) LB_API (Cloudflare Worker) -> global board shared by everyone, always-on
    2) window.storage shared      -> global across viewers of a published Claude artifact
-   3) localStorage               -> persists on this device (GitHub Pages with no Worker set)
-   4) in-memory                  -> this session only
-   Paste your Worker URL into LB_API below to turn on the global board. */
+   3) localStorage               -> persists on this device (no Worker set)
+   4) in-memory                  -> this session only */
 var LB_API = "https://gridiron-hof.joeysamowitz.workers.dev";  // global board (Cloudflare Worker)
-var LB_KEY="gridironBlitzHOF", LB_MAX=5, lbScope="session", lbMem=[];
+var LB_KEY="gridironBlitzHOF", LB_MAX=5, lbScope="session", lbMem={};
+function lbSeg(){ return mode+":"+era; }   // difficulty (blitz|rookie) x era (all|modern|nineties)
+function lbSort(b){ b.sort(function(a,c){ return c.s-a.s; }); return b; }
 async function lbLoad(){
+  var seg=lbSeg();
   if(LB_API){
     lbScope="global";
-    try{ var r=await fetch(LB_API,{cache:"no-store"}); if(r.ok) return await r.json(); }catch(e){}
-    return lbMem.slice();
+    try{ var r=await fetch(LB_API+"?m="+encodeURIComponent(mode)+"&era="+encodeURIComponent(era),{cache:"no-store"}); if(r.ok) return await r.json(); }catch(e){}
+    return (lbMem[seg]||[]).slice();
   }
   if(window.storage && window.storage.get){
     lbScope="shared";
-    try{ var s=await window.storage.get(LB_KEY,true); return (s&&s.value)?JSON.parse(s.value):[]; }
+    try{ var s=await window.storage.get(LB_KEY+":"+seg,true); return (s&&s.value)?JSON.parse(s.value):[]; }
     catch(e){ return []; }
   }
-  try{ if(window.localStorage){ lbScope="device"; var v=localStorage.getItem(LB_KEY); return v?JSON.parse(v):[]; } }catch(e){}
-  lbScope="session"; return lbMem.slice();
+  try{ if(window.localStorage){ lbScope="device"; var v=localStorage.getItem(LB_KEY+":"+seg); return v?JSON.parse(v):[]; } }catch(e){}
+  lbScope="session"; return (lbMem[seg]||[]).slice();
 }
 async function lbSubmit(entry){
+  var seg=lbSeg();
   if(LB_API){
     lbScope="global";
     try{
-      var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(entry)});
-      if(r.ok){ var b=await r.json(); lbMem=b.slice(); return b; }
+      var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({m:mode,era:era,i:entry.i,s:entry.s})});
+      if(r.ok){ var b=await r.json(); lbMem[seg]=b.slice(); return b; }
     }catch(e){}
   }
   var board=lbSort(await lbLoad());
-  board.push(entry);
+  board.push({i:entry.i,s:entry.s,t:Date.now()});
   board=lbSort(board).slice(0,LB_MAX);
-  lbMem=board.slice();
-  try{ if(window.storage && window.storage.set){ await window.storage.set(LB_KEY,JSON.stringify(board),true); return board; } }catch(e){}
-  try{ if(window.localStorage){ localStorage.setItem(LB_KEY,JSON.stringify(board)); } }catch(e){}
+  lbMem[seg]=board.slice();
+  try{ if(window.storage && window.storage.set){ await window.storage.set(LB_KEY+":"+seg,JSON.stringify(board),true); return board; } }catch(e){}
+  try{ if(window.localStorage){ localStorage.setItem(LB_KEY+":"+seg,JSON.stringify(board)); } }catch(e){}
   return board;
 }
-function lbSort(b){ b.sort(function(a,c){ return c.s-a.s; }); return b; }
 async function renderHiScores(){
   var list=$("hsList"); if(!list) return;
   var board=lbSort(await lbLoad());
@@ -1291,7 +1294,13 @@ async function renderHiScores(){
       return '<span class="hs-row'+(i===0?' top1':'')+'"><b class="hs-rank">'+ord[i]+'</b><b class="hs-init">'+esc(e.i)+'</b><span class="hs-score">'+(+e.s).toFixed(1)+'</span></span>';
     }).join("");
   }
-  var sc=$("hsScope"); if(sc) sc.textContent = ({global:"global board",shared:"shared board",device:"this device",session:"this session"})[lbScope]||"";
+  var sc=$("hsScope");
+  if(sc){
+    var diffL = mode==="rookie"?"Rookie":"Blitz";
+    var eraL = ({all:"All-Era",modern:"80s+",nineties:"90s+"})[era]||era;
+    var scopeL = ({global:"global",shared:"shared",device:"this device",session:"this session"})[lbScope]||"";
+    sc.textContent = diffL+" \u00b7 "+eraL+(scopeL?" \u00b7 "+scopeL:"");
+  }
 }
 async function maybeHighScore(R){
   var wrap=$("hsEntryWrap"); if(!wrap) return;
@@ -1312,7 +1321,7 @@ async function maybeHighScore(R){
     var ini=(inp.value||"").replace(/[^A-Za-z]/g,"").toUpperCase().slice(0,3) || "AAA";
     btn.disabled=true;
     var sc=Math.round(R*10)/10;
-    lbSubmit({i:ini,s:sc,e:era,t:Date.now()}).then(function(b){
+    lbSubmit({i:ini,s:sc}).then(function(b){
       renderHiScores();
       var pos=b.findIndex(function(e){ return e.i===ini && e.s===sc; })+1;
       wrap.innerHTML='<div class="hs-entry"><div class="done">&#10003; '+esc(ini)+' enshrined at #'+(pos||1)+'</div></div>';
@@ -1387,7 +1396,7 @@ function setMode(m){
   Array.prototype.forEach.call(document.querySelectorAll(".dt-seg"),function(b){
     b.classList.toggle("active", b.getAttribute("data-mode")===mode);
   });
-  renderHand(); renderLineup();
+  renderHand(); renderLineup(); renderHiScores();
 }
 
 /* ---- era mode (defines the draftable pool, so it restarts the draft) ---- */
@@ -1397,7 +1406,7 @@ function setEra(e){
   Array.prototype.forEach.call(document.querySelectorAll(".et-seg"),function(b){
     b.classList.toggle("active", b.getAttribute("data-era")===era);
   });
-  newGame();
+  newGame(); renderHiScores();
 }
 
 /* ---- responsive view (auto-detect, user can override) ---- */
