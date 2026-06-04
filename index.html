@@ -127,6 +127,8 @@ h1.title .b{
 .hs-entry button{font-family:"Anton",sans-serif;font-size:18px;letter-spacing:.04em;cursor:pointer;color:#0c1220;
   background:linear-gradient(180deg,var(--neon-yellow),#d6a800);border:none;border-radius:8px;padding:12px 18px}
 .hs-entry .done{font-family:"Press Start 2P",monospace;font-size:11px;color:var(--neon-green);text-shadow:0 0 10px rgba(61,255,132,.5)}
+.hs-entry.note{border-color:rgba(150,170,200,.25);background:rgba(150,170,200,.05);box-shadow:none;padding:10px 14px;margin-top:10px}
+.hs-entry.note .sub{margin-bottom:0;color:var(--chrome2,#8aa0bf);font-size:12.5px}
 .view-mobile .hiscore{padding:10px 12px;gap:9px}
 .view-mobile .hs-title{font-size:8px}
 .view-mobile .hs-init{font-size:9px}
@@ -296,6 +298,31 @@ h1.title .b{
 .t-PLAYOFFTEAM{color:var(--neon-green);text-shadow:0 0 22px rgba(61,255,132,.5)}
 .t-FRINGE,.t-MEDIOCRE{color:var(--neon-blue);text-shadow:0 0 18px rgba(39,214,255,.45)}
 .t-REBUILDING,.t-BASEMENT{color:var(--chrome2)}
+/* how-to-play button + rules / glossary panel */
+.how-btn{display:block;margin:12px auto 0;font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--neon-blue);background:rgba(39,214,255,.06);border:1px solid rgba(39,214,255,.45);border-radius:999px;padding:7px 16px;cursor:pointer;
+  box-shadow:0 0 18px -8px rgba(39,214,255,.6);transition:background .15s,box-shadow .15s}
+.how-btn:hover{background:rgba(39,214,255,.13);box-shadow:0 0 22px -6px rgba(39,214,255,.85)}
+.rules-sheet{text-align:left;padding-top:30px}
+.rg-x{position:absolute;top:12px;right:14px;font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--chrome1);background:transparent;border:1px solid #3a4a66;border-radius:8px;padding:6px 12px;cursor:pointer}
+.rg-x:hover{color:#fff;border-color:#5a6f93}
+.rg-title{font-family:"Anton",sans-serif;font-size:clamp(26px,6vw,40px);text-transform:uppercase;letter-spacing:.01em;transform:skewX(-5deg);
+  color:var(--neon-yellow);text-shadow:0 0 18px rgba(255,212,0,.45);margin:2px 0 2px}
+.rg-sub{font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:.12em;color:var(--txt-dim);margin-bottom:8px}
+.rg-h{font-family:"Press Start 2P",monospace;font-size:11px;letter-spacing:.05em;color:var(--neon-blue);text-shadow:0 0 10px rgba(39,214,255,.4);
+  margin:20px 0 9px;padding-bottom:6px;border-bottom:1px solid rgba(39,214,255,.18)}
+.rg-list{list-style:none;margin:0 0 6px;padding:0}
+.rg-list li{font-family:"Oswald",sans-serif;font-size:14.5px;line-height:1.45;color:var(--chrome1);padding:5px 0 5px 18px;position:relative;letter-spacing:.01em}
+.rg-list li:before{content:"\25B8";position:absolute;left:0;top:5px;color:var(--neon-blue);font-size:11px}
+.rg-list li b{color:var(--neon-yellow)}
+.rg-list li.rg-keep:before{color:var(--neon-green)}
+.rg-hl{color:var(--neon-green);font-weight:600}
+.rg-tier{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-family:"Oswald",sans-serif;font-size:14px;margin:2px 0 4px;align-items:baseline}
+.rg-tier b{color:var(--neon-yellow);white-space:nowrap;text-align:right}
+.rg-tier span{color:var(--chrome1)}
+.rg-term{margin:6px 0;font-family:"Oswald",sans-serif;font-size:14.5px;color:var(--chrome1);line-height:1.45;letter-spacing:.01em}
+.rg-term b{color:#fff;font-weight:600}
 
 .jumbo-rule{height:3px;background:linear-gradient(90deg,transparent,var(--neon-blue),transparent);border:0;margin:22px 0 16px;box-shadow:0 0 12px rgba(39,214,255,.5)}
 .boxscore{width:100%;border-collapse:collapse;font-family:"Oswald",sans-serif}
@@ -436,6 +463,7 @@ h1.title .b{
     <div class="coin">The Ledger Arcade &middot; Insert Coin</div>
     <h1 class="title">Gridiron <span class="b">Blitz</span></h1>
     <div class="subtitle">All&ndash;Era Offense Draft</div>
+    <button class="how-btn" id="howBtn" type="button">How to Play &amp; Glossary</button>
   </header>
 
   <div class="hiscore" id="hiscore">
@@ -506,6 +534,58 @@ h1.title .b{
 </div>
 
 <div class="results" id="results"><div class="jumbo" id="resSheet"></div></div>
+
+<div class="results" id="rules"><div class="jumbo rules-sheet">
+  <button class="rg-x" id="rulesClose" type="button">Close</button>
+  <div class="rg-title">How to Play</div>
+  <div class="rg-sub">Gridiron Blitz &middot; All-Era Offense Draft</div>
+
+  <div class="rg-h">The Drill</div>
+  <ul class="rg-list">
+    <li>Every roll locks in a <b>franchise</b> and a <b>decade</b>. You draft what the dice give you, with no takebacks.</li>
+    <li>Pick one player from that team and era into any open slot on your offense.</li>
+    <li>Fill all <b>twelve</b> slots: head coach, quarterback, the skill players, and five offensive linemen.</li>
+    <li>When the roster is full, it grades out of 100 and projects to a season record and playoff finish.</li>
+    <li>You cannot sign the same player twice out of the same decade.</li>
+  </ul>
+
+  <div class="rg-h">What's Scored</div>
+  <ul class="rg-list">
+    <li>Slots are weighted. <b>Quarterback</b> counts the most, then <b>head coach</b>, then your <b>left tackle</b>. The interior line counts least.</li>
+    <li><b>Line fit:</b> a natural tackle at LT or RT, or an interior lineman at LG, C, or RG, adds +2. Playing out of position drops the grade by 3.</li>
+    <li><b>Receiver fit:</b> a true slot man in the SLOT, or an outside receiver at WR1 or WR2, adds +1. A wrong fit simply gets no bonus.</li>
+    <li>After fit, any single grade is held between 40 and 99.</li>
+  </ul>
+
+  <div class="rg-h">Modes &amp; the Hall of Fame</div>
+  <ul class="rg-list">
+    <li><b>Era</b> sets the dice: All-Era rolls every decade, 80s+ starts at the 1980s, 90s+ starts at the 1990s.</li>
+    <li><b>Difficulty:</b> Blitz hides ratings and fit hints while you draft. Rookie shows FIT and OFF markers as you pick. The final score is identical either way; Blitz is simply blind.</li>
+    <li class="rg-keep"><span class="rg-hl">The Hall of Fame records Blitz, All-Era runs only.</span> Any other setup still plays and scores, but will not post to the global board.</li>
+  </ul>
+
+  <div class="rg-h">Season Tiers</div>
+  <div class="rg-tier">
+    <b>92+</b><span>Historic Champion &middot; 17-0</span>
+    <b>91</b><span>Super Bowl Champion &middot; 16-1</span>
+    <b>89</b><span>Super Bowl Runner-Up &middot; 15-2</span>
+    <b>86</b><span>Contender &middot; Conference Championship</span>
+    <b>80&ndash;83</b><span>Playoff Team &middot; Divisional Round</span>
+    <b>77</b><span>Playoff Team &middot; Wild Card</span>
+    <b>71&ndash;74</b><span>Fringe &middot; just missed</span>
+    <b>68</b><span>Mediocre &middot; 8-9</span>
+    <b>60&ndash;64</b><span>Rebuilding</span>
+    <b>&lt;55</b><span>Basement &middot; top-5 pick</span>
+  </div>
+
+  <div class="rg-h">Glossary</div>
+  <div class="rg-term"><b>HC</b> head coach &middot; <b>QB</b> quarterback &middot; <b>RB</b> running back &middot; <b>TE</b> tight end.</div>
+  <div class="rg-term"><b>WR1 / WR2</b> the two outside receivers. <b>SLOT</b> the inside receiver who works the middle of the field.</div>
+  <div class="rg-term"><b>LT / RT</b> left and right tackle, the edge protectors. <b>LG / C / RG</b> the interior line: guards and center.</div>
+  <div class="rg-term"><b>OT / iOL</b> the badge a card shows for a tackle slot (OT) versus an interior slot (iOL).</div>
+  <div class="rg-term"><b>FIT / OFF</b> shown in Rookie mode: green FIT means the player suits the slot, orange OFF means out of position.</div>
+  <div class="rg-term"><b>Signed</b> how many of the twelve slots are filled. <b>Draft Drive</b> the meter tracking progress to a full roster.</div>
+</div></div>
 
 <script>
 /* ============================================================
@@ -1241,51 +1321,50 @@ function showResults(R,out){
 }
 
 /* ---- high-score / hall of fame ----
-   Six separate top-5 boards, one per (difficulty x era) segment.
+   ONE global top-5 board. Only Blitz + All-Era runs are logged (lbEligible).
    Storage, in priority order, degrading gracefully (never crashes):
    1) LB_API (Cloudflare Worker) -> global board shared by everyone, always-on
    2) window.storage shared      -> global across viewers of a published Claude artifact
    3) localStorage               -> persists on this device (no Worker set)
-   4) in-memory                  -> this session only */
+   4) in-memory                  -> this session only
+   lbScope is set honestly each call so the banner can show whether a score
+   actually reached the global board ("saved globally") or fell back ("offline"). */
 var LB_API = "https://gridiron-hof.joeysamowitz.workers.dev";  // global board (Cloudflare Worker)
-var LB_KEY="gridironBlitzHOF", LB_MAX=5, lbScope="session", lbMem={};
-function lbSeg(){ return mode+":"+era; }   // difficulty (blitz|rookie) x era (all|modern|nineties)
+var LB_KEY="gridironBlitzHOF", LB_MAX=5, lbScope="", lbMem=[];
+function lbEligible(){ return mode==="blitz" && era==="all"; }   // Hall of Fame is Blitz + All-Era only
 function lbSort(b){ b.sort(function(a,c){ return c.s-a.s; }); return b; }
 async function lbLoad(){
-  var seg=lbSeg();
   if(LB_API){
-    lbScope="global";
-    try{ var r=await fetch(LB_API+"?m="+encodeURIComponent(mode)+"&era="+encodeURIComponent(era),{cache:"no-store"}); if(r.ok) return await r.json(); }catch(e){}
-    return (lbMem[seg]||[]).slice();
+    try{ var r=await fetch(LB_API,{cache:"no-store"}); if(r.ok){ lbScope="global"; lbMem=(await r.json()).slice(); return lbMem.slice(); } }catch(e){}
+    lbScope="offline"; return lbMem.slice();
   }
   if(window.storage && window.storage.get){
     lbScope="shared";
-    try{ var s=await window.storage.get(LB_KEY+":"+seg,true); return (s&&s.value)?JSON.parse(s.value):[]; }
+    try{ var s=await window.storage.get(LB_KEY,true); return (s&&s.value)?JSON.parse(s.value):[]; }
     catch(e){ return []; }
   }
-  try{ if(window.localStorage){ lbScope="device"; var v=localStorage.getItem(LB_KEY+":"+seg); return v?JSON.parse(v):[]; } }catch(e){}
-  lbScope="session"; return (lbMem[seg]||[]).slice();
+  try{ if(window.localStorage){ lbScope="device"; var v=localStorage.getItem(LB_KEY); return v?JSON.parse(v):[]; } }catch(e){}
+  lbScope="session"; return lbMem.slice();
 }
 async function lbSubmit(entry){
-  var seg=lbSeg();
   if(LB_API){
-    lbScope="global";
     try{
-      var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({m:mode,era:era,i:entry.i,s:entry.s})});
-      if(r.ok){ var b=await r.json(); lbMem[seg]=b.slice(); return b; }
+      var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({i:entry.i,s:entry.s})});
+      if(r.ok){ lbScope="global"; var b=await r.json(); lbMem=b.slice(); return b; }
     }catch(e){}
+    lbScope="offline";
   }
   var board=lbSort(await lbLoad());
   board.push({i:entry.i,s:entry.s,t:Date.now()});
   board=lbSort(board).slice(0,LB_MAX);
-  lbMem[seg]=board.slice();
-  try{ if(window.storage && window.storage.set){ await window.storage.set(LB_KEY+":"+seg,JSON.stringify(board),true); return board; } }catch(e){}
-  try{ if(window.localStorage){ localStorage.setItem(LB_KEY+":"+seg,JSON.stringify(board)); } }catch(e){}
+  lbMem=board.slice();
+  try{ if(window.storage && window.storage.set){ await window.storage.set(LB_KEY,JSON.stringify(board),true); return board; } }catch(e){}
+  try{ if(window.localStorage){ localStorage.setItem(LB_KEY,JSON.stringify(board)); } }catch(e){}
   return board;
 }
-async function renderHiScores(){
+async function renderHiScores(board){
   var list=$("hsList"); if(!list) return;
-  var board=lbSort(await lbLoad());
+  board=lbSort((board||await lbLoad()).slice());
   if(!board.length){
     list.innerHTML='<span class="hs-empty">No scores yet &mdash; be the first to make the board</span>';
   } else {
@@ -1296,14 +1375,16 @@ async function renderHiScores(){
   }
   var sc=$("hsScope");
   if(sc){
-    var diffL = mode==="rookie"?"Rookie":"Blitz";
-    var eraL = ({all:"All-Era",modern:"80s+",nineties:"90s+"})[era]||era;
-    var scopeL = ({global:"global",shared:"shared",device:"this device",session:"this session"})[lbScope]||"";
-    sc.textContent = diffL+" \u00b7 "+eraL+(scopeL?" \u00b7 "+scopeL:"");
+    var scopeL = ({global:"saved globally",offline:"offline \u2014 not saved",shared:"shared",device:"this device",session:"this session"})[lbScope]||"";
+    sc.textContent = "Blitz \u00b7 All-Era"+(scopeL?" \u00b7 "+scopeL:"");
   }
 }
 async function maybeHighScore(R){
   var wrap=$("hsEntryWrap"); if(!wrap) return;
+  if(!lbEligible()){
+    wrap.innerHTML='<div class="hs-entry note"><div class="sub">Hall of Fame logs <b>Blitz &middot; All-Era</b> runs only.</div></div>';
+    return;
+  }
   var board=lbSort(await lbLoad());
   var qualifies = board.length<LB_MAX || R > board[board.length-1].s;
   if(!qualifies) return;
@@ -1322,9 +1403,10 @@ async function maybeHighScore(R){
     btn.disabled=true;
     var sc=Math.round(R*10)/10;
     lbSubmit({i:ini,s:sc}).then(function(b){
-      renderHiScores();
+      renderHiScores(b);   // render the authoritative board returned by the write (no stale re-read)
       var pos=b.findIndex(function(e){ return e.i===ini && e.s===sc; })+1;
-      wrap.innerHTML='<div class="hs-entry"><div class="done">&#10003; '+esc(ini)+' enshrined at #'+(pos||1)+'</div></div>';
+      var note = lbScope==="offline" ? '<div class="sub">saved on this device only &mdash; global board unreachable</div>' : '';
+      wrap.innerHTML='<div class="hs-entry"><div class="done">&#10003; '+esc(ini)+' enshrined at #'+(pos||1)+'</div>'+note+'</div>';
     });
   }
   btn.addEventListener("click",submit);
@@ -1396,7 +1478,7 @@ function setMode(m){
   Array.prototype.forEach.call(document.querySelectorAll(".dt-seg"),function(b){
     b.classList.toggle("active", b.getAttribute("data-mode")===mode);
   });
-  renderHand(); renderLineup(); renderHiScores();
+  renderHand(); renderLineup();
 }
 
 /* ---- era mode (defines the draftable pool, so it restarts the draft) ---- */
@@ -1406,7 +1488,7 @@ function setEra(e){
   Array.prototype.forEach.call(document.querySelectorAll(".et-seg"),function(b){
     b.classList.toggle("active", b.getAttribute("data-era")===era);
   });
-  newGame(); renderHiScores();
+  newGame();
 }
 
 /* ---- responsive view (auto-detect, user can override) ---- */
@@ -1444,6 +1526,11 @@ function boot(){
     b.addEventListener("click",function(){ setView(b.getAttribute("data-view"), true); });
   });
   el.formationToggle.addEventListener("click",toggleFormation);
+  var rulesOv=$("rules"), howBtn=$("howBtn"), rulesClose=$("rulesClose");
+  if(howBtn&&rulesOv) howBtn.addEventListener("click",function(){ rulesOv.classList.add("show"); });
+  if(rulesClose&&rulesOv) rulesClose.addEventListener("click",function(){ rulesOv.classList.remove("show"); });
+  if(rulesOv) rulesOv.addEventListener("click",function(e){ if(e.target===rulesOv) rulesOv.classList.remove("show"); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&rulesOv) rulesOv.classList.remove("show"); });
   window.addEventListener("resize",autoView);
   renderHiScores();
   newGame();
