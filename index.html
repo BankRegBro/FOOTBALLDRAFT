@@ -961,7 +961,7 @@ function renderLineup(){
           +'<div class="who"><div class="name">'+eliteStar(p.grade)+esc(p.name)+'</div>'
           +'<div class="meta">'+esc(abbr(p.team))+' &middot; '+DECADE_LABEL[p.decade]
           +(p.note?' <span class="note">('+esc(p.note)+')</span>':'')
-          +(posFit(key,p)<0?' <span class="offpos">off-pos</span>':'')+'</div></div>'
+          +((mode==="rookie"&&posFit(key,p)<0)?' <span class="offpos">off-pos</span>':'')+'</div></div>'
           +'<div class="signed">SIGNED</div></div>';
       } else {
         html+='<div class="slot empty" data-slot="'+key+'">'
@@ -1103,9 +1103,12 @@ function onCardClick(idx,cardEl){
   var ch=document.createElement("div"); ch.className="chooser";
   var inner='<div class="ctitle">Line up '+esc(p.name)+' at &mdash;</div>';
   slots.forEach(function(k){
-    var d=posFit(k,p);
-    var cls=d>0?' fit':(d<0?' off':'');
-    var tag=d>0?' <span class="fit-tag">FIT</span>':(d<0?' <span class="off-tag">OFF</span>':'');
+    var cls="", tag="";
+    if(mode==="rookie"){
+      var d=posFit(k,p);
+      cls=d>0?' fit':(d<0?' off':'');
+      tag=d>0?' <span class="fit-tag">FIT</span>':(d<0?' <span class="off-tag">OFF</span>':'');
+    }
     inner+='<button class="slot-pick'+cls+'" data-k="'+k+'">'+SLOT_BY_KEY[k].label+tag+'</button>';
   });
   ch.innerHTML=inner;
