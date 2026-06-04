@@ -517,11 +517,11 @@ function olFit(slotKey, p){
   return olClass(p.name) === st ? OL_FIT_BONUS : -OL_FIT_PENALTY;
 }
 /* ---- wide-receiver alignment fit ----
-   WR1/WR2 are outside spots; SLOT is the slot. Recognized slot receivers
-   are boosted in the slot and dinged outside; pure outside receivers are
-   dinged in the slot. Outside WR at an outside spot is the neutral baseline. */
+   WR1/WR2 are outside spots; SLOT is the slot. A receiver lined up in his
+   natural alignment (slot man in the slot, outside man outside) gets a small
+   +1 boost. Out-of-alignment receivers are never penalized. */
 const WR_TYPE = { WR1:"O", WR2:"O", SLOT:"S" };
-const WR_FIT_BONUS = 2, WR_FIT_PENALTY = 3;
+const WR_FIT_BONUS = 1;
 const SLOT_WRS = new Set([
  "Wes Welker","Julian Edelman","Danny Amendola","Troy Brown","Wayne Chrebet","Cole Beasley","Hunter Renfrow","Jakobi Meyers","Jarvis Landry","Tyler Boyd","Randall Cobb","Jamison Crowder","Adam Humphries","Braxton Berrios","Brandon Stokley","Eddie Royal","Ricky Proehl","Antwaan Randle El","Greg Camarillo","Andrew Hawkins","Howard Twilley","Bobby Engram","Rondale Moore","Greg Dortch","Wan'Dale Robinson","Sterling Shepard"
 ]);
@@ -530,10 +530,7 @@ function wrFit(slotKey, p){
   if (!p || p.pos !== "WR") return 0;
   const st = WR_TYPE[slotKey];
   if (!st) return 0;
-  const c = wrClass(p.name);
-  if (c === "S" && st === "S") return WR_FIT_BONUS;
-  if (c === "O" && st === "O") return 0;
-  return -WR_FIT_PENALTY;
+  return wrClass(p.name) === st ? WR_FIT_BONUS : 0;  // right alignment = small boost, no penalty
 }
 function posFit(slotKey, p){ return olFit(slotKey, p) + wrFit(slotKey, p); }
 function effGrade(slotKey, p){
