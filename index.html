@@ -256,7 +256,8 @@ h1.title .b{
 .score-wrap .of{font-family:"Press Start 2P",monospace;font-size:16px;color:var(--txt-dim);letter-spacing:.05em;vertical-align:super}
 .record-line{font-family:"Anton",sans-serif;text-transform:uppercase;font-size:clamp(16px,3.4vw,26px);text-align:center;color:var(--chrome1);letter-spacing:.05em;transform:skewX(-5deg)}
 .record-line b{color:var(--neon-yellow)}
-.t-IMMORTAL,.t-DYNASTY{color:var(--neon-yellow);text-shadow:0 0 22px rgba(255,212,0,.6)}
+.t-IMMORTAL,.t-DYNASTY,.t-HISTORICCHAMPION,.t-SUPERBOWLCHAMPION{color:var(--neon-yellow);text-shadow:0 0 22px rgba(255,212,0,.6)}
+.t-SUPERBOWLRUNNERUP{color:#cdd6e8;text-shadow:0 0 20px rgba(205,214,232,.5)}
 .t-TRUECONTENDER,.t-CONTENDER{color:var(--neon-orange);text-shadow:0 0 22px rgba(255,138,30,.55)}
 .t-PLAYOFFTEAM{color:var(--neon-green);text-shadow:0 0 22px rgba(61,255,132,.5)}
 .t-FRINGE,.t-MEDIOCRE{color:var(--neon-blue);text-shadow:0 0 18px rgba(39,214,255,.45)}
@@ -831,19 +832,19 @@ function ratingFromRoster(roster){
 
 function seasonOutcome(R){
   const bands = [
-    [97, "17-0",  "Super Bowl Champion",          "IMMORTAL"],
-    [94, "16-1",  "Super Bowl Champion",          "DYNASTY"],
-    [91, "15-2",  "Super Bowl runner-up",         "TRUE CONTENDER"],
-    [88, "14-3",  "Conference Championship Game",  "CONTENDER"],
-    [85, "13-4",  "Divisional Round",              "PLAYOFF TEAM"],
-    [82, "12-5",  "Divisional Round",              "PLAYOFF TEAM"],
-    [79, "11-6",  "Wild Card Round",               "PLAYOFF TEAM"],
-    [76, "10-7",  "Wild Card Round (bubble)",      "FRINGE"],
-    [73, "9-8",   "Missed the playoffs",           "FRINGE"],
-    [70, "8-9",   "Missed the playoffs",           "MEDIOCRE"],
-    [66, "7-10",  "Out of contention",             "REBUILDING"],
-    [62, "5-12",  "Top-10 draft pick",             "REBUILDING"],
-    [57, "4-13",  "Top-5 draft pick",              "BASEMENT"],
+    [92, "17-0",  "Historic Champion",             "HISTORIC CHAMPION"],
+    [91, "16-1",  "Won the Super Bowl",            "SUPER BOWL CHAMPION"],
+    [89, "15-2",  "Lost the Super Bowl",           "SUPER BOWL RUNNER-UP"],
+    [86, "14-3",  "Conference Championship Game",  "CONTENDER"],
+    [83, "13-4",  "Divisional Round",              "PLAYOFF TEAM"],
+    [80, "12-5",  "Divisional Round",              "PLAYOFF TEAM"],
+    [77, "11-6",  "Wild Card Round",               "PLAYOFF TEAM"],
+    [74, "10-7",  "Wild Card Round (bubble)",      "FRINGE"],
+    [71, "9-8",   "Missed the playoffs",           "FRINGE"],
+    [68, "8-9",   "Missed the playoffs",           "MEDIOCRE"],
+    [64, "7-10",  "Out of contention",             "REBUILDING"],
+    [60, "5-12",  "Top-10 draft pick",             "REBUILDING"],
+    [55, "4-13",  "Top-5 draft pick",              "BASEMENT"],
     [0,  "2-15",  "No. 1 overall pick",            "BASEMENT"],
   ];
   for (const [min, rec, finish, tier] of bands){
