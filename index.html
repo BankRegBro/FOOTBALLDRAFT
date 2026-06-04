@@ -398,6 +398,9 @@ h1.title .b{
 .et-seg{font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:.03em;cursor:pointer;border:none;border-radius:5px;padding:8px 11px;background:transparent;color:#3a4a66;transition:color .2s,background .2s,box-shadow .2s}
 .et-seg:not(.active):hover{color:var(--txt)}
 .et-seg.active{background:rgba(255,176,32,.16);color:var(--neon-yellow);text-shadow:0 0 8px rgba(255,176,32,.5);box-shadow:inset 0 0 0 1px rgba(255,176,32,.5)}
+.sq-seg{font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:.03em;cursor:pointer;border:none;border-radius:5px;padding:8px 11px;background:transparent;color:#3a4a66;transition:color .2s,background .2s,box-shadow .2s}
+.sq-seg:not(.active):hover{color:var(--txt)}
+.sq-seg.active{background:rgba(176,108,255,.16);color:#c79bff;text-shadow:0 0 8px rgba(176,108,255,.55);box-shadow:inset 0 0 0 1px rgba(176,108,255,.5)}
 
 .formation-head{width:100%;text-align:left;background:none;border:none;cursor:pointer;color:inherit;align-items:center}
 .formation-head::after{display:none}
@@ -459,7 +462,7 @@ h1.title .b{
 .view-mobile .share textarea{font-size:8px;height:160px}
 .view-mobile .res-actions button{font-size:16px;min-width:130px}
 .view-mobile .dt-lbl{font-size:7px}
-.view-mobile .dt-seg,.view-mobile .vt-seg,.view-mobile .et-seg{font-size:8px;padding:7px 9px}
+.view-mobile .dt-seg,.view-mobile .vt-seg,.view-mobile .et-seg,.view-mobile .sq-seg{font-size:8px;padding:7px 9px}
 </style>
 <script>(function(){try{var w=window.innerWidth||document.documentElement.clientWidth||1200;document.documentElement.classList.add(w<=820?'view-mobile':'view-desktop');}catch(e){document.documentElement.classList.add('view-desktop');}})();</script>
 </head>
@@ -481,6 +484,13 @@ h1.title .b{
 
   <div class="scorestrip">
     <div class="led blue"><span class="lbl">Signed</span><span id="ledSigned">00/12</span></div>
+    <div class="diff-toggle" id="squadToggle">
+      <span class="dt-lbl">Squad</span>
+      <div class="dt-track">
+        <button class="sq-seg active" data-squad="offense" type="button">Offense</button>
+        <button class="sq-seg" data-squad="fullsquad" type="button">Full Squad</button>
+      </div>
+    </div>
     <div class="diff-toggle" id="eraToggle">
       <span class="dt-lbl">Era</span>
       <div class="dt-track">
@@ -545,13 +555,14 @@ h1.title .b{
 <div class="results" id="rules"><div class="jumbo rules-sheet">
   <button class="rg-x" id="rulesClose" type="button">Close</button>
   <div class="rg-title">How to Play</div>
-  <div class="rg-sub">Gridiron Blitz &middot; All-Era Offense Draft</div>
+  <div class="rg-sub">Gridiron Blitz &middot; All-Era Roster Draft</div>
 
   <div class="rg-h">The Drill</div>
   <ul class="rg-list">
     <li>Every roll locks in a <b>franchise</b> and a <b>decade</b>. You draft what the dice give you, with no takebacks.</li>
     <li>Pick one player from that team and era into any open slot on your offense.</li>
     <li>Fill all <b>twelve</b> slots: head coach, quarterback, the skill players, and five offensive linemen.</li>
+    <li><b>Full Squad</b> adds four defensive anchors for <b>sixteen</b> total: a defensive tackle, a linebacker, a cornerback, and a safety.</li>
     <li>When the roster is full, it grades out of 100 and projects to a season record and playoff finish.</li>
     <li>You cannot sign the same player twice out of the same decade.</li>
   </ul>
@@ -562,13 +573,15 @@ h1.title .b{
     <li><b>Line fit:</b> a natural tackle at LT or RT, or an interior lineman at LG, C, or RG, adds +2. Playing out of position drops the grade by 3.</li>
     <li><b>Receiver fit:</b> a true slot man in the SLOT, or an outside receiver at WR1 or WR2, adds +1. A wrong fit simply gets no bonus.</li>
     <li>After fit, any single grade is held between 40 and 99.</li>
+    <li><b>Full Squad:</b> the final number is 60 percent offense and 40 percent defense. Each defensive slot takes only its own position, so a cornerback fills the corner and nothing else. There is no fit bonus or penalty on defense.</li>
   </ul>
 
   <div class="rg-h">Modes &amp; the Hall of Fame</div>
   <ul class="rg-list">
     <li><b>Era</b> sets the dice: All-Era rolls every decade, 80s+ starts at the 1980s, 90s+ starts at the 1990s.</li>
+    <li><b>Squad:</b> Offense drafts the twelve. Full Squad adds the four defenders. If a rolled franchise and decade has no one who fits an open slot, the dice simply never land there, so you are never stuck waiting on a team that cannot help.</li>
     <li><b>Difficulty:</b> Blitz hides ratings and fit hints while you draft. Rookie shows FIT and OFF markers as you pick. The final score is identical either way; Blitz is simply blind.</li>
-    <li class="rg-keep"><span class="rg-hl">The Hall of Fame records Blitz, All-Era runs only.</span> Any other setup still plays and scores, but will not post to the global board.</li>
+    <li class="rg-keep"><span class="rg-hl">The Hall of Fame records Blitz, All-Era runs only.</span> Offense and Full Squad each keep their own global board. Any other setup still plays and scores, but will not post.</li>
   </ul>
 
   <div class="rg-h">Season Tiers</div>
@@ -584,14 +597,16 @@ h1.title .b{
     <b>60&ndash;64</b><span>Rebuilding</span>
     <b>&lt;55</b><span>Basement &middot; top-5 pick</span>
   </div>
+  <div class="rg-term" style="margin-top:8px"><b>Full Squad</b> blends offense and defense, so its scores sit higher and tighter. It uses its own recentered ladder over the same tier names, and a typical random build lands around Fringe.</div>
 
   <div class="rg-h">Glossary</div>
   <div class="rg-term"><b>HC</b> head coach &middot; <b>QB</b> quarterback &middot; <b>RB</b> running back &middot; <b>TE</b> tight end.</div>
   <div class="rg-term"><b>WR1 / WR2</b> the two outside receivers. <b>SLOT</b> the inside receiver who works the middle of the field.</div>
   <div class="rg-term"><b>LT / RT</b> left and right tackle, the edge protectors. <b>LG / C / RG</b> the interior line: guards and center.</div>
   <div class="rg-term"><b>OT / iOL</b> the badge a card shows for a tackle slot (OT) versus an interior slot (iOL).</div>
+  <div class="rg-term"><b>DT</b> defensive tackle, the interior of the front. <b>LB</b> linebacker. <b>CB</b> cornerback. <b>S</b> safety, the last line of the secondary.</div>
   <div class="rg-term"><b>FIT / OFF</b> shown in Rookie mode: green FIT means the player suits the slot, orange OFF means out of position.</div>
-  <div class="rg-term"><b>Signed</b> how many of the twelve slots are filled. <b>Draft Drive</b> the meter tracking progress to a full roster.</div>
+  <div class="rg-term"><b>Signed</b> how many slots are filled, twelve on offense or sixteen in Full Squad. <b>Draft Drive</b> the meter tracking progress to a full roster.</div>
 </div></div>
 
 <script>
@@ -620,6 +635,47 @@ const SLOTS = [
   { key:"RG",  label:"Right Guard",   pos:"OL", w:0.78 },
   { key:"RT",  label:"Right Tackle",  pos:"OL", w:0.92 },
 ];
+// Full Squad add-on: four defensive anchors, strict 1:1 position matching, no fit modifier.
+const DEF_SLOTS = [
+  { key:"DT", label:"Defensive Tackle", pos:"DT", w:1.05 },
+  { key:"LB", label:"Linebacker",       pos:"LB", w:1.00 },
+  { key:"CB", label:"Cornerback",       pos:"CB", w:1.10 },
+  { key:"S",  label:"Safety",           pos:"S",  w:0.95 },
+];
+const DEFENSE = {
+  "Arizona Cardinals":{"60s":[["Larry Wilson","S",94]],"70s":[["Roger Wehrli","CB",90],["Larry Wilson","S",90]],"90s":[["Aeneas Williams","CB",92]],"00s":[["Karlos Dansby","LB",80]],"10s":[["Patrick Peterson","CB",92],["Calais Campbell","DT",86]],"20s":[["Budda Baker","S",88]]},
+  "Atlanta Falcons":{"70s":[["Claude Humphrey","LB",84]],"80s":[["Buddy Curry","LB",76]],"90s":[["Deion Sanders","CB",97]],"00s":[["Keith Brooking","LB",82]],"10s":[["Desmond Trufant","CB",82],["Grady Jarrett","DT",84]],"20s":[["Grady Jarrett","DT",84],["A.J. Terrell","CB",82]]},
+  "Baltimore Ravens":{"90s":[["Ray Lewis","LB",92]],"00s":[["Ray Lewis","LB",98],["Ed Reed","S",96],["Chris McAlister","CB",84],["Haloti Ngata","DT",90]],"10s":[["Terrell Suggs","LB",88],["Haloti Ngata","DT",88]],"20s":[["Marlon Humphrey","CB",86],["Roquan Smith","LB",86]]},
+  "Buffalo Bills":{"60s":[["George Saimes","S",80]],"90s":[["Bruce Smith","LB",96],["Cornelius Bennett","LB",84],["Nate Odomes","CB",78]],"00s":[["Nate Clements","CB",82]],"10s":[["Kyle Williams","DT",86]],"20s":[["Tre'Davious White","CB",88],["Jordan Poyer","S",84],["Micah Hyde","S",82]]},
+  "Carolina Panthers":{"90s":[["Sam Mills","LB",84]],"00s":[["Julius Peppers","LB",90],["Mike Minter","S",78]],"10s":[["Luke Kuechly","LB",94],["Kawann Short","DT",84],["Josh Norman","CB",82]],"20s":[["Jaycee Horn","CB",80]]},
+  "Chicago Bears":{"60s":[["Dick Butkus","LB",97]],"70s":[["Dick Butkus","LB",95]],"80s":[["Mike Singletary","LB",94],["Richard Dent","LB",88],["Dan Hampton","DT",88],["Gary Fencik","S",80]],"00s":[["Brian Urlacher","LB",92],["Lance Briggs","LB",86],["Charles Tillman","CB",84]],"10s":[["Akiem Hicks","DT",84]],"20s":[["Eddie Jackson","S",82]]},
+  "Cincinnati Bengals":{"80s":[["Reggie Williams","LB",80]],"00s":[["Geno Atkins","DT",84]],"10s":[["Geno Atkins","DT",90],["Vontaze Burfict","LB",80]],"20s":[["Trey Hendrickson","LB",84],["Cam Taylor-Britt","CB",76]]},
+  "Cleveland Browns":{"60s":[["Jim Houston","LB",80]],"80s":[["Hanford Dixon","CB",80],["Frank Minnifield","CB",80],["Clay Matthews Jr.","LB",84]],"10s":[["Joe Haden","CB",84],["Myles Garrett","LB",90]],"20s":[["Myles Garrett","LB",95],["Denzel Ward","CB",84]]},
+  "Dallas Cowboys":{"60s":[["Bob Lilly","DT",96],["Mel Renfro","CB",90]],"70s":[["Bob Lilly","DT",94],["Cliff Harris","S",86],["Randy White","DT",92]],"80s":[["Randy White","DT",90],["Everson Walls","CB",82]],"90s":[["Charles Haley","LB",88],["Darren Woodson","S",86]],"00s":[["DeMarcus Ware","LB",92]],"10s":[["Sean Lee","LB",82]],"20s":[["Micah Parsons","LB",92],["Trevon Diggs","CB",82]]},
+  "Denver Broncos":{"70s":[["Randy Gradishar","LB",88]],"80s":[["Karl Mecklenburg","LB",84],["Dennis Smith","S",82]],"90s":[["Steve Atwater","S",88]],"10s":[["Von Miller","LB",94],["Chris Harris Jr.","CB",86],["Aqib Talib","CB",84]],"20s":[["Patrick Surtain II","CB",88]]},
+  "Detroit Lions":{"60s":[["Joe Schmidt","LB",90],["Dick LeBeau","CB",82],["Lem Barney","CB",88]],"70s":[["Lem Barney","CB",84]],"90s":[["Chris Spielman","LB",84]],"00s":[["Ndamukong Suh","DT",88]],"10s":[["Ndamukong Suh","DT",92],["Darius Slay","CB",84]],"20s":[["Aidan Hutchinson","LB",86]]},
+  "Green Bay Packers":{"60s":[["Ray Nitschke","LB",92],["Herb Adderley","CB",92],["Willie Wood","S",90]],"90s":[["Reggie White","DT",96],["LeRoy Butler","S",88]],"00s":[["Al Harris","CB",80]],"10s":[["Clay Matthews","LB",86],["Charles Woodson","CB",92],["Ha Ha Clinton-Dix","S",78]],"20s":[["Jaire Alexander","CB",86],["Kenny Clark","DT",84]]},
+  "Houston Texans":{"00s":[["DeMeco Ryans","LB",82],["Mario Williams","LB",86]],"10s":[["J.J. Watt","DT",96],["Johnathan Joseph","CB",82],["Jadeveon Clowney","LB",84]],"20s":[["Will Anderson Jr.","LB",84],["Derek Stingley Jr.","CB",84]]},
+  "Indianapolis Colts":{"60s":[["Bobby Boyd","CB",84],["Mike Curtis","LB",82]],"70s":[["Rick Volk","S",78],["Ted Hendricks","LB",88]],"00s":[["Dwight Freeney","LB",90],["Robert Mathis","LB",86],["Bob Sanders","S",86],["Antoine Bethea","S",80]],"10s":[["Vontae Davis","CB",82],["Darius Leonard","LB",88]],"20s":[["DeForest Buckner","DT",88]]},
+  "Jacksonville Jaguars":{"90s":[["Tony Brackens","LB",78]],"00s":[["Rashean Mathis","CB",80],["John Henderson","DT",82]],"10s":[["Jalen Ramsey","CB",90],["Calais Campbell","DT",86],["Telvin Smith","LB",80]],"20s":[["Josh Allen","LB",82],["Tyson Campbell","CB",78]]},
+  "Kansas City Chiefs":{"60s":[["Bobby Bell","LB",92],["Buck Buchanan","DT",90],["Johnny Robinson","S",86]],"70s":[["Willie Lanier","LB",92],["Emmitt Thomas","CB",86]],"90s":[["Derrick Thomas","LB",94],["Neil Smith","LB",84],["Albert Lewis","CB",82]],"10s":[["Eric Berry","S",88],["Justin Houston","LB",86]],"20s":[["Chris Jones","DT",92],["L'Jarius Sneed","CB",82]]},
+  "Las Vegas Raiders":{"60s":[["Willie Brown","CB",90]],"70s":[["Willie Brown","CB",88],["Jack Tatum","S",86],["Ted Hendricks","LB",90]],"80s":[["Lester Hayes","CB",86],["Mike Haynes","CB",90],["Howie Long","DT",88]],"00s":[["Charles Woodson","CB",88],["Nnamdi Asomugha","CB",88]],"10s":[["Khalil Mack","LB",92]],"20s":[["Maxx Crosby","LB",88]]},
+  "Los Angeles Chargers":{"60s":[["Lance Alworth","CB",80]],"70s":[["Gary Johnson","DT",82]],"80s":[["Gill Byrd","CB",80]],"90s":[["Junior Seau","LB",96],["Rodney Harrison","S",84]],"00s":[["Antonio Cromartie","CB",80],["Shawne Merriman","LB",84]],"10s":[["Joey Bosa","LB",88]],"20s":[["Derwin James","S",90],["Khalil Mack","LB",88]]},
+  "Los Angeles Rams":{"60s":[["Merlin Olsen","DT",94],["Deacon Jones","DT",92]],"70s":[["Merlin Olsen","DT",92],["Jack Youngblood","LB",88]],"80s":[["Nolan Cromwell","S",80]],"90s":[["Kevin Greene","LB",86],["Aeneas Williams","CB",86]],"00s":[["London Fletcher","LB",82]],"10s":[["Aaron Donald","DT",99],["Robert Quinn","LB",84]],"20s":[["Aaron Donald","DT",99],["Jalen Ramsey","CB",90]]},
+  "Miami Dolphins":{"70s":[["Nick Buoniconti","LB",90],["Dick Anderson","S",84],["Jake Scott","S",84]],"80s":[["A.J. Duhe","LB",78]],"90s":[["Zach Thomas","LB",88],["Jason Taylor","LB",92]],"00s":[["Jason Taylor","LB",90]],"10s":[["Cameron Wake","LB",86]],"20s":[["Xavien Howard","CB",86],["Jalen Ramsey","CB",88]]},
+  "Minnesota Vikings":{"60s":[["Alan Page","DT",94]],"70s":[["Alan Page","DT",94],["Carl Eller","DT",88],["Paul Krause","S",90]],"90s":[["John Randle","DT",92],["Robert Griffith","S",78]],"00s":[["Kevin Williams","DT",86],["Antoine Winfield","CB",84]],"10s":[["Harrison Smith","S",88],["Everson Griffen","LB",84],["Xavier Rhodes","CB",82]],"20s":[["Harrison Smith","S",84]]},
+  "New England Patriots":{"60s":[["Nick Buoniconti","LB",86]],"80s":[["Andre Tippett","LB",90],["Steve Nelson","LB",80]],"90s":[["Willie McGinest","LB",82]],"00s":[["Ty Law","CB",88],["Tedy Bruschi","LB",84],["Richard Seymour","DT",90],["Rodney Harrison","S",84],["Vince Wilfork","DT",86]],"10s":[["Devin McCourty","S",84],["Dont'a Hightower","LB",84],["Stephon Gilmore","CB",90]]},
+  "New Orleans Saints":{"80s":[["Rickey Jackson","LB",88],["Sam Mills","LB",84],["Pat Swilling","LB",84],["Vaughan Johnson","LB",80]],"90s":[["Sam Mills","LB",82]],"10s":[["Cameron Jordan","DT",86],["Marshon Lattimore","CB",84]],"20s":[["Tyrann Mathieu","S",84],["Demario Davis","LB",86]]},
+  "New York Giants":{"60s":[["Sam Huff","LB",86]],"80s":[["Lawrence Taylor","LB",99],["Harry Carson","LB",88],["Carl Banks","LB",82]],"90s":[["Lawrence Taylor","LB",92]],"00s":[["Michael Strahan","LB",94],["Osi Umenyiora","LB",84],["Antonio Pierce","LB",80]],"10s":[["Jason Pierre-Paul","LB",84]],"20s":[["Dexter Lawrence","DT",88]]},
+  "New York Jets":{"60s":[["Gerry Philbin","LB",80]],"80s":[["Joe Klecko","DT",88],["Mark Gastineau","LB",86]],"90s":[["Marvin Jones","LB",78]],"00s":[["Darrelle Revis","CB",96],["David Harris","LB",80]],"10s":[["Muhammad Wilkerson","DT",82],["Leonard Williams","DT",80]],"20s":[["Quinnen Williams","DT",88],["Sauce Gardner","CB",90],["C.J. Mosley","LB",82]]},
+  "Philadelphia Eagles":{"60s":[["Maxie Baughan","LB",80]],"80s":[["Reggie White","DT",96],["Seth Joyner","LB",84]],"90s":[["Eric Allen","CB",84],["William Thomas","LB",80]],"00s":[["Brian Dawkins","S",94],["Troy Vincent","CB",84]],"10s":[["Fletcher Cox","DT",90]],"20s":[["Fletcher Cox","DT",86],["Darius Slay","CB",84],["Haason Reddick","LB",84]]},
+  "Pittsburgh Steelers":{"70s":[["Joe Greene","DT",97],["Jack Lambert","LB",94],["Jack Ham","LB",92],["Mel Blount","CB",94],["Donnie Shell","S",84]],"80s":[["Mike Merriweather","LB",78]],"90s":[["Rod Woodson","CB",95],["Greg Lloyd","LB",84],["Levon Kirkland","LB",82]],"00s":[["Troy Polamalu","S",94],["James Harrison","LB",88]],"10s":[["Cameron Heyward","DT",88]],"20s":[["T.J. Watt","LB",96],["Minkah Fitzpatrick","S",88]]},
+  "San Francisco 49ers":{"80s":[["Ronnie Lott","S",97],["Charles Haley","LB",88]],"90s":[["Bryant Young","DT",86],["Deion Sanders","CB",94],["Merton Hanks","S",80]],"00s":[["Bryant Young","DT",84]],"10s":[["Patrick Willis","LB",94],["NaVorro Bowman","LB",88],["Justin Smith","DT",86]],"20s":[["Fred Warner","LB",92],["Nick Bosa","LB",92],["Arik Armstead","DT",82]]},
+  "Seattle Seahawks":{"80s":[["Kenny Easley","S",90],["Jacob Green","LB",80]],"90s":[["Cortez Kennedy","DT",92]],"00s":[["Lofa Tatupu","LB",80],["Marcus Trufant","CB",78]],"10s":[["Richard Sherman","CB",92],["Earl Thomas","S",92],["Kam Chancellor","S",86],["Bobby Wagner","LB",92]],"20s":[["Bobby Wagner","LB",86]]},
+  "Tampa Bay Buccaneers":{"70s":[["Lee Roy Selmon","DT",90]],"80s":[["Lee Roy Selmon","DT",86]],"90s":[["Warren Sapp","DT",92],["Derrick Brooks","LB",92],["John Lynch","S",88],["Hardy Nickerson","LB",82]],"00s":[["Ronde Barber","CB",88],["Simeon Rice","LB",84]],"20s":[["Vita Vea","DT",86],["Lavonte David","LB",84],["Antoine Winfield Jr.","S",86]]},
+  "Tennessee Titans":{"60s":[["George Webster","LB",82]],"70s":[["Robert Brazile","LB",86],["Curley Culp","DT",86]],"90s":[["Blaine Bishop","S",80]],"00s":[["Samari Rolle","CB",80],["Albert Haynesworth","DT",86],["Keith Bulluck","LB",82]],"10s":[["Jurrell Casey","DT",84],["Kevin Byard","S",84]],"20s":[["Harold Landry","LB",80]]},
+  "Washington Commanders":{"70s":[["Chris Hanburger","LB",84],["Ken Houston","S",90]],"80s":[["Dexter Manley","LB",82],["Darrell Green","CB",94]],"90s":[["Darrell Green","CB",90]],"00s":[["LaVar Arrington","LB",84],["Sean Taylor","S",90],["London Fletcher","LB",82]],"10s":[["Ryan Kerrigan","LB",84]],"20s":[["Jonathan Allen","DT",84],["Daron Payne","DT",82]]}
+};  // curated v1 defenders (real players); see add_defense.py
 
 // skill positions are strict; OL is interchangeable across the five line slots
 function slotAccepts(slotPos, playerPos){
@@ -944,21 +1000,32 @@ const DATA = {
 };
 
 /* ---- scoring ---- */
-function ratingFromRoster(roster){
-  // roster: { slotKey: {grade} }
-  let num = 0, den = 0;
+function ratingFromRoster(roster, mode){
+  // offense side: weighted average over the offensive + coach slots (unchanged)
+  let on = 0, od = 0;
   for (const s of SLOTS){
     const p = roster[s.key];
     if (!p) continue;
-    num += effGrade(s.key, p) * s.w;
-    den += s.w;
+    on += effGrade(s.key, p) * s.w;
+    od += s.w;
   }
-  if (den === 0) return 0;
-  return num / den;
+  const off = od === 0 ? 0 : on / od;
+  if (mode !== "fullsquad") return off;        // offense-only: identical number to before
+  // defense side: weighted average over the four defensive slots
+  let dn = 0, dd = 0;
+  for (const s of DEF_SLOTS){
+    const p = roster[s.key];
+    if (!p) continue;
+    dn += effGrade(s.key, p) * s.w;
+    dd += s.w;
+  }
+  if (dd === 0) return off;                     // no defense yet -> offense number
+  const def = dn / dd;
+  return 0.60 * off + 0.40 * def;               // Full Squad blend
 }
 
-function seasonOutcome(R){
-  const bands = [
+function seasonOutcome(R, mode){
+  const OFFENSE_BANDS = [
     [92, "17-0",  "Historic Champion",             "HISTORIC CHAMPION"],
     [91, "16-1",  "Won the Super Bowl",            "SUPER BOWL CHAMPION"],
     [89, "15-2",  "Lost the Super Bowl",           "SUPER BOWL RUNNER-UP"],
@@ -974,6 +1041,24 @@ function seasonOutcome(R){
     [55, "4-13",  "Top-5 draft pick",              "BASEMENT"],
     [0,  "2-15",  "No. 1 overall pick",            "BASEMENT"],
   ];
+  // Full Squad blends a 60/40 offense/defense average, which sits higher and tighter,
+  // so its ladder is recentered (median random build lands at FRINGE, tails reach Basement..Champion).
+  const FULLSQUAD_BANDS = [
+    [89,   "17-0", "Historic Champion",             "HISTORIC CHAMPION"],
+    [88,   "16-1", "Won the Super Bowl",            "SUPER BOWL CHAMPION"],
+    [86.5, "15-2", "Lost the Super Bowl",           "SUPER BOWL RUNNER-UP"],
+    [85,   "14-3", "Conference Championship Game",  "CONTENDER"],
+    [83.5, "13-4", "Divisional Round",              "PLAYOFF TEAM"],
+    [82,   "12-5", "Divisional Round",              "PLAYOFF TEAM"],
+    [80.8, "11-6", "Wild Card Round",               "PLAYOFF TEAM"],
+    [79.5, "10-7", "Wild Card Round (bubble)",      "FRINGE"],
+    [78,   "9-8",  "Missed the playoffs",           "FRINGE"],
+    [76.5, "8-9",  "Missed the playoffs",           "MEDIOCRE"],
+    [75,   "7-10", "Out of contention",             "REBUILDING"],
+    [73,   "5-12", "Top-10 draft pick",             "REBUILDING"],
+    [0,    "4-13", "Top-5 draft pick",              "BASEMENT"],
+  ];
+  const bands = (mode === "fullsquad") ? FULLSQUAD_BANDS : OFFENSE_BANDS;
   for (const [min, rec, finish, tier] of bands){
     if (R >= min) return { rec, finish, tier };
   }
@@ -1064,6 +1149,7 @@ var hand   = null; // { team, decade, players:[{name,pos,grade,note,idx}] }
 var rolling = false;
 var mode   = "blitz";  // "blitz" (ratings fully hidden) | "rookie" (star marks 90+)
 var era    = "all";    // "all" (60s-20s) | "modern" (80s+) | "nineties" (90s+)
+var squad  = "offense"; // "offense" (12 slots) | "fullsquad" (12 offense + 4 defense)
 var ERAS = {
   all:      DECADE_ORDER,
   modern:   ["80s","90s","00s","10s","20s"],
@@ -1079,12 +1165,14 @@ var GROUPS = [
   { label:"Sideline",       keys:["HC"] },
   { label:"Backfield",      keys:["QB","RB"] },
   { label:"Receivers",      keys:["WR1","WR2","SLOT","TE"] },
-  { label:"Offensive Line", keys:["LT","LG","C","RG","RT"] }
+  { label:"Offensive Line", keys:["LT","LG","C","RG","RT"] },
+  { label:"Defense",        keys:["DT","LB","CB","S"] }
 ];
-var TOTAL = SLOTS.length;
+function activeSlots(){ return squad==="fullsquad" ? SLOTS.concat(DEF_SLOTS) : SLOTS; }
+var TOTAL = activeSlots().length;
 var SLOT_BY_KEY = {};
-SLOTS.forEach(function(s){ SLOT_BY_KEY[s.key]=s; });
-var POS_ORDER = {QB:0,RB:1,WR:2,TE:3,OL:4};
+SLOTS.concat(DEF_SLOTS).forEach(function(s){ SLOT_BY_KEY[s.key]=s; });
+var POS_ORDER = {QB:0,RB:1,WR:2,TE:3,OL:4,DT:5,LB:6,CB:7,S:8};
 
 function $(id){ return document.getElementById(id); }
 var el = {
@@ -1096,13 +1184,19 @@ var el = {
 };
 
 /* ---- helpers ---- */
-function openSlots(){ return SLOTS.filter(function(s){ return !roster[s.key]; }); }
+function poolFor(team,decade){
+  var off=(DATA[team]&&DATA[team][decade])||[];
+  if(squad!=="fullsquad") return off;
+  var def=(typeof DEFENSE!=="undefined" && DEFENSE[team]&&DEFENSE[team][decade])||[];
+  return def.length ? off.concat(def) : off;
+}
+function openSlots(){ return activeSlots().filter(function(s){ return !roster[s.key]; }); }
 function eligibleSlotsFor(pos){ return openSlots().filter(function(s){ return slotAccepts(s.pos,pos); }).map(function(s){ return s.key; }); }
 // a player-season is identified by name + decade; the same name from a different decade is a distinct, draftable entry
 function isUsed(name,decade){ for(var k in roster){ var r=roster[k]; if(r && r.name===name && r.decade===decade) return true; } return false; }
 function poolIsValid(team,decade){
   if(!decadeAllowed(decade)) return false;
-  var pool=DATA[team]&&DATA[team][decade]; if(!pool||!pool.length) return false;
+  var pool=poolFor(team,decade); if(!pool||!pool.length) return false;
   var open=openSlots();
   for(var i=0;i<pool.length;i++){
     if(isUsed(pool[i][0],decade)) continue;
@@ -1126,10 +1220,13 @@ function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {"&":"&a
 
 /* ---- lineup board ---- */
 function renderLineup(){
+  var active={}; activeSlots().forEach(function(s){ active[s.key]=true; });
   var html="";
   GROUPS.forEach(function(g){
+    var keys=g.keys.filter(function(k){ return active[k]; });
+    if(!keys.length) return;                       // e.g. Defense group hidden in offense mode
     html+='<div class="unit"><div class="unit-label">'+g.label+'</div>';
-    g.keys.forEach(function(key){
+    keys.forEach(function(key){
       var slot=SLOT_BY_KEY[key], p=roster[key];
       if(p){
         html+='<div class="slot filled" data-slot="'+key+'" style="'+colorVars(p.team)+'">'
@@ -1156,7 +1253,7 @@ function renderPips(){
   if(el.fSig) el.fSig.textContent=picks+"/"+TOTAL;
   if(!el.pipStrip) return;
   var html="";
-  SLOTS.forEach(function(s){
+  activeSlots().forEach(function(s){
     var p=roster[s.key];
     html += p
       ? '<span class="pip filled" style="'+colorVars(p.team)+'">'+chipLabel(s.key)+'</span>'
@@ -1194,7 +1291,7 @@ function doRoll(){
 
   var teams=validTeams(); if(!teams.length) teams=TEAMS.slice();
   var team=pick(teams);
-  var decs=validDecades(team); if(!decs.length) decs=allowedDecades().filter(function(d){ return DATA[team][d]; });
+  var decs=validDecades(team); if(!decs.length) decs=allowedDecades().filter(function(d){ return poolFor(team,d).length; });
   var decade=pick(decs);
 
   el.teamReel.classList.remove("locked"); el.decadeReel.classList.remove("locked");
@@ -1226,7 +1323,7 @@ function doRoll(){
 
 /* ---- reveal hand (ratings hidden, so order does NOT use grade) ---- */
 function revealHand(team,decade){
-  var pool=DATA[team][decade]||[];
+  var pool=poolFor(team,decade);
   var players=pool.map(function(t,i){ return {name:t[0],pos:t[1],grade:t[2],note:t[3]||"",idx:i}; });
   players.sort(function(a,b){
     var ae=!isUsed(a.name,decade) && eligibleSlotsFor(a.pos).length>0, be=!isUsed(b.name,decade) && eligibleSlotsFor(b.pos).length>0;
@@ -1328,8 +1425,8 @@ function prependTick(html){
 /* ---- final whistle ---- */
 function grade(){
   if(picks!==TOTAL) return;
-  var R=ratingFromRoster(roster);
-  showResults(R,seasonOutcome(R));
+  var R=ratingFromRoster(roster, squad);
+  showResults(R,seasonOutcome(R, squad));
 }
 function showResults(R,out){
   var tc="t-"+out.tier.replace(/[^A-Z]/g,"");
@@ -1364,36 +1461,39 @@ function showResults(R,out){
    lbScope is set honestly each call so the banner can show whether a score
    actually reached the global board ("saved globally") or fell back ("offline"). */
 var LB_API = "https://gridiron-hof.joeysamowitz.workers.dev";  // global board (Cloudflare Worker)
-var LB_KEY="gridironBlitzHOF", LB_MAX=5, lbScope="", lbMem=[];
+var LB_KEY="gridironBlitzHOF", LB_MAX=5, lbScope="", lbMem={};
+function lbBoard(){ return squad==="fullsquad" ? "squad" : "offense"; }  // offense -> KV "board"; squad -> KV "board:squad"
 function lbEligible(){ return mode==="blitz" && era==="all"; }   // Hall of Fame is Blitz + All-Era only
 function lbSort(b){ b.sort(function(a,c){ return c.s-a.s; }); return b; }
 async function lbLoad(){
+  var bd=lbBoard(), mk=LB_KEY+":"+bd;
   if(LB_API){
-    try{ var r=await fetch(LB_API,{cache:"no-store"}); if(r.ok){ lbScope="global"; lbMem=(await r.json()).slice(); return lbMem.slice(); } }catch(e){}
-    lbScope="offline"; return lbMem.slice();
+    try{ var r=await fetch(LB_API+"?b="+encodeURIComponent(bd),{cache:"no-store"}); if(r.ok){ lbScope="global"; lbMem[bd]=(await r.json()).slice(); return lbMem[bd].slice(); } }catch(e){}
+    lbScope="offline"; return (lbMem[bd]||[]).slice();
   }
   if(window.storage && window.storage.get){
     lbScope="shared";
-    try{ var s=await window.storage.get(LB_KEY,true); return (s&&s.value)?JSON.parse(s.value):[]; }
+    try{ var s=await window.storage.get(mk,true); return (s&&s.value)?JSON.parse(s.value):[]; }
     catch(e){ return []; }
   }
-  try{ if(window.localStorage){ lbScope="device"; var v=localStorage.getItem(LB_KEY); return v?JSON.parse(v):[]; } }catch(e){}
-  lbScope="session"; return lbMem.slice();
+  try{ if(window.localStorage){ lbScope="device"; var v=localStorage.getItem(mk); return v?JSON.parse(v):[]; } }catch(e){}
+  lbScope="session"; return (lbMem[bd]||[]).slice();
 }
 async function lbSubmit(entry){
+  var bd=lbBoard(), mk=LB_KEY+":"+bd;
   if(LB_API){
     try{
-      var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({i:entry.i,s:entry.s})});
-      if(r.ok){ lbScope="global"; var b=await r.json(); lbMem=b.slice(); return b; }
+      var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({b:bd,i:entry.i,s:entry.s})});
+      if(r.ok){ lbScope="global"; var b=await r.json(); lbMem[bd]=b.slice(); return b; }
     }catch(e){}
     lbScope="offline";
   }
   var board=lbSort(await lbLoad());
   board.push({i:entry.i,s:entry.s,t:Date.now()});
   board=lbSort(board).slice(0,LB_MAX);
-  lbMem=board.slice();
-  try{ if(window.storage && window.storage.set){ await window.storage.set(LB_KEY,JSON.stringify(board),true); return board; } }catch(e){}
-  try{ if(window.localStorage){ localStorage.setItem(LB_KEY,JSON.stringify(board)); } }catch(e){}
+  lbMem[bd]=board.slice();
+  try{ if(window.storage && window.storage.set){ await window.storage.set(mk,JSON.stringify(board),true); return board; } }catch(e){}
+  try{ if(window.localStorage){ localStorage.setItem(mk,JSON.stringify(board)); } }catch(e){}
   return board;
 }
 async function renderHiScores(board){
@@ -1410,7 +1510,7 @@ async function renderHiScores(board){
   var sc=$("hsScope");
   if(sc){
     var scopeL = ({global:"saved globally",offline:"offline \u2014 not saved",shared:"shared",device:"this device",session:"this session"})[lbScope]||"";
-    sc.textContent = "Blitz \u00b7 All-Era"+(scopeL?" \u00b7 "+scopeL:"");
+    sc.textContent = (squad==="fullsquad"?"Full Squad \u00b7 ":"")+"Blitz \u00b7 All-Era"+(scopeL?" \u00b7 "+scopeL:"");
   }
 }
 async function maybeHighScore(R){
@@ -1449,7 +1549,7 @@ async function maybeHighScore(R){
 function gradeTier(v){ return v>=90?"gt-hi":(v>=80?"gt-mid":(v>=70?"gt-lo":"gt-bad")); }
 function boxscore(){
   var rows="";
-  SLOTS.forEach(function(s){
+  activeSlots().forEach(function(s){
     var p=roster[s.key], c=colorsOf(p.team);
     var fit=posFit(s.key,p), eff=effGrade(s.key,p);
     var fitTag = fit>0 ? ' <span class="fitd up">+'+fit+' fit</span>' : (fit<0 ? ' <span class="fitd dn">'+fit+' off</span>' : '');
@@ -1475,7 +1575,7 @@ function shareText(R,out){
   L.push("FINAL: "+R.toFixed(1)+"/100  \u00b7  "+out.tier);
   L.push("Projected "+out.rec+"  \u00b7  "+out.finish);
   L.push("--------------------------------");
-  SLOTS.forEach(function(s){
+  activeSlots().forEach(function(s){
     var p=roster[s.key], tag=(chipLabel(s.key)+"   ").slice(0,3);
     var fit=posFit(s.key,p), eff=effGrade(s.key,p);
     var fm = fit>0?" (+"+fit+")":(fit<0?" ("+fit+")":"");
@@ -1497,6 +1597,7 @@ function copyShare(){
 
 /* ---- new game ---- */
 function newGame(){
+  TOTAL=activeSlots().length;
   roster={}; picks=0; hand=null; rolling=false;
   el.results.classList.remove("show");
   el.teamReel.classList.remove("locked"); el.decadeReel.classList.remove("locked");
@@ -1524,6 +1625,15 @@ function setEra(e){
     b.classList.toggle("active", b.getAttribute("data-era")===era);
   });
   newGame();
+}
+function setSquad(s){
+  if(s===squad) return;
+  squad=s;
+  Array.prototype.forEach.call(document.querySelectorAll(".sq-seg"),function(b){
+    b.classList.toggle("active", b.getAttribute("data-squad")===squad);
+  });
+  newGame();          // recomputes TOTAL and rebuilds the board with/without defense
+  renderHiScores();   // the leaderboard board differs by squad mode
 }
 
 /* ---- responsive view (auto-detect, user can override) ---- */
@@ -1556,6 +1666,9 @@ function boot(){
   });
   Array.prototype.forEach.call(document.querySelectorAll(".et-seg"),function(b){
     b.addEventListener("click",function(){ setEra(b.getAttribute("data-era")); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".sq-seg"),function(b){
+    b.addEventListener("click",function(){ setSquad(b.getAttribute("data-squad")); });
   });
   Array.prototype.forEach.call(document.querySelectorAll(".vt-seg"),function(b){
     b.addEventListener("click",function(){ setView(b.getAttribute("data-view"), true); });
