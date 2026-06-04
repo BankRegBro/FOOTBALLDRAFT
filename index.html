@@ -98,6 +98,40 @@ h1.title .b{
 .meter{height:14px;background:#040810;border:1px solid #1d2942;border-radius:7px;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,.6)}
 .meter>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));box-shadow:0 0 12px var(--neon-green);transition:width .5s cubic-bezier(.2,.9,.2,1)}
 
+/* ---------- high-score / hall of fame ---------- */
+.hiscore{margin-top:14px;padding:12px 16px;border:1px solid #2a3550;border-radius:12px;
+  background:linear-gradient(180deg,rgba(20,28,44,.92),rgba(12,18,30,.92));
+  box-shadow:inset 0 0 24px rgba(0,0,0,.5),0 0 18px -8px rgba(255,212,0,.25);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;animation:drop .6s .05s both}
+.hs-title{font-family:"Press Start 2P",monospace;font-size:10px;letter-spacing:.06em;color:var(--neon-yellow);text-shadow:0 0 10px rgba(255,212,0,.5);white-space:nowrap}
+.hs-list{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;align-items:center}
+.hs-row{display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:7px;background:rgba(0,0,0,.32);border:1px solid #283449}
+.hs-row.top1{border-color:rgba(255,212,0,.55);box-shadow:0 0 12px -4px rgba(255,212,0,.5)}
+.hs-rank{font-family:"Press Start 2P",monospace;font-size:8px;color:#6b7894}
+.hs-row.top1 .hs-rank{color:var(--neon-yellow)}
+.hs-init{font-family:"Press Start 2P",monospace;font-size:11px;letter-spacing:.08em;color:var(--chrome1)}
+.hs-row.top1 .hs-init{color:var(--neon-yellow);text-shadow:0 0 8px rgba(255,212,0,.5)}
+.hs-score{font-family:"Oswald",sans-serif;font-weight:700;font-size:15px;color:var(--neon-green)}
+.hs-empty{font-family:"Oswald",sans-serif;font-size:14px;color:#7c8aa6;letter-spacing:.04em}
+.hs-scope{font-family:"Press Start 2P",monospace;font-size:6.5px;letter-spacing:.05em;color:#56657f}
+
+/* new-high-score initials entry inside results */
+.hs-entry{margin:14px auto 4px;max-width:420px;padding:16px;border-radius:12px;text-align:center;
+  border:1px solid rgba(255,212,0,.5);background:rgba(255,212,0,.06);box-shadow:0 0 22px -8px rgba(255,212,0,.5)}
+.hs-entry .hl{font-family:"Press Start 2P",monospace;font-size:12px;color:var(--neon-yellow);text-shadow:0 0 12px rgba(255,212,0,.55);margin-bottom:4px}
+.hs-entry .sub{font-family:"Oswald",sans-serif;font-size:14px;color:var(--chrome1);margin-bottom:12px;letter-spacing:.03em}
+.hs-entry .row{display:flex;gap:10px;justify-content:center;align-items:center}
+.hs-entry input{width:130px;text-transform:uppercase;text-align:center;font-family:"Press Start 2P",monospace;font-size:18px;letter-spacing:.18em;
+  color:var(--neon-yellow);background:#0c1220;border:2px solid #3a4a66;border-radius:8px;padding:12px 6px;outline:none}
+.hs-entry input:focus{border-color:var(--neon-yellow);box-shadow:0 0 14px -4px rgba(255,212,0,.6)}
+.hs-entry button{font-family:"Anton",sans-serif;font-size:18px;letter-spacing:.04em;cursor:pointer;color:#0c1220;
+  background:linear-gradient(180deg,var(--neon-yellow),#d6a800);border:none;border-radius:8px;padding:12px 18px}
+.hs-entry .done{font-family:"Press Start 2P",monospace;font-size:11px;color:var(--neon-green);text-shadow:0 0 10px rgba(61,255,132,.5)}
+.view-mobile .hiscore{padding:10px 12px;gap:9px}
+.view-mobile .hs-title{font-size:8px}
+.view-mobile .hs-init{font-size:9px}
+.view-mobile .hs-score{font-size:13px}
+
 /* ---------- board (layout driven by .view-* classes on <html>) ---------- */
 .board{display:grid;grid-template-columns:1.08fr .92fr;gap:30px;margin-top:30px}
 .view-mobile .board{grid-template-columns:1fr;gap:22px}
@@ -403,6 +437,12 @@ h1.title .b{
     <h1 class="title">Gridiron <span class="b">Blitz</span></h1>
     <div class="subtitle">All&ndash;Era Offense Draft</div>
   </header>
+
+  <div class="hiscore" id="hiscore">
+    <span class="hs-title">&#9733; Hall of Fame &#9733;</span>
+    <div class="hs-list" id="hsList"></div>
+    <span class="hs-scope" id="hsScope"></span>
+  </div>
 
   <div class="scorestrip">
     <div class="led blue"><span class="lbl">Signed</span><span id="ledSigned">00/12</span></div>
@@ -1174,6 +1214,7 @@ function showResults(R,out){
     +'<div class="tier-line '+tc+'">'+out.tier+'</div>'
     +'<div class="score-wrap"><span class="score '+tc+'" id="scoreNum">0.0</span><span class="of '+tc+'"> / 100</span></div>'
     +'<div class="record-line">Projected <b>'+out.rec+'</b> &middot; '+out.finish+'</div>'
+    +'<div id="hsEntryWrap"></div>'
     +'<hr class="jumbo-rule">'
     +boxscore()
     +'<div class="share"><div class="share-label">&#9654; The box score &mdash; share your roster</div>'
@@ -1187,6 +1228,89 @@ function showResults(R,out){
   $("copyBtn").addEventListener("click",copyShare);
   $("newBtn").addEventListener("click",newGame);
   countUp($("scoreNum"),R);
+  maybeHighScore(R);
+}
+
+/* ---- high-score / hall of fame ----
+   Storage, in priority order, degrading gracefully (never crashes):
+   1) LB_API (Cloudflare Worker) -> global board shared by everyone, always-on
+   2) window.storage shared      -> global across viewers of a published Claude artifact
+   3) localStorage               -> persists on this device (GitHub Pages with no Worker set)
+   4) in-memory                  -> this session only
+   Paste your Worker URL into LB_API below to turn on the global board. */
+var LB_API = "";  // e.g. "https://gridiron-hof.YOURNAME.workers.dev"
+var LB_KEY="gridironBlitzHOF", LB_MAX=5, lbScope="session", lbMem=[];
+async function lbLoad(){
+  if(LB_API){
+    lbScope="global";
+    try{ var r=await fetch(LB_API,{cache:"no-store"}); if(r.ok) return await r.json(); }catch(e){}
+    return lbMem.slice();
+  }
+  if(window.storage && window.storage.get){
+    lbScope="shared";
+    try{ var s=await window.storage.get(LB_KEY,true); return (s&&s.value)?JSON.parse(s.value):[]; }
+    catch(e){ return []; }
+  }
+  try{ if(window.localStorage){ lbScope="device"; var v=localStorage.getItem(LB_KEY); return v?JSON.parse(v):[]; } }catch(e){}
+  lbScope="session"; return lbMem.slice();
+}
+async function lbSubmit(entry){
+  if(LB_API){
+    lbScope="global";
+    try{
+      var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(entry)});
+      if(r.ok){ var b=await r.json(); lbMem=b.slice(); return b; }
+    }catch(e){}
+  }
+  var board=lbSort(await lbLoad());
+  board.push(entry);
+  board=lbSort(board).slice(0,LB_MAX);
+  lbMem=board.slice();
+  try{ if(window.storage && window.storage.set){ await window.storage.set(LB_KEY,JSON.stringify(board),true); return board; } }catch(e){}
+  try{ if(window.localStorage){ localStorage.setItem(LB_KEY,JSON.stringify(board)); } }catch(e){}
+  return board;
+}
+function lbSort(b){ b.sort(function(a,c){ return c.s-a.s; }); return b; }
+async function renderHiScores(){
+  var list=$("hsList"); if(!list) return;
+  var board=lbSort(await lbLoad());
+  if(!board.length){
+    list.innerHTML='<span class="hs-empty">No scores yet &mdash; be the first to make the board</span>';
+  } else {
+    var ord=["1ST","2ND","3RD","4TH","5TH"];
+    list.innerHTML=board.slice(0,LB_MAX).map(function(e,i){
+      return '<span class="hs-row'+(i===0?' top1':'')+'"><b class="hs-rank">'+ord[i]+'</b><b class="hs-init">'+esc(e.i)+'</b><span class="hs-score">'+(+e.s).toFixed(1)+'</span></span>';
+    }).join("");
+  }
+  var sc=$("hsScope"); if(sc) sc.textContent = ({global:"global board",shared:"shared board",device:"this device",session:"this session"})[lbScope]||"";
+}
+async function maybeHighScore(R){
+  var wrap=$("hsEntryWrap"); if(!wrap) return;
+  var board=lbSort(await lbLoad());
+  var qualifies = board.length<LB_MAX || R > board[board.length-1].s;
+  if(!qualifies) return;
+  var rank=board.filter(function(e){ return e.s>R; }).length + 1;
+  wrap.innerHTML='<div class="hs-entry">'
+    +'<div class="hl">New High Score &middot; #'+rank+'</div>'
+    +'<div class="sub">'+R.toFixed(1)+' / 100 &mdash; enter your initials for the Hall of Fame</div>'
+    +'<div class="row"><input id="hsInit" maxlength="3" placeholder="AAA" autocomplete="off" spellcheck="false"><button id="hsSave">Enter</button></div>'
+    +'</div>';
+  var inp=$("hsInit"), btn=$("hsSave");
+  inp.addEventListener("input",function(){ inp.value=inp.value.replace(/[^A-Za-z]/g,"").toUpperCase().slice(0,3); });
+  try{ inp.focus(); }catch(e){}
+  function submit(){
+    if(btn.disabled) return;
+    var ini=(inp.value||"").replace(/[^A-Za-z]/g,"").toUpperCase().slice(0,3) || "AAA";
+    btn.disabled=true;
+    var sc=Math.round(R*10)/10;
+    lbSubmit({i:ini,s:sc,e:era,t:Date.now()}).then(function(b){
+      renderHiScores();
+      var pos=b.findIndex(function(e){ return e.i===ini && e.s===sc; })+1;
+      wrap.innerHTML='<div class="hs-entry"><div class="done">&#10003; '+esc(ini)+' enshrined at #'+(pos||1)+'</div></div>';
+    });
+  }
+  btn.addEventListener("click",submit);
+  inp.addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); submit(); } });
 }
 function boxscore(){
   var rows="";
@@ -1303,6 +1427,7 @@ function boot(){
   });
   el.formationToggle.addEventListener("click",toggleFormation);
   window.addEventListener("resize",autoView);
+  renderHiScores();
   newGame();
 }
 if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot);
