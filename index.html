@@ -984,11 +984,16 @@ var el = {
 /* ---- helpers ---- */
 function openSlots(){ return SLOTS.filter(function(s){ return !roster[s.key]; }); }
 function eligibleSlotsFor(pos){ return openSlots().filter(function(s){ return slotAccepts(s.pos,pos); }).map(function(s){ return s.key; }); }
+// a player-season is identified by name + decade; the same name from a different decade is a distinct, draftable entry
+function isUsed(name,decade){ for(var k in roster){ var r=roster[k]; if(r && r.name===name && r.decade===decade) return true; } return false; }
 function poolIsValid(team,decade){
   if(!decadeAllowed(decade)) return false;
   var pool=DATA[team]&&DATA[team][decade]; if(!pool||!pool.length) return false;
   var open=openSlots();
-  for(var i=0;i<pool.length;i++){ for(var j=0;j<open.length;j++){ if(slotAccepts(open[j].pos,pool[i][1])) return true; } }
+  for(var i=0;i<pool.length;i++){
+    if(isUsed(pool[i][0],decade)) continue;
+    for(var j=0;j<open.length;j++){ if(slotAccepts(open[j].pos,pool[i][1])) return true; }
+  }
   return false;
 }
 function validTeams(){ return TEAMS.filter(function(t){ return allowedDecades().some(function(d){ return poolIsValid(t,d); }); }); }
@@ -1110,7 +1115,7 @@ function revealHand(team,decade){
   var pool=DATA[team][decade]||[];
   var players=pool.map(function(t,i){ return {name:t[0],pos:t[1],grade:t[2],note:t[3]||"",idx:i}; });
   players.sort(function(a,b){
-    var ae=eligibleSlotsFor(a.pos).length>0, be=eligibleSlotsFor(b.pos).length>0;
+    var ae=!isUsed(a.name,decade) && eligibleSlotsFor(a.pos).length>0, be=!isUsed(b.name,decade) && eligibleSlotsFor(b.pos).length>0;
     if(ae!==be) return ae?-1:1;                       // eligible first
     if(POS_ORDER[a.pos]!==POS_ORDER[b.pos]) return POS_ORDER[a.pos]-POS_ORDER[b.pos];
     return a.name.localeCompare(b.name);              // stable, never by grade
@@ -1125,19 +1130,21 @@ function renderHand(){
     el.hand.innerHTML='<div class="hand-idle">Hit ROLL &mdash; the dice pick a franchise &amp; era. You sign one of whoever was there. Ratings stay hidden until the final whistle.</div>';
     return;
   }
-  var eligCount=hand.players.filter(function(p){ return eligibleSlotsFor(p.pos).length>0; }).length;
+  var eligCount=hand.players.filter(function(p){ return !isUsed(p.name,hand.decade) && eligibleSlotsFor(p.pos).length>0; }).length;
   var legend=(mode==="rookie")?' &middot; <span class="legend-star">&#9733; elite</span>':'';
   var html='<div style="'+colorVars(hand.team)+'">'
     +'<div class="hand-head">'+esc(hand.team)+' <span class="era">&rsquo;'+hand.decade.replace("s","")+'s</span></div>'
     +'<div class="hand-sub">'+DECADE_LABEL[hand.decade]+' &middot; '+eligCount+' can fill an open spot'+legend+'</div>'
     +'<div class="cards">';
   hand.players.forEach(function(p){
-    var elig=eligibleSlotsFor(p.pos).length>0;
+    var used=isUsed(p.name,hand.decade);
+    var elig=!used && eligibleSlotsFor(p.pos).length>0;
     var isElite=(mode==="rookie"&&p.grade>=ELITE);
+    var note=elig ? (p.note?esc(p.note):"") : (used?"already signed":"roster full here");
     html+='<div class="card '+(elig?"elig":"dim")+(isElite?" elite":"")+'" data-idx="'+p.idx+'">'
       +'<div class="cpos">'+posBadge(p)+'</div>'
       +'<div><div class="cname">'+eliteStar(p.grade)+esc(p.name)+'</div>'
-      +(p.note?'<div class="cnote">'+esc(p.note)+'</div>':(elig?'':'<div class="cnote">roster full here</div>'))+'</div>'
+      +(note?'<div class="cnote">'+note+'</div>':'')+'</div>'
       +(elig?'<div class="cpick">SIGN &#9654;</div>':'<div class="cnote">&mdash;</div>')
       +'</div>';
   });
@@ -1153,6 +1160,7 @@ function renderHand(){
 function onCardClick(idx,cardEl){
   var p=hand.players.filter(function(x){ return x.idx===idx; })[0];
   if(!p) return;
+  if(isUsed(p.name,hand.decade)) return;
   var slots=eligibleSlotsFor(p.pos);
   if(slots.length===0) return;
   if(slots.length===1){ assign(slots[0],p); return; }
@@ -1177,6 +1185,7 @@ function onCardClick(idx,cardEl){
 
 function assign(slotKey,p){
   if(roster[slotKey]) return;
+  if(isUsed(p.name,hand.decade)) return;
   roster[slotKey]={name:p.name,pos:p.pos,grade:p.grade,note:p.note,team:hand.team,decade:hand.decade};
   picks++;
   logPick(slotKey,roster[slotKey]);
