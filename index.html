@@ -326,6 +326,9 @@ h1.title .b{
 .vt-seg{font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:.03em;cursor:pointer;border:none;border-radius:5px;padding:8px 11px;background:transparent;color:#3a4a66;transition:color .2s,background .2s,box-shadow .2s}
 .vt-seg:not(.active):hover{color:var(--txt)}
 .vt-seg.active{background:rgba(39,214,255,.16);color:var(--neon-blue);text-shadow:0 0 8px rgba(39,214,255,.55);box-shadow:inset 0 0 0 1px rgba(39,214,255,.5)}
+.et-seg{font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:.03em;cursor:pointer;border:none;border-radius:5px;padding:8px 11px;background:transparent;color:#3a4a66;transition:color .2s,background .2s,box-shadow .2s}
+.et-seg:not(.active):hover{color:var(--txt)}
+.et-seg.active{background:rgba(255,176,32,.16);color:var(--neon-yellow);text-shadow:0 0 8px rgba(255,176,32,.5);box-shadow:inset 0 0 0 1px rgba(255,176,32,.5)}
 
 .formation-head{width:100%;text-align:left;background:none;border:none;cursor:pointer;color:inherit;align-items:center}
 .formation-head::after{display:none}
@@ -387,7 +390,7 @@ h1.title .b{
 .view-mobile .share textarea{font-size:8px;height:160px}
 .view-mobile .res-actions button{font-size:16px;min-width:130px}
 .view-mobile .dt-lbl{font-size:7px}
-.view-mobile .dt-seg,.view-mobile .vt-seg{font-size:8px;padding:7px 9px}
+.view-mobile .dt-seg,.view-mobile .vt-seg,.view-mobile .et-seg{font-size:8px;padding:7px 9px}
 </style>
 <script>(function(){try{var w=window.innerWidth||document.documentElement.clientWidth||1200;document.documentElement.classList.add(w<=820?'view-mobile':'view-desktop');}catch(e){document.documentElement.classList.add('view-desktop');}})();</script>
 </head>
@@ -397,12 +400,19 @@ h1.title .b{
   <header class="marquee">
     <div class="coin">The Ledger Arcade &middot; Insert Coin</div>
     <h1 class="title">Gridiron <span class="b">Blitz</span></h1>
-    <div class="subtitle">All&ndash;Era Offense Draft &middot; 1980 &#9654; Today</div>
+    <div class="subtitle">All&ndash;Era Offense Draft</div>
   </header>
 
   <div class="scorestrip">
     <div class="led blue"><span class="lbl">Signed</span><span id="ledSigned">00/12</span></div>
-    <div class="led amber"><span class="lbl">Mode</span>ALL-ERA</div>
+    <div class="diff-toggle" id="eraToggle">
+      <span class="dt-lbl">Era</span>
+      <div class="dt-track">
+        <button class="et-seg active" data-era="all" type="button">All-Era</button>
+        <button class="et-seg" data-era="modern" type="button">80s+</button>
+        <button class="et-seg" data-era="nineties" type="button">90s+</button>
+      </div>
+    </div>
     <div class="diff-toggle" id="diffToggle">
       <span class="dt-lbl">Difficulty</span>
       <div class="dt-track">
@@ -901,6 +911,14 @@ var picks  = 0;
 var hand   = null; // { team, decade, players:[{name,pos,grade,note,idx}] }
 var rolling = false;
 var mode   = "blitz";  // "blitz" (ratings fully hidden) | "rookie" (star marks 90+)
+var era    = "all";    // "all" (60s-20s) | "modern" (80s+) | "nineties" (90s+)
+var ERAS = {
+  all:      DECADE_ORDER,
+  modern:   ["80s","90s","00s","10s","20s"],
+  nineties: ["90s","00s","10s","20s"]
+};
+function allowedDecades(){ return ERAS[era] || DECADE_ORDER; }
+function decadeAllowed(d){ return allowedDecades().indexOf(d)>=0; }
 var ELITE  = 90;
 function eliteStar(grade){ return (mode==="rookie" && grade>=ELITE) ? '<span class="star">&#9733;</span>' : ""; }
 
@@ -929,13 +947,14 @@ var el = {
 function openSlots(){ return SLOTS.filter(function(s){ return !roster[s.key]; }); }
 function eligibleSlotsFor(pos){ return openSlots().filter(function(s){ return slotAccepts(s.pos,pos); }).map(function(s){ return s.key; }); }
 function poolIsValid(team,decade){
+  if(!decadeAllowed(decade)) return false;
   var pool=DATA[team]&&DATA[team][decade]; if(!pool||!pool.length) return false;
   var open=openSlots();
   for(var i=0;i<pool.length;i++){ for(var j=0;j<open.length;j++){ if(slotAccepts(open[j].pos,pool[i][1])) return true; } }
   return false;
 }
-function validTeams(){ return TEAMS.filter(function(t){ return DECADE_ORDER.some(function(d){ return poolIsValid(t,d); }); }); }
-function validDecades(team){ return DECADE_ORDER.filter(function(d){ return poolIsValid(team,d); }); }
+function validTeams(){ return TEAMS.filter(function(t){ return allowedDecades().some(function(d){ return poolIsValid(t,d); }); }); }
+function validDecades(team){ return allowedDecades().filter(function(d){ return poolIsValid(team,d); }); }
 function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
 function pad(n){ return (n<10?"0":"")+n; }
 function chipLabel(key){ return key; }
@@ -1018,7 +1037,7 @@ function doRoll(){
 
   var teams=validTeams(); if(!teams.length) teams=TEAMS.slice();
   var team=pick(teams);
-  var decs=validDecades(team); if(!decs.length) decs=DECADE_ORDER.filter(function(d){ return DATA[team][d]; });
+  var decs=validDecades(team); if(!decs.length) decs=allowedDecades().filter(function(d){ return DATA[team][d]; });
   var decade=pick(decs);
 
   el.teamReel.classList.remove("locked"); el.decadeReel.classList.remove("locked");
@@ -1195,7 +1214,7 @@ function countUp(node,target){
 }
 function shareText(R,out){
   var L=[];
-  L.push("GRIDIRON BLITZ \u2014 ALL-ERA OFFENSE");
+  L.push("GRIDIRON BLITZ \u2014 "+(era==="modern"?"80s+ OFFENSE":era==="nineties"?"90s+ OFFENSE":"ALL-ERA OFFENSE"));
   L.push("FINAL: "+R.toFixed(1)+"/100  \u00b7  "+out.tier);
   L.push("Projected "+out.rec+"  \u00b7  "+out.finish);
   L.push("--------------------------------");
@@ -1240,6 +1259,16 @@ function setMode(m){
   renderHand(); renderLineup();
 }
 
+/* ---- era mode (defines the draftable pool, so it restarts the draft) ---- */
+function setEra(e){
+  if(e===era) return;
+  era=e;
+  Array.prototype.forEach.call(document.querySelectorAll(".et-seg"),function(b){
+    b.classList.toggle("active", b.getAttribute("data-era")===era);
+  });
+  newGame();
+}
+
 /* ---- responsive view (auto-detect, user can override) ---- */
 var viewLocked=false;
 function currentView(){ return document.documentElement.classList.contains("view-mobile") ? "mobile" : "desktop"; }
@@ -1267,6 +1296,9 @@ function boot(){
   el.results.addEventListener("click",function(e){ if(e.target===el.results) el.results.classList.remove("show"); });
   Array.prototype.forEach.call(document.querySelectorAll(".dt-seg"),function(b){
     b.addEventListener("click",function(){ setMode(b.getAttribute("data-mode")); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".et-seg"),function(b){
+    b.addEventListener("click",function(){ setEra(b.getAttribute("data-era")); });
   });
   Array.prototype.forEach.call(document.querySelectorAll(".vt-seg"),function(b){
     b.addEventListener("click",function(){ setView(b.getAttribute("data-view"), true); });
