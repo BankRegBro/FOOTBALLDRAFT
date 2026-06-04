@@ -203,7 +203,10 @@ h1.title .b{
   box-shadow:inset 0 2px 10px rgba(0,0,0,.7);
 }
 .reel .tag{font-family:"Press Start 2P",monospace;font-size:8px;letter-spacing:.12em;color:var(--txt-dim);margin-bottom:9px}
-.reel .face{font-family:"Anton",sans-serif;font-size:clamp(15px,2.3vw,22px);line-height:1.02;text-transform:uppercase;color:var(--chrome1);min-height:1.05em;letter-spacing:.01em}
+.reel .face{font-family:"Anton",sans-serif;font-size:clamp(15px,2.3vw,22px);line-height:1.02;text-transform:uppercase;color:var(--chrome1);min-height:1.05em;letter-spacing:.01em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.reel .face .crest{width:clamp(50px,10vw,70px);height:auto;display:block;filter:drop-shadow(0 1px 6px rgba(0,0,0,.55));animation:crestPop .42s cubic-bezier(.2,.9,.3,1.3) both}
+.reel .face .rl-name{font-size:clamp(13px,1.9vw,18px);line-height:1.02;letter-spacing:.01em}
+@keyframes crestPop{0%{transform:scale(.35);opacity:0}60%{transform:scale(1.09)}100%{transform:scale(1);opacity:1}}
 .reel .face.dec{font-family:"Press Start 2P",monospace;font-size:clamp(13px,2vw,18px)}
 .reel.spin{animation:shake .1s linear infinite}
 .reel.locked{border-color:var(--neon-blue);box-shadow:inset 0 2px 10px rgba(0,0,0,.7),0 0 22px rgba(39,214,255,.55)}
@@ -1023,6 +1026,33 @@ var TEAM_COLORS = {
 function colorsOf(team){ return TEAM_COLORS[team] || ["#27d6ff","#27d6ff","#03131c"]; }
 function colorVars(team){ var c=colorsOf(team); return "--c1:"+c[0]+";--c2:"+c[1]+";--ct:"+c[2]+";"; }
 
+/* ---- original team crests (generic roundel in each franchise's colors; NOT the trademarked logos) ---- */
+var TEAM_ABBR = {
+  "Arizona Cardinals":"ARI","Atlanta Falcons":"ATL","Baltimore Ravens":"BAL","Buffalo Bills":"BUF",
+  "Carolina Panthers":"CAR","Chicago Bears":"CHI","Cincinnati Bengals":"CIN","Cleveland Browns":"CLE",
+  "Dallas Cowboys":"DAL","Denver Broncos":"DEN","Detroit Lions":"DET","Green Bay Packers":"GB",
+  "Houston Texans":"HOU","Indianapolis Colts":"IND","Jacksonville Jaguars":"JAX","Kansas City Chiefs":"KC",
+  "Las Vegas Raiders":"LV","Los Angeles Chargers":"LAC","Los Angeles Rams":"LAR","Miami Dolphins":"MIA",
+  "Minnesota Vikings":"MIN","New England Patriots":"NE","New Orleans Saints":"NO","New York Giants":"NYG",
+  "New York Jets":"NYJ","Philadelphia Eagles":"PHI","Pittsburgh Steelers":"PIT","San Francisco 49ers":"SF",
+  "Seattle Seahawks":"SEA","Tampa Bay Buccaneers":"TB","Tennessee Titans":"TEN","Washington Commanders":"WAS"
+};
+function abbrOf(team){
+  if(TEAM_ABBR[team]) return TEAM_ABBR[team];
+  var w=String(team).trim().split(/\s+/);
+  return (w.length>=2 ? (w[w.length-2][0]+w[w.length-1][0]) : String(team).slice(0,2)).toUpperCase();
+}
+function teamCrest(team){
+  var c=colorsOf(team), ab=abbrOf(team), fs = ab.length>=3 ? 29 : 37;
+  return '<svg class="crest" viewBox="0 0 100 100" aria-hidden="true" focusable="false">'
+    +'<circle cx="50" cy="50" r="45" fill="'+c[0]+'" stroke="'+c[1]+'" stroke-width="6"/>'
+    +'<circle cx="50" cy="50" r="37" fill="none" stroke="'+c[1]+'" stroke-width="1.5" opacity=".5"/>'
+    +'<path d="M27 31 L50 25 L73 31" fill="none" stroke="'+c[1]+'" stroke-width="3.4" stroke-linecap="round" opacity=".85"/>'
+    +'<text x="50" y="51" text-anchor="middle" dominant-baseline="central" '
+      +'font-family="Anton, sans-serif" font-size="'+fs+'" fill="'+c[2]+'">'+esc(ab)+'</text>'
+    +'</svg>';
+}
+
 /* ---- state ---- */
 var roster = {};   // slotKey -> {name,pos,grade,note,team,decade}
 var picks  = 0;
@@ -1174,7 +1204,7 @@ function doRoll(){
       clearInterval(ti);
       el.teamReel.classList.remove("spin"); el.teamReel.classList.add("locked");
       el.teamReel.setAttribute("style",colorVars(team));
-      el.teamFace.textContent=team;
+      el.teamFace.innerHTML=teamCrest(team)+'<span class="rl-name">'+esc(team)+'</span>';
       var dTick=0;
       var di=setInterval(function(){
         el.decadeFace.textContent=DECADE_LABEL[pick(decs)];
