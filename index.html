@@ -337,6 +337,10 @@ h1.title .b{
 .boxscore td.nm{font-family:"Anton",sans-serif;font-size:16px;text-transform:uppercase;color:var(--txt)}
 .boxscore td.mt{font-family:"Oswald",sans-serif;font-weight:600;font-size:11px;color:var(--txt-dim);text-transform:uppercase;letter-spacing:.06em}
 .boxscore td.g{font-family:"Press Start 2P",monospace;font-size:11px;color:var(--neon-green);text-shadow:0 0 6px currentColor}
+.boxscore td.g.gt-hi{color:var(--neon-green)}
+.boxscore td.g.gt-mid{color:var(--neon-yellow)}
+.boxscore td.g.gt-lo{color:var(--neon-orange)}
+.boxscore td.g.gt-bad{color:var(--neon-red)}
 
 .share{margin-top:20px}
 .share-label{font-family:"Press Start 2P",monospace;font-size:8px;letter-spacing:.1em;color:var(--txt-dim);margin-bottom:8px}
@@ -1442,6 +1446,7 @@ async function maybeHighScore(R){
   btn.addEventListener("click",submit);
   inp.addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); submit(); } });
 }
+function gradeTier(v){ return v>=90?"gt-hi":(v>=80?"gt-mid":(v>=70?"gt-lo":"gt-bad")); }
 function boxscore(){
   var rows="";
   SLOTS.forEach(function(s){
@@ -1451,7 +1456,7 @@ function boxscore(){
     rows+='<tr><td class="k">'+chipLabel(s.key)+'</td>'
       +'<td class="nm"><span class="cdot" style="background:'+c[0]+';border-color:'+c[1]+'"></span>'+esc(p.name)+'</td>'
       +'<td class="mt">'+abbr(p.team)+' &rsquo;'+p.decade.replace("s","")+'s'+fitTag+'</td>'
-      +'<td class="num g">'+eff+'</td></tr>';
+      +'<td class="num g '+gradeTier(eff)+'">'+eff+'</td></tr>';
   });
   return '<table class="boxscore"><thead><tr><th>Pos</th><th>Player</th><th>Franchise</th><th class="num">Rating</th></tr></thead><tbody>'+rows+'</tbody></table>';
 }
