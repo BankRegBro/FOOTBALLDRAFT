@@ -483,6 +483,7 @@ html.league-college .tab.active>span{color:var(--neon-orange);text-shadow:0 0 8p
 .boxscore td .heis{display:inline-block;font-family:"Press Start 2P",monospace;font-size:7px;color:#0c1220;
   background:linear-gradient(180deg,#ffe680,#ffce1f);border-radius:3px;padding:2px 4px;margin-left:7px;
   vertical-align:middle;box-shadow:0 0 8px -1px rgba(255,212,0,.6)}
+.boxscore td .heis.fin{background:linear-gradient(180deg,#e9edf2,#b9c2cc);box-shadow:0 0 8px -1px rgba(200,212,224,.55)}
 
 /* college season-tier color treatments */
 .t-NATIONALCHAMPION{color:var(--neon-yellow);text-shadow:0 0 22px rgba(255,212,0,.6)}
@@ -644,7 +645,7 @@ html.league-college #gradeBtn:not(:disabled):active{box-shadow:inset 0 2px 0 rgb
     <li>Slots are weighted. <b>Quarterback</b> counts the most, then <b>head coach</b>, then your <b>left tackle</b>. The interior line counts least.</li>
     <li><b>Line fit:</b> a natural tackle at LT or RT, or an interior lineman at LG, C, or RG, adds +2. Playing out of position drops the grade by 3.</li>
     <li><b>Receiver fit:</b> a true slot man in the SLOT, or an outside receiver at WR1 or WR2, adds +1. A wrong fit simply gets no bonus.</li>
-    <li class="cfb-only"><b>Heisman bonus:</b> any Heisman Trophy winner on your roster adds <b>+2</b> to his grade. Winners are marked <b>H</b> in the box score.</li>
+    <li class="cfb-only"><b>Heisman bonus:</b> a Heisman Trophy winner on your roster adds <b>+3</b> to his grade; a Heisman finalist adds <b>+1</b>. Winners are marked <b>H</b> in the box score, finalists <b>F</b>.</li>
     <li>After fit, any single grade is held between 40 and 99.</li>
     <li class="nfl-only"><b>Full Squad:</b> the final number is 60 percent offense and 40 percent defense. Each defensive slot takes only its own position, so a cornerback fills the corner and nothing else. There is no fit bonus or penalty on defense.</li>
   </ul>
@@ -785,7 +786,10 @@ function posFit(slotKey, p){ return olFit(slotKey, p) + wrFit(slotKey, p); }
 /* Heisman winners (college only) carry a +2 honors bump. The flag is set on the
    drafted player object at draft time and is only ever true in the college league,
    so identically named NFL players are never affected. */
-function heismanBonus(p){ return (p && p.heisman) ? 2 : 0; }
+/* College honors bump: Heisman winner +3, Heisman finalist +1. Flags are set on the
+   drafted player object at draft time and are only true in the college league, so
+   identically named NFL players are never affected. */
+function heismanBonus(p){ return p && p.heisman ? 3 : (p && p.heisFin ? 1 : 0); }
 function effGrade(slotKey, p){
   return Math.max(40, Math.min(99, p.grade + posFit(slotKey, p) + heismanBonus(p)));
 }
@@ -1261,8 +1265,8 @@ const CDATA = {
 },
 };
 
-/* Heisman Trophy winners present in the college pool (offense, on their actual
-   Heisman-season team). Each carries +2 via the league-gated heisman flag. */
+/* Heisman Trophy winners in the college pool (on their actual Heisman-season team).
+   Each carries +3 via the league-gated heisman flag. */
 const HEISMAN = new Set([
   "Ty Detmer","Desmond Howard","Gino Torretta","Charlie Ward","Rashaan Salaam","Eddie George","Danny Wuerffel",
   "Charles Woodson","Ricky Williams","Ron Dayne","Chris Weinke","Eric Crouch","Carson Palmer","Jason White",
@@ -1270,6 +1274,16 @@ const HEISMAN = new Set([
   "Robert Griffin III","Johnny Manziel","Jameis Winston","Marcus Mariota","Derrick Henry","Lamar Jackson",
   "Baker Mayfield","Kyler Murray","Joe Burrow","DeVonta Smith","Bryce Young","Caleb Williams","Jayden Daniels",
   "Travis Hunter"
+]);
+
+/* Heisman finalists (invited to the ceremony as top vote-getters) who are in the pool
+   and did NOT win. A career honor, name-matched like the winners, worth +1. */
+const HEISMAN_FIN = new Set([
+  "Eric Bieniemy","David Palmer","Ki-Jana Carter","Kerry Collins","Tommie Frazier","Orlando Pace","Michael Vick",
+  "Josh Heupel","Ken Dorsey","Willis McGahee","Adrian Peterson","Vince Young","Colt McCoy","LaMichael James",
+  "Trent Richardson","AJ McCarron","Tre Mason","Amari Cooper","Deshaun Watson","Tua Tagovailoa","Jalen Hurts",
+  "Justin Fields","Trevor Lawrence","Mac Jones","C.J. Stroud","Max Duggan","Stetson Bennett","Michael Penix Jr.",
+  "Marvin Harrison Jr.","Ashton Jeanty","Dillon Gabriel"
 ]);
 
 /* ---- scoring ---- */
@@ -1712,7 +1726,11 @@ function doRoll(){
 /* ---- reveal hand (ratings hidden, so order does NOT use grade) ---- */
 function revealHand(team,decade){
   var pool=poolFor(team,decade);
-  var players=pool.map(function(t,i){ return {name:t[0],pos:t[1],grade:t[2],note:t[3]||"",idx:i,heisman:(league==="college" && HEISMAN.has(t[0]))}; });
+  var players=pool.map(function(t,i){
+    var w=league==="college" && HEISMAN.has(t[0]);
+    var fin=league==="college" && !w && HEISMAN_FIN.has(t[0]);
+    return {name:t[0],pos:t[1],grade:t[2],note:t[3]||"",idx:i,heisman:w,heisFin:fin};
+  });
   players.sort(function(a,b){
     var ae=!isUsed(a.name,decade) && eligibleSlotsFor(a.pos).length>0, be=!isUsed(b.name,decade) && eligibleSlotsFor(b.pos).length>0;
     if(ae!==be) return ae?-1:1;                       // eligible first
@@ -1785,7 +1803,7 @@ function onCardClick(idx,cardEl){
 function assign(slotKey,p){
   if(roster[slotKey]) return;
   if(isUsed(p.name,hand.decade)) return;
-  roster[slotKey]={name:p.name,pos:p.pos,grade:p.grade,note:p.note,team:hand.team,decade:hand.decade,heisman:!!p.heisman};
+  roster[slotKey]={name:p.name,pos:p.pos,grade:p.grade,note:p.note,team:hand.team,decade:hand.decade,heisman:!!p.heisman,heisFin:!!p.heisFin};
   picks++;
   logPick(slotKey,roster[slotKey]);
   hand=null;
@@ -1942,8 +1960,8 @@ function boxscore(){
     var p=roster[s.key], c=colorsOf(p.team);
     var fit=posFit(s.key,p), eff=effGrade(s.key,p);
     var fitTag = fit>0 ? ' <span class="fitd up">+'+fit+' fit</span>' : (fit<0 ? ' <span class="fitd dn">'+fit+' off</span>' : '');
-    var heisTag = p.heisman ? ' <span class="fitd up">+2 Heisman</span>' : '';
-    var heis = p.heisman ? ' <span class="heis" title="Heisman winner (+2)">H</span>' : '';
+    var heisTag = p.heisman ? ' <span class="fitd up">+3 Heisman</span>' : (p.heisFin ? ' <span class="fitd up">+1 finalist</span>' : '');
+    var heis = p.heisman ? ' <span class="heis" title="Heisman winner (+3)">H</span>' : (p.heisFin ? ' <span class="heis fin" title="Heisman finalist (+1)">F</span>' : '');
     rows+='<tr><td class="k">'+chipLabel(s.key)+'</td>'
       +'<td class="nm"><span class="cdot" style="background:'+c[0]+';border-color:'+c[1]+'"></span>'+esc(p.name)+heis+'</td>'
       +'<td class="mt">'+abbr(p.team)+' '+seasonTag(p.decade)+fitTag+heisTag+'</td>'
@@ -1972,7 +1990,7 @@ function shareText(R,out){
     var p=roster[s.key], tag=(chipLabel(s.key)+"   ").slice(0,3);
     var fit=posFit(s.key,p), eff=effGrade(s.key,p);
     var fm = fit>0?" (+"+fit+")":(fit<0?" ("+fit+")":"");
-    var hm = p.heisman ? " [H]" : "";
+    var hm = p.heisman ? " [H]" : (p.heisFin ? " [F]" : "");
     L.push(tag+"  "+p.name+hm+"  ("+abbr(p.team)+" "+seasonTagTxt(p.decade)+")  "+eff+fm);
   });
   L.push("--------------------------------");
