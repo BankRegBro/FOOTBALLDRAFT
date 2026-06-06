@@ -463,16 +463,88 @@ h1.title .b{
 .view-mobile .res-actions button{font-size:16px;min-width:130px}
 .view-mobile .dt-lbl{font-size:7px}
 .view-mobile .dt-seg,.view-mobile .vt-seg,.view-mobile .et-seg,.view-mobile .sq-seg{font-size:8px;padding:7px 9px}
+/* ---------- league tab bar ---------- */
+.tabbar{display:flex;gap:10px;justify-content:center;margin:26px auto 0;max-width:520px;animation:drop .55s both}
+.tab{flex:1;cursor:pointer;border:1px solid var(--steel-edge);border-bottom:none;border-radius:12px 12px 0 0;
+  background:linear-gradient(180deg,#0a0f1c,#05080f);color:#7c8aa6;padding:12px 10px 14px;text-align:center;
+  transform:skewX(-7deg);transition:color .18s,background .18s,box-shadow .18s,transform .08s}
+.tab>b{display:block;font-family:"Anton",sans-serif;font-size:22px;letter-spacing:.04em;text-transform:uppercase;transform:skewX(7deg)}
+.tab>span{display:block;font-family:"Press Start 2P",monospace;font-size:7px;letter-spacing:.06em;margin-top:6px;color:#46587a;transform:skewX(7deg)}
+.tab:not(.active):hover{color:var(--chrome2);background:linear-gradient(180deg,#0d1424,#070b14)}
+.tab.active{color:#fff;background:linear-gradient(180deg,#13203a,#0a1326);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.08),0 0 22px -6px var(--neon-blue);border-color:#3a4a66}
+.tab.active>span{color:var(--neon-blue);text-shadow:0 0 8px rgba(39,214,255,.6)}
+html.league-college .tab.active{box-shadow:inset 0 2px 0 rgba(255,255,255,.08),0 0 22px -6px var(--neon-orange);border-color:#5a4630}
+html.league-college .tab.active>span{color:var(--neon-orange);text-shadow:0 0 8px rgba(255,138,30,.6)}
+.view-mobile .tabbar{margin-top:16px}
+.view-mobile .tab>b{font-size:18px}
+
+/* Heisman badge in box score */
+.boxscore td .heis{display:inline-block;font-family:"Press Start 2P",monospace;font-size:7px;color:#0c1220;
+  background:linear-gradient(180deg,#ffe680,#ffce1f);border-radius:3px;padding:2px 4px;margin-left:7px;
+  vertical-align:middle;box-shadow:0 0 8px -1px rgba(255,212,0,.6)}
+
+/* college season-tier color treatments */
+.t-NATIONALCHAMPION{color:var(--neon-yellow);text-shadow:0 0 22px rgba(255,212,0,.6)}
+.t-TITLERUNNERUP{color:#cdd6e8;text-shadow:0 0 20px rgba(205,214,232,.5)}
+.t-PLAYOFFSEMIFINALIST{color:var(--neon-orange);text-shadow:0 0 22px rgba(255,138,30,.55)}
+.t-MAJORBOWL{color:var(--neon-green);text-shadow:0 0 22px rgba(61,255,132,.5)}
+.t-BOWLTEAM{color:var(--neon-blue);text-shadow:0 0 18px rgba(39,214,255,.45)}
+.t-MIDDLEOFTHEPACK{color:var(--neon-blue);text-shadow:0 0 16px rgba(39,214,255,.4)}
+.t-CELLAR{color:var(--chrome2)}
+
+/* league-conditional rules content */
+.cfb-only{display:none}
+html.league-college .cfb-only{display:revert}
+html.league-college .nfl-only{display:none}
+
+/* ============ COLLEGE SKIN: warm amber theme (unmistakable league switch) ============ */
+/* Remap the cyan chrome variable; every var(--neon-blue) element shifts warm at once. */
+html.league-college{ --neon-blue:#ff9c30; }
+/* Warm the stadium glow (green turf -> amber Saturday). */
+html.league-college body::before{
+  background:
+    radial-gradient(60% 40% at 50% 116%, rgba(255,156,48,.16), transparent 70%),
+    linear-gradient(180deg, transparent 60%, rgba(120,70,12,.20) 100%),
+    repeating-linear-gradient(90deg, transparent 0 78px, rgba(255,255,255,.035) 78px 80px),
+    radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.7) 100%);
+}
+/* The remaining cyan literals (glows/gradients) retinted to amber. */
+html.league-college h1.title{filter:drop-shadow(0 3px 0 #2a1505) drop-shadow(0 0 22px rgba(255,156,48,.5))}
+html.league-college .coin{border-color:rgba(255,156,48,.35);background:rgba(255,156,48,.06);text-shadow:0 0 8px rgba(255,156,48,.7)}
+html.league-college .panel-head::after{box-shadow:0 0 10px rgba(255,156,48,.5)}
+html.league-college .unit-label{text-shadow:0 0 8px rgba(255,156,48,.5)}
+html.league-college .reel.locked{box-shadow:inset 0 2px 10px rgba(0,0,0,.7),0 0 22px rgba(255,156,48,.55)}
+html.league-college .hand{--c1:#ff9c30;--c2:#ff9c30}
+html.league-college .chooser{background:rgba(255,156,48,.06)}
+html.league-college .how-btn{background:rgba(255,156,48,.06);border-color:rgba(255,156,48,.45);box-shadow:0 0 18px -8px rgba(255,156,48,.6)}
+html.league-college .how-btn:hover{background:rgba(255,156,48,.13);box-shadow:0 0 22px -6px rgba(255,156,48,.85)}
+html.league-college .rg-h{text-shadow:0 0 10px rgba(255,156,48,.4);border-bottom-color:rgba(255,156,48,.18)}
+html.league-college .jumbo{box-shadow:inset 0 2px 0 rgba(255,255,255,.08),0 40px 90px rgba(0,0,0,.7),0 0 60px rgba(255,156,48,.15)}
+html.league-college .jumbo-rule{box-shadow:0 0 12px rgba(255,156,48,.5)}
+html.league-college .vt-seg.active{background:rgba(255,156,48,.16);text-shadow:0 0 8px rgba(255,156,48,.55);box-shadow:inset 0 0 0 1px rgba(255,156,48,.5)}
+html.league-college .rg-title{color:var(--neon-yellow)} /* keep gold title in rules */
+/* Final Whistle button: cool cyan -> warm amber */
+html.league-college #gradeBtn{
+  background:linear-gradient(180deg,#ffd9a0 0%,#ff9c30 44%,#c25e00 100%);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.6),inset 0 -6px 0 rgba(80,40,0,.4),0 8px 0 #7a3c00,0 14px 26px rgba(0,0,0,.55);
+}
+html.league-college #gradeBtn:not(:disabled):active{box-shadow:inset 0 2px 0 rgba(255,255,255,.5),0 1px 0 #7a3c00,0 4px 10px rgba(0,0,0,.5)}
 </style>
 <script>(function(){try{var w=window.innerWidth||document.documentElement.clientWidth||1200;document.documentElement.classList.add(w<=820?'view-mobile':'view-desktop');}catch(e){document.documentElement.classList.add('view-desktop');}})();</script>
 </head>
 <body>
 <div class="stage">
 
+  <nav class="tabbar" id="tabbar" aria-label="League">
+    <button class="tab active" data-league="nfl" type="button"><b>NFL</b><span>Pro Football</span></button>
+    <button class="tab" data-league="college" type="button"><b>College</b><span>CFB &middot; 90s+</span></button>
+  </nav>
+
   <header class="marquee">
-    <div class="coin">The Ledger Arcade &middot; Insert Coin</div>
+    <div class="coin" id="coinLine">Gridiron Arcade &middot; Insert Coin</div>
     <h1 class="title">Gridiron <span class="b">Blitz</span></h1>
-    <div class="subtitle">All&ndash;Era Offense Draft</div>
+    <div class="subtitle" id="subtitle">All&ndash;Era Offense Draft</div>
     <button class="how-btn" id="howBtn" type="button">How to Play &amp; Glossary</button>
   </header>
 
@@ -527,8 +599,8 @@ h1.title .b{
       <h2 class="panel-head">The Draw</h2>
       <div class="cabinet">
         <div class="reels">
-          <div class="reel team" id="teamReel"><div class="tag">Franchise</div><div class="face" id="teamFace">&mdash;</div></div>
-          <div class="reel" id="decadeReel"><div class="tag">Era</div><div class="face dec" id="decadeFace">&mdash;</div></div>
+          <div class="reel team" id="teamReel"><div class="tag" id="teamReelTag">Franchise</div><div class="face" id="teamFace">&mdash;</div></div>
+          <div class="reel" id="decadeReel"><div class="tag" id="decadeReelTag">Era</div><div class="face dec" id="decadeFace">&mdash;</div></div>
         </div>
         <button class="arcade-btn red pulse" id="rollBtn"><span>&#9654; Roll the Draw</span></button>
         <div class="draw-hint" id="drawHint">No takebacks &mdash; you draft what the dice give you</div>
@@ -555,15 +627,15 @@ h1.title .b{
 <div class="results" id="rules"><div class="jumbo rules-sheet">
   <button class="rg-x" id="rulesClose" type="button">Close</button>
   <div class="rg-title">How to Play</div>
-  <div class="rg-sub">Gridiron Blitz &middot; All-Era Roster Draft</div>
+  <div class="rg-sub" id="rgSub">Gridiron Blitz &middot; All-Era Roster Draft</div>
 
   <div class="rg-h">The Drill</div>
   <ul class="rg-list">
-    <li>Every roll locks in a <b>franchise</b> and a <b>decade</b>. You draft what the dice give you, with no takebacks.</li>
+    <li>Every roll locks in a <b>team</b> and a <b>decade</b>. You draft what the dice give you, with no takebacks.</li>
     <li>Pick one player from that team and era into any open slot on your offense.</li>
     <li>Fill all <b>twelve</b> slots: head coach, quarterback, the skill players, and five offensive linemen.</li>
-    <li><b>Full Squad</b> adds four defensive anchors for <b>sixteen</b> total: a defensive tackle, a linebacker, a cornerback, and a safety.</li>
-    <li>When the roster is full, it grades out of 100 and projects to a season record and playoff finish.</li>
+    <li class="nfl-only"><b>Full Squad</b> adds four defensive anchors for <b>sixteen</b> total: a defensive tackle, a linebacker, a cornerback, and a safety.</li>
+    <li>When the roster is full, it grades out of 100 and projects to a season record and finish.</li>
     <li>You cannot sign the same player twice out of the same decade.</li>
   </ul>
 
@@ -572,39 +644,31 @@ h1.title .b{
     <li>Slots are weighted. <b>Quarterback</b> counts the most, then <b>head coach</b>, then your <b>left tackle</b>. The interior line counts least.</li>
     <li><b>Line fit:</b> a natural tackle at LT or RT, or an interior lineman at LG, C, or RG, adds +2. Playing out of position drops the grade by 3.</li>
     <li><b>Receiver fit:</b> a true slot man in the SLOT, or an outside receiver at WR1 or WR2, adds +1. A wrong fit simply gets no bonus.</li>
+    <li class="cfb-only"><b>Heisman bonus:</b> any Heisman Trophy winner on your roster adds <b>+2</b> to his grade. Winners are marked <b>H</b> in the box score.</li>
     <li>After fit, any single grade is held between 40 and 99.</li>
-    <li><b>Full Squad:</b> the final number is 60 percent offense and 40 percent defense. Each defensive slot takes only its own position, so a cornerback fills the corner and nothing else. There is no fit bonus or penalty on defense.</li>
+    <li class="nfl-only"><b>Full Squad:</b> the final number is 60 percent offense and 40 percent defense. Each defensive slot takes only its own position, so a cornerback fills the corner and nothing else. There is no fit bonus or penalty on defense.</li>
   </ul>
 
   <div class="rg-h">Modes &amp; the Hall of Fame</div>
   <ul class="rg-list">
-    <li><b>Era</b> sets the dice: All-Era rolls every decade, 80s+ starts at the 1980s, 90s+ starts at the 1990s.</li>
-    <li><b>Squad:</b> Offense drafts the twelve. Full Squad adds the four defenders. If a rolled franchise and decade has no one who fits an open slot, the dice simply never land there, so you are never stuck waiting on a team that cannot help.</li>
+    <li class="nfl-only"><b>Era</b> sets the dice: All-Era rolls every decade, 80s+ starts at the 1980s, 90s+ starts at the 1990s.</li>
+    <li class="cfb-only"><b>Era</b> sets the dice: the college pool starts in the 1990s. All rolls every decade from the 90s on, 00s+ starts in the 2000s, 10s+ in the 2010s.</li>
+    <li class="cfb-only"><b>College</b> drafts the twelve-man offense only. The pool is programs that reached a national-title game or the College Football Playoff in that decade.</li>
+    <li class="nfl-only"><b>Squad:</b> Offense drafts the twelve. Full Squad adds the four defenders. If a rolled team and decade has no one who fits an open slot, the dice simply never land there, so you are never stuck waiting on a team that cannot help.</li>
     <li><b>Difficulty:</b> Blitz hides ratings and fit hints while you draft. Rookie shows FIT and OFF markers as you pick. The final score is identical either way; Blitz is simply blind.</li>
-    <li class="rg-keep"><span class="rg-hl">The Hall of Fame records Blitz, All-Era runs only.</span> Offense and Full Squad each keep their own global board. Any other setup still plays and scores, but will not post.</li>
+    <li class="rg-keep"><span class="rg-hl">The Hall of Fame records Blitz runs on each league's full era span only.</span> NFL Offense, NFL Full Squad, and College each keep their own global board. Any other setup still plays and scores, but will not post.</li>
   </ul>
 
   <div class="rg-h">Season Tiers</div>
-  <div class="rg-tier">
-    <b>92+</b><span>Historic Champion &middot; 17-0</span>
-    <b>91</b><span>Super Bowl Champion &middot; 16-1</span>
-    <b>89</b><span>Super Bowl Runner-Up &middot; 15-2</span>
-    <b>86</b><span>Contender &middot; Conference Championship</span>
-    <b>80&ndash;83</b><span>Playoff Team &middot; Divisional Round</span>
-    <b>77</b><span>Playoff Team &middot; Wild Card</span>
-    <b>71&ndash;74</b><span>Fringe &middot; just missed</span>
-    <b>68</b><span>Mediocre &middot; 8-9</span>
-    <b>60&ndash;64</b><span>Rebuilding</span>
-    <b>&lt;55</b><span>Basement &middot; top-5 pick</span>
-  </div>
-  <div class="rg-term" style="margin-top:8px"><b>Full Squad</b> blends offense and defense, so its scores sit higher and tighter. It uses its own recentered ladder over the same tier names, and a typical random build lands around Fringe.</div>
+  <div class="rg-tier" id="rgTier"></div>
+  <div class="rg-term nfl-only" style="margin-top:8px"><b>Full Squad</b> blends offense and defense, so its scores sit higher and tighter. It uses its own recentered ladder over the same tier names, and a typical random build lands around Fringe.</div>
 
   <div class="rg-h">Glossary</div>
   <div class="rg-term"><b>HC</b> head coach &middot; <b>QB</b> quarterback &middot; <b>RB</b> running back &middot; <b>TE</b> tight end.</div>
   <div class="rg-term"><b>WR1 / WR2</b> the two outside receivers. <b>SLOT</b> the inside receiver who works the middle of the field.</div>
   <div class="rg-term"><b>LT / RT</b> left and right tackle, the edge protectors. <b>LG / C / RG</b> the interior line: guards and center.</div>
   <div class="rg-term"><b>OT / iOL</b> the badge a card shows for a tackle slot (OT) versus an interior slot (iOL).</div>
-  <div class="rg-term"><b>DT</b> defensive tackle, the interior of the front. <b>LB</b> linebacker. <b>CB</b> cornerback. <b>S</b> safety, the last line of the secondary.</div>
+  <div class="rg-term nfl-only"><b>DT</b> defensive tackle, the interior of the front. <b>LB</b> linebacker. <b>CB</b> cornerback. <b>S</b> safety, the last line of the secondary.</div>
   <div class="rg-term"><b>FIT / OFF</b> shown in Rookie mode: green FIT means the player suits the slot, orange OFF means out of position.</div>
   <div class="rg-term"><b>Signed</b> how many slots are filled, twelve on offense or sixteen in Full Squad. <b>Draft Drive</b> the meter tracking progress to a full roster.</div>
 </div></div>
@@ -691,7 +755,8 @@ function slotAccepts(slotPos, playerPos){
 const SLOT_TYPE = { LT:"T", RT:"T", LG:"I", C:"I", RG:"I" };
 const OL_FIT_BONUS = 2, OL_FIT_PENALTY = 3;
 const TACKLES = new Set([
- "Anthony Munoz","Jonathan Ogden","Orlando Pace","Joe Thomas","Walter Jones","Tony Boselli","Willie Roaf","Willie Anderson","Trent Williams","Tyron Smith","Lane Johnson","Andrew Whitworth","Joe Staley","Jason Peters","Ryan Clady","Garett Bolles","Taylor Decker","Penei Sewell","David Bakhtiari","Laremy Tunsil","Duane Brown","Tarik Glenn","Anthony Castonzo","Cam Robinson","Taylor Lewan","Michael Roos","Branden Albert","Ja'Wuan James","Austin Jackson","Terron Armstead","Ryan Ramczyk","Trent Brown","Nate Solder","Matt Light","Russell Okung","Charles Cross","Andrew Thomas","Mike McGlinchey","Rashawn Slater","Harris Barton","Jordan Mailata","Jon Runyan","Tra Thomas","Marvel Smith","D.J. Humphries","Kolton Miller","Mitchell Schwartz","Eric Fisher","Jackie Slater","Dan Dierdorf","Luis Sharpe","Bryant McKinnie","Jordan Gross","Jeff Backus","Lomas Brown","Richmond Webb","Brad Benson","Jumbo Elliott","Marvin Powell","Brian Holloway","Jimbo Covert","Joe Jacoby","Mark Tuinei","Erik Williams","Leon Searcy","Forrest Gregg","Bob Brown","Ron Mix","Art Shell","Rayfield Wright","Winston Hill","Leon Gray","Russ Washington","Doug Dieken","Roosevelt Brown","Jim Tyrer","Stan Walters","Ron Yary","Chad Clifton","Mark Tauscher","David Diehl","Kareem McKenzie","Will Beatty","Brian O'Neill","Christian Darrisaw","Rob Havenstein","Jake Matthews","Chris Hinton","Jim Parker","Tytus Howard","Walker Little","La'el Collins","Tyler Smith","Sebastian Vollmer","Cordy Glenn","Dion Dawkins","Ronnie Stanley","Jack Conklin","Howard Ballard","Gary Zimmerman","Chris Samuels","Jon Jansen","Flozell Adams","Levi Jones","Bob Skoronski","Ryan Diem","Paul Gruber","Demar Dotson","Tristan Wirfs","Vernon Carey"
+ "Anthony Munoz","Jonathan Ogden","Orlando Pace","Joe Thomas","Walter Jones","Tony Boselli","Willie Roaf","Willie Anderson","Trent Williams","Tyron Smith","Lane Johnson","Andrew Whitworth","Joe Staley","Jason Peters","Ryan Clady","Garett Bolles","Taylor Decker","Penei Sewell","David Bakhtiari","Laremy Tunsil","Duane Brown","Tarik Glenn","Anthony Castonzo","Cam Robinson","Taylor Lewan","Michael Roos","Branden Albert","Ja'Wuan James","Austin Jackson","Terron Armstead","Ryan Ramczyk","Trent Brown","Nate Solder","Matt Light","Russell Okung","Charles Cross","Andrew Thomas","Mike McGlinchey","Rashawn Slater","Harris Barton","Jordan Mailata","Jon Runyan","Tra Thomas","Marvel Smith","D.J. Humphries","Kolton Miller","Mitchell Schwartz","Eric Fisher","Jackie Slater","Dan Dierdorf","Luis Sharpe","Bryant McKinnie","Jordan Gross","Jeff Backus","Lomas Brown","Richmond Webb","Brad Benson","Jumbo Elliott","Marvin Powell","Brian Holloway","Jimbo Covert","Joe Jacoby","Mark Tuinei","Erik Williams","Leon Searcy","Forrest Gregg","Bob Brown","Ron Mix","Art Shell","Rayfield Wright","Winston Hill","Leon Gray","Russ Washington","Doug Dieken","Roosevelt Brown","Jim Tyrer","Stan Walters","Ron Yary","Chad Clifton","Mark Tauscher","David Diehl","Kareem McKenzie","Will Beatty","Brian O'Neill","Christian Darrisaw","Rob Havenstein","Jake Matthews","Chris Hinton","Jim Parker","Tytus Howard","Walker Little","La'el Collins","Tyler Smith","Sebastian Vollmer","Cordy Glenn","Dion Dawkins","Ronnie Stanley","Jack Conklin","Howard Ballard","Gary Zimmerman","Chris Samuels","Jon Jansen","Flozell Adams","Levi Jones","Bob Skoronski","Ryan Diem","Paul Gruber","Demar Dotson","Tristan Wirfs","Vernon Carey",
+ "Andre Smith","Evan Neal","Alex Leatherwood","Lincoln Kennedy","Alex Barron","Jammal Brown","Orlando Brown Jr.","Greg Robinson","Tyrell Crosby","Penei Sewell","Zack Martin","Mitch Hyatt","Broderick Jones","Isaiah Wynn","Joe Alt","Kelvin Banks Jr.","Olu Fashanu","Troy Fautanu","Cam Erving","Roderick Johnson","Marcus Cannon","Sam Baker","Winston Justice","Jonathan Scott","Zach Wiegert","James Hudson","Trey Adams","Kaleb McGary","Paris Johnson Jr.","Robert Gallery","Luke Joeckel","Greg Skrepenak","Chris McIntosh","Josh Conerly Jr.","Jonah Williams","JC Latham","Charles Jagusah","Drew Shelton"
 ]);
 function olClass(name){ return TACKLES.has(name) ? "T" : "I"; }
 function olFit(slotKey, p){
@@ -717,8 +782,12 @@ function wrFit(slotKey, p){
   return wrClass(p.name) === st ? WR_FIT_BONUS : 0;  // right alignment = small boost, no penalty
 }
 function posFit(slotKey, p){ return olFit(slotKey, p) + wrFit(slotKey, p); }
+/* Heisman winners (college only) carry a +2 honors bump. The flag is set on the
+   drafted player object at draft time and is only ever true in the college league,
+   so identically named NFL players are never affected. */
+function heismanBonus(p){ return (p && p.heisman) ? 2 : 0; }
 function effGrade(slotKey, p){
-  return Math.max(40, Math.min(99, p.grade + posFit(slotKey, p)));
+  return Math.max(40, Math.min(99, p.grade + posFit(slotKey, p) + heismanBonus(p)));
 }
 
 const T = (...players) => players; // tiny helper for readability
@@ -999,6 +1068,210 @@ const DATA = {
 },
 };
 
+/* ============================================================
+   COLLEGE FOOTBALL — programs that reached a national-title game
+   (poll / Bowl Coalition / Alliance / BCS era) or the College
+   Football Playoff, 1990s onward. Offense + head coaches only.
+   Tuple: [name, pos, grade]   pos: QB | RB | WR | TE | OL | HC
+   ============================================================ */
+const CDATA = {
+"Alabama": {
+  "1992 Sugar Bowl \u00b7 Champion": T(["Gene Stallings","HC",86],["Jay Barker","QB",76],["Derrick Lassic","RB",72],["Sherman Williams","RB",70],["David Palmer","WR",82],["Curtis Brown","WR",60],["Tobie Sheils","OL",60]),
+  "2009 BCS Title \u00b7 Champion": T(["Nick Saban","HC",96],["Greg McElroy","QB",70],["Mark Ingram","RB",90],["Trent Richardson","RB",80],["Julio Jones","WR",86],["Marquis Maze","WR",62],["Mike Johnson","OL",70],["Colin Peek","TE",60]),
+  "2011 BCS Title \u00b7 Champion": T(["Nick Saban","HC",97],["AJ McCarron","QB",78],["Trent Richardson","RB",88],["Eddie Lacy","RB",72],["Marquis Maze","WR",66],["Brad Smelley","TE",60],["Barrett Jones","OL",84],["William Vlachos","OL",64]),
+  "2012 BCS Title \u00b7 Champion": T(["Nick Saban","HC",97],["AJ McCarron","QB",82],["Eddie Lacy","RB",80],["T.J. Yeldon","RB",74],["Amari Cooper","WR",82],["Kevin Norwood","WR",62],["Chance Warmack","OL",84],["D.J. Fluker","OL",76]),
+  "2014 CFP \u00b7 Semifinalist": T(["Nick Saban","HC",97],["Blake Sims","QB",70],["T.J. Yeldon","RB",76],["Derrick Henry","RB",80],["Amari Cooper","WR",90],["DeAndrew White","WR",64],["O.J. Howard","TE",74],["Cam Robinson","OL",74]),
+  "2015 CFP \u00b7 National Champion": T(["Nick Saban","HC",98],["Jake Coker","QB",68],["Derrick Henry","RB",92],["Kenyan Drake","RB",70],["Calvin Ridley","WR",80],["ArDarius Stewart","WR",66],["O.J. Howard","TE",82],["Ryan Kelly","OL",82],["Cam Robinson","OL",80]),
+  "2016 CFP \u00b7 Runner-Up": T(["Nick Saban","HC",98],["Jalen Hurts","QB",80],["Damien Harris","RB",74],["Bo Scarbrough","RB",74],["Calvin Ridley","WR",84],["ArDarius Stewart","WR",68],["O.J. Howard","TE",82],["Cam Robinson","OL",82]),
+  "2017 CFP \u00b7 National Champion": T(["Nick Saban","HC",98],["Tua Tagovailoa","QB",84],["Jalen Hurts","QB",80],["Damien Harris","RB",76],["Bo Scarbrough","RB",72],["Calvin Ridley","WR",84],["Jerry Jeudy","WR",72],["DeVonta Smith","WR",74],["Jonah Williams","OL",78]),
+  "2018 CFP \u00b7 Runner-Up": T(["Nick Saban","HC",98],["Tua Tagovailoa","QB",90],["Damien Harris","RB",76],["Najee Harris","RB",72],["Jerry Jeudy","WR",84],["Henry Ruggs III","WR",80],["DeVonta Smith","WR",80],["Jaylen Waddle","WR",78],["Jonah Williams","OL",80]),
+  "2020 CFP \u00b7 National Champion": T(["Nick Saban","HC",97],["Mac Jones","QB",84],["Najee Harris","RB",86],["DeVonta Smith","WR",92],["Jaylen Waddle","WR",84],["John Metchie III","WR",72],["Alex Leatherwood","OL",78],["Landon Dickerson","OL",76]),
+  "2021 CFP \u00b7 Runner-Up": T(["Nick Saban","HC",97],["Bryce Young","QB",90],["Brian Robinson Jr.","RB",74],["Jameson Williams","WR",84],["John Metchie III","WR",74],["Slade Bolden","WR",60],["Cameron Latu","TE",64],["Evan Neal","OL",84]),
+  "2023 CFP \u00b7 Semifinalist": T(["Nick Saban","HC",96],["Jalen Milroe","QB",80],["Jase McClellan","RB",70],["Roydell Williams","RB",62],["Jermaine Burton","WR",74],["Isaiah Bond","WR",68],["JC Latham","OL",78],["CJ Dippre","TE",60]),
+},
+"Georgia Tech": {
+  "1990 Citrus Bowl \u00b7 Co-Champion": T(["Bobby Ross","HC",80],["Shawn Jones","QB",74],["William Bell","RB",66],["Jerry Mays","RB",62],["Tom Covington","TE",56],["Mike Mooney","OL",58]),
+},
+"Miami": {
+  "1991 Orange Bowl \u00b7 Champion": T(["Dennis Erickson","HC",84],["Gino Torretta","QB",80],["Stephen McGuire","RB",62],["Lamar Thomas","WR",70],["Horace Copeland","WR",62],["Leon Searcy","OL",78],["Coleman Bell","TE",56]),
+  "1992 Sugar Bowl \u00b7 Runner-Up": T(["Dennis Erickson","HC",82],["Gino Torretta","QB",82],["Larry Jones","RB",60],["Lamar Thomas","WR",70],["Kevin Williams","WR",64],["Leon Searcy","OL",76]),
+  "2001 Rose Bowl \u00b7 Champion": T(["Larry Coker","HC",84],["Ken Dorsey","QB",80],["Clinton Portis","RB",82],["Willis McGahee","RB",76],["Andre Johnson","WR",86],["Reggie Wayne","WR",82],["Jeremy Shockey","TE",84],["Bryant McKinnie","OL",86]),
+  "2002 Fiesta Bowl \u00b7 Runner-Up": T(["Larry Coker","HC",80],["Ken Dorsey","QB",80],["Willis McGahee","RB",86],["Frank Gore","RB",72],["Andre Johnson","WR",86],["Kevin Beard","WR",60],["Kellen Winslow II","TE",82],["Vernon Carey","OL",76]),
+},
+"Washington": {
+  "1991 Rose Bowl \u00b7 Co-Champion": T(["Don James","HC",86],["Billy Joe Hobert","QB",66],["Napoleon Kaufman","RB",76],["Beno Bryant","RB",64],["Mario Bailey","WR",70],["Lincoln Kennedy","OL",82],["Aaron Pierce","TE",58]),
+  "2016 CFP \u00b7 Semifinalist": T(["Chris Petersen","HC",84],["Jake Browning","QB",80],["Myles Gaskin","RB",76],["John Ross","WR",80],["Dante Pettis","WR",72],["Darrell Daniels","TE",60],["Trey Adams","OL",74]),
+  "2023 CFP \u00b7 Runner-Up": T(["Kalen DeBoer","HC",82],["Michael Penix Jr.","QB",88],["Dillon Johnson","RB",70],["Rome Odunze","WR",86],["Ja'Lynn Polk","WR",74],["Jalen McMillan","WR",74],["Troy Fautanu","OL",80]),
+},
+"Colorado": {
+  "1990 Orange Bowl \u00b7 Champion": T(["Bill McCartney","HC",84],["Darian Hagan","QB",74],["Eric Bieniemy","RB",80],["J.J. Flannigan","RB",60],["Mike Pritchard","WR",72],["Joe Garten","OL",64]),
+  "1994 Fiesta Bowl \u00b7 Heisman": T(["Bill McCartney","HC",82],["Kordell Stewart","QB",82],["Rashaan Salaam","RB",84],["Michael Westbrook","WR",78],["Rae Carruth","WR",64],["Christian Fauria","TE",64],["Chris Naeole","OL",70]),
+  "2024 Alamo Bowl \u00b7 Heisman": T(["Deion Sanders","HC",80],["Shedeur Sanders","QB",84],["Travis Hunter","WR",90],["LaJohntay Wester","WR",66],["Jimmy Horn Jr.","WR",62],["Isaiah Augustave","RB",58]),
+},
+"Florida State": {
+  "1993 Orange Bowl \u00b7 Champion": T(["Bobby Bowden","HC",92],["Charlie Ward","QB",88],["Warrick Dunn","RB",68],["Sean Jackson","RB",62],["Kez McCorvey","WR",64],["Tamarick Vanover","WR",66],["Kevin Mancini","OL",58]),
+  "1996 Sugar Bowl \u00b7 Runner-Up": T(["Bobby Bowden","HC",90],["Thad Busby","QB",64],["Warrick Dunn","RB",84],["E.G. Green","WR",66],["Andre Cooper","WR",60],["Walter Jones","OL",88]),
+  "1998 Fiesta Bowl \u00b7 Runner-Up": T(["Bobby Bowden","HC",90],["Chris Weinke","QB",76],["Travis Minor","RB",68],["Peter Warrick","WR",86],["Laveranues Coles","WR",70],["Tra Thomas","OL",78]),
+  "1999 Sugar Bowl \u00b7 Champion": T(["Bobby Bowden","HC",90],["Chris Weinke","QB",84],["Travis Minor","RB",66],["Peter Warrick","WR",86],["Snoop Minnis","WR",68],["Ron Dugans","WR",62],["Jason Whitaker","OL",66]),
+  "2000 Orange Bowl \u00b7 Runner-Up": T(["Bobby Bowden","HC",88],["Chris Weinke","QB",86],["Travis Minor","RB",64],["Snoop Minnis","WR",70],["Atrews Bell","WR",56],["Brett Williams","OL",62]),
+  "2013 BCS Title \u00b7 Champion": T(["Jimbo Fisher","HC",84],["Jameis Winston","QB",90],["Devonta Freeman","RB",80],["Karlos Williams","RB",64],["Rashad Greene","WR",76],["Kelvin Benjamin","WR",78],["Nick O'Leary","TE",68],["Cam Erving","OL",76]),
+  "2014 CFP \u00b7 Semifinalist": T(["Jimbo Fisher","HC",82],["Jameis Winston","QB",88],["Dalvin Cook","RB",80],["Karlos Williams","RB",66],["Rashad Greene","WR",76],["Travis Rudolph","WR",64],["Cam Erving","OL",76]),
+},
+"Nebraska": {
+  "1993 Orange Bowl \u00b7 Runner-Up": T(["Tom Osborne","HC",92],["Tommie Frazier","QB",84],["Calvin Jones","RB",70],["Lawrence Phillips","RB",72],["Corey Dixon","WR",58],["Zach Wiegert","OL",82],["Brenden Stai","OL",72]),
+  "1994 Orange Bowl \u00b7 Champion": T(["Tom Osborne","HC",94],["Tommie Frazier","QB",86],["Brook Berringer","QB",66],["Lawrence Phillips","RB",82],["Damon Benning","RB",60],["Zach Wiegert","OL",84],["Aaron Taylor","OL",78]),
+  "1995 Fiesta Bowl \u00b7 Champion": T(["Tom Osborne","HC",94],["Tommie Frazier","QB",90],["Lawrence Phillips","RB",84],["Ahman Green","RB",76],["Clinton Childs","RB",60],["Aaron Taylor","OL",82],["Aaron Graham","OL",62]),
+  "1997 Orange Bowl \u00b7 Co-Champion": T(["Tom Osborne","HC",94],["Scott Frost","QB",78],["Ahman Green","RB",82],["Correll Buckhalter","RB",64],["Jeff Lake","WR",58],["Josh Heskew","OL",62]),
+  "2001 Rose Bowl \u00b7 Runner-Up": T(["Frank Solich","HC",74],["Eric Crouch","QB",84],["Dahrran Diedrick","RB",62],["Thunder Collins","RB",60],["Wilson Thomas","WR",58],["Toniu Fonoti","OL",76]),
+},
+"Penn State": {
+  "1994 Rose Bowl \u00b7 No. 2": T(["Joe Paterno","HC",90],["Kerry Collins","QB",82],["Ki-Jana Carter","RB",86],["Bobby Engram","WR",76],["Freddie Scott","WR",60],["Kyle Brady","TE",72],["Jeff Hartings","OL",76]),
+  "2024 CFP \u00b7 Semifinalist": T(["James Franklin","HC",82],["Drew Allar","QB",80],["Nicholas Singleton","RB",78],["Kaytron Allen","RB",74],["Harrison Wallace III","WR",64],["Tyler Warren","TE",84],["Drew Shelton","OL",64]),
+},
+"Florida": {
+  "1995 Fiesta Bowl \u00b7 Runner-Up": T(["Steve Spurrier","HC",88],["Danny Wuerffel","QB",84],["Fred Taylor","RB",80],["Elijah Williams","RB",60],["Ike Hilliard","WR",76],["Reidel Anthony","WR",70],["Chris Doering","WR",64]),
+  "1996 Sugar Bowl \u00b7 Champion": T(["Steve Spurrier","HC",90],["Danny Wuerffel","QB",86],["Fred Taylor","RB",82],["Ike Hilliard","WR",78],["Reidel Anthony","WR",72],["Jacquez Green","WR",70],["Jason Odom","OL",72]),
+  "2006 BCS Title \u00b7 Champion": T(["Urban Meyer","HC",90],["Chris Leak","QB",74],["Tim Tebow","QB",80],["DeShawn Wynn","RB",62],["Percy Harvin","WR",78],["Dallas Baker","WR",64],["Andre Caldwell","WR",64]),
+  "2007 Citrus Bowl \u00b7 Heisman": T(["Urban Meyer","HC",88],["Tim Tebow","QB",90],["Kestahn Moore","RB",58],["Percy Harvin","WR",84],["Andre Caldwell","WR",66],["Cornelius Ingram","TE",64]),
+  "2008 BCS Title \u00b7 Champion": T(["Urban Meyer","HC",92],["Tim Tebow","QB",88],["Jeff Demps","RB",66],["Percy Harvin","WR",84],["Riley Cooper","WR",64],["Louis Murphy","WR",64],["Aaron Hernandez","TE",80],["Maurkice Pouncey","OL",84],["Mike Pouncey","OL",78]),
+},
+"Oklahoma": {
+  "2000 Orange Bowl \u00b7 Champion": T(["Bob Stoops","HC",88],["Josh Heupel","QB",80],["Quentin Griffin","RB",66],["Andre Woolfolk","WR",58],["Curtis Fagan","WR",58],["Trent Smith","TE",60],["Frank Romero","OL",58]),
+  "2003 Sugar Bowl \u00b7 Runner-Up": T(["Bob Stoops","HC",90],["Jason White","QB",82],["Kejuan Jones","RB",62],["Mark Clayton","WR",74],["Brandon Jones","WR",62],["Jammal Brown","OL",80]),
+  "2004 Orange Bowl \u00b7 Runner-Up": T(["Bob Stoops","HC",90],["Jason White","QB",80],["Adrian Peterson","RB",90],["Mark Clayton","WR",74],["Travis Wilson","WR",62],["Jammal Brown","OL",80],["Davin Joseph","OL",72]),
+  "2008 BCS Title \u00b7 Runner-Up": T(["Bob Stoops","HC",88],["Sam Bradford","QB",86],["DeMarco Murray","RB",76],["Chris Brown","RB",64],["Juaquin Iglesias","WR",66],["Jermaine Gresham","TE",76],["Trent Williams","OL",82],["Duke Robinson","OL",70]),
+  "2015 CFP \u00b7 Semifinalist": T(["Bob Stoops","HC",84],["Baker Mayfield","QB",84],["Samaje Perine","RB",76],["Joe Mixon","RB",72],["Sterling Shepard","WR",76],["Durron Neal","WR",60]),
+  "2017 CFP \u00b7 Semifinalist": T(["Lincoln Riley","HC",84],["Baker Mayfield","QB",88],["Rodney Anderson","RB",68],["Marquise Brown","WR",80],["CeeDee Lamb","WR",82],["Mark Andrews","TE",80],["Orlando Brown Jr.","OL",80]),
+  "2018 CFP \u00b7 Semifinalist": T(["Lincoln Riley","HC",84],["Kyler Murray","QB",88],["Trey Sermon","RB",68],["Marquise Brown","WR",82],["CeeDee Lamb","WR",84],["Grant Calcaterra","TE",62],["Creed Humphrey","OL",78],["Cody Ford","OL",74]),
+  "2019 CFP \u00b7 Semifinalist": T(["Lincoln Riley","HC",82],["Jalen Hurts","QB",82],["Kennedy Brooks","RB",70],["CeeDee Lamb","WR",86],["Charleston Rambo","WR",62],["Creed Humphrey","OL",80]),
+},
+"USC": {
+  "2002 Orange Bowl \u00b7 Heisman": T(["Pete Carroll","HC",86],["Carson Palmer","QB",84],["Justin Fargas","RB",66],["Keary Colbert","WR",66],["Kareem Kelly","WR",62],["Malaefou MacKenzie","RB",58]),
+  "2003 Rose Bowl \u00b7 Co-Champion": T(["Pete Carroll","HC",88],["Matt Leinart","QB",82],["Hershel Dennis","RB",62],["Mike Williams","WR",82],["Keary Colbert","WR",66],["Ryan Kalil","OL",76]),
+  "2004 Orange Bowl \u00b7 Champion": T(["Pete Carroll","HC",90],["Matt Leinart","QB",86],["Reggie Bush","RB",86],["LenDale White","RB",78],["Dwayne Jarrett","WR",74],["Steve Smith","WR",64],["Ryan Kalil","OL",78]),
+  "2005 Rose Bowl \u00b7 Runner-Up": T(["Pete Carroll","HC",90],["Matt Leinart","QB",86],["Reggie Bush","RB",90],["LenDale White","RB",80],["Dwayne Jarrett","WR",78],["Steve Smith","WR",66],["Sam Baker","OL",76],["Ryan Kalil","OL",78]),
+  "2022 Cotton Bowl \u00b7 Heisman": T(["Lincoln Riley","HC",82],["Caleb Williams","QB",88],["Travis Dye","RB",68],["Jordan Addison","WR",82],["Mario Williams","WR",64],["Brett Neilon","OL",62]),
+},
+"Texas": {
+  "1998 Cotton Bowl \u00b7 Heisman": T(["Mack Brown","HC",80],["Major Applewhite","QB",64],["Ricky Williams","RB",88],["Wane McGarity","WR",60],["Kwame Cavil","WR",58],["Roger Roesler","OL",56]),
+  "2005 Rose Bowl \u00b7 Champion": T(["Mack Brown","HC",84],["Vince Young","QB",90],["Jamaal Charles","RB",76],["Selvin Young","RB",64],["Limas Sweed","WR",66],["Billy Pittman","WR",62],["David Thomas","TE",66],["Justin Blalock","OL",76],["Jonathan Scott","OL",68]),
+  "2009 BCS Title \u00b7 Runner-Up": T(["Mack Brown","HC",82],["Colt McCoy","QB",84],["Cody Johnson","RB",60],["Tre' Newton","RB",58],["Jordan Shipley","WR",72],["Quan Cosby","WR",62],["Adam Ulatoski","OL",64]),
+  "2023 CFP \u00b7 Semifinalist": T(["Steve Sarkisian","HC",82],["Quinn Ewers","QB",80],["Jonathon Brooks","RB",74],["CJ Baxter","RB",64],["Xavier Worthy","WR",82],["Adonai Mitchell","WR",76],["Ja'Tavion Sanders","TE",76],["Kelvin Banks Jr.","OL",82]),
+  "2024 CFP \u00b7 Semifinalist": T(["Steve Sarkisian","HC",82],["Quinn Ewers","QB",78],["Quintrevion Wisner","RB",72],["Matthew Golden","WR",78],["DeAndre Moore Jr.","WR",66],["Gunnar Helm","TE",70],["Kelvin Banks Jr.","OL",82]),
+},
+"LSU": {
+  "2003 Sugar Bowl \u00b7 Champion": T(["Nick Saban","HC",90],["Matt Mauck","QB",64],["Justin Vincent","RB",66],["Michael Clayton","WR",74],["Skyler Green","WR",62],["Andrew Whitworth","OL",82]),
+  "2007 BCS Title \u00b7 Champion": T(["Les Miles","HC",84],["Matt Flynn","QB",66],["Jacob Hester","RB",64],["Early Doucet","WR",66],["Brandon LaFell","WR",66],["Ciron Black","OL",68]),
+  "2011 BCS Title \u00b7 Runner-Up": T(["Les Miles","HC",82],["Jordan Jefferson","QB",60],["Spencer Ware","RB",66],["Rueben Randle","WR",72],["Odell Beckham Jr.","WR",78],["Jarvis Landry","WR",76],["La'el Collins","OL",74]),
+  "2019 CFP \u00b7 National Champion": T(["Ed Orgeron","HC",84],["Joe Burrow","QB",96],["Clyde Edwards-Helaire","RB",80],["Ja'Marr Chase","WR",90],["Justin Jefferson","WR",86],["Terrace Marshall Jr.","WR",72],["Lloyd Cushenberry","OL",72]),
+  "2023 ReliaQuest Bowl \u00b7 Heisman": T(["Brian Kelly","HC",80],["Jayden Daniels","QB",88],["Logan Diggs","RB",66],["Malik Nabers","WR",84],["Brian Thomas Jr.","WR",78],["Mason Taylor","TE",66]),
+},
+"Ohio State": {
+  "1995 Citrus Bowl \u00b7 Heisman": T(["John Cooper","HC",72],["Bobby Hoying","QB",68],["Eddie George","RB",88],["Terry Glenn","WR",78],["Rickey Dudley","TE",66],["Orlando Pace","OL",90]),
+  "2002 Fiesta Bowl \u00b7 Champion": T(["Jim Tressel","HC",86],["Craig Krenzel","QB",66],["Maurice Clarett","RB",80],["Michael Jenkins","WR",74],["Chris Gamble","WR",64],["Ben Hartsock","TE",60]),
+  "2006 BCS Title \u00b7 Runner-Up": T(["Jim Tressel","HC",86],["Troy Smith","QB",86],["Antonio Pittman","RB",68],["Ted Ginn Jr.","WR",84],["Anthony Gonzalez","WR",74],["Brian Robiskie","WR",62]),
+  "2007 BCS Title \u00b7 Runner-Up": T(["Jim Tressel","HC",84],["Todd Boeckman","QB",64],["Chris Wells","RB",80],["Brian Robiskie","WR",66],["Brian Hartline","WR",64],["Alex Boone","OL",72]),
+  "2014 CFP \u00b7 National Champion": T(["Urban Meyer","HC",92],["Cardale Jones","QB",68],["J.T. Barrett","QB",76],["Ezekiel Elliott","RB",88],["Michael Thomas","WR",80],["Devin Smith","WR",70],["Jalin Marshall","WR",62],["Taylor Decker","OL",80],["Pat Elflein","OL",74]),
+  "2016 CFP \u00b7 Semifinalist": T(["Urban Meyer","HC",90],["J.T. Barrett","QB",80],["Mike Weber","RB",68],["Curtis Samuel","WR",74],["Noah Brown","WR",62],["Pat Elflein","OL",78],["Billy Price","OL",72]),
+  "2019 CFP \u00b7 Semifinalist": T(["Ryan Day","HC",82],["Justin Fields","QB",86],["J.K. Dobbins","RB",82],["K.J. Hill","WR",66],["Chris Olave","WR",76],["Garrett Wilson","WR",78],["Wyatt Davis","OL",74]),
+  "2020 CFP \u00b7 Runner-Up": T(["Ryan Day","HC",82],["Justin Fields","QB",88],["Master Teague","RB",66],["Chris Olave","WR",82],["Garrett Wilson","WR",84],["Jeremy Ruckert","TE",64],["Wyatt Davis","OL",74]),
+  "2022 CFP \u00b7 Semifinalist": T(["Ryan Day","HC",82],["C.J. Stroud","QB",90],["Miyan Williams","RB",66],["Marvin Harrison Jr.","WR",88],["Jaxon Smith-Njigba","WR",84],["Emeka Egbuka","WR",78],["Paris Johnson Jr.","OL",80]),
+  "2024 CFP \u00b7 National Champion": T(["Ryan Day","HC",84],["Will Howard","QB",78],["TreVeyon Henderson","RB",82],["Quinshon Judkins","RB",78],["Jeremiah Smith","WR",86],["Emeka Egbuka","WR",80],["Donovan Jackson","OL",76]),
+},
+"Michigan": {
+  "1991 Rose Bowl \u00b7 Heisman": T(["Gary Moeller","HC",66],["Elvis Grbac","QB",72],["Ricky Powers","RB",64],["Desmond Howard","WR",86],["Derrick Alexander","WR",66],["Greg Skrepenak","OL",64]),
+  "1997 Rose Bowl \u00b7 Champion": T(["Lloyd Carr","HC",82],["Brian Griese","QB",76],["Chris Howard","RB",62],["Charles Woodson","WR",90],["Tai Streets","WR",64],["Jon Jansen","OL",78],["Steve Hutchinson","OL",80]),
+  "2021 CFP \u00b7 Semifinalist": T(["Jim Harbaugh","HC",86],["Cade McNamara","QB",66],["Hassan Haskins","RB",74],["Blake Corum","RB",78],["Roman Wilson","WR",66],["Erick All","TE",62],["Andrew Stueber","OL",64]),
+  "2022 CFP \u00b7 Semifinalist": T(["Jim Harbaugh","HC",86],["J.J. McCarthy","QB",82],["Blake Corum","RB",84],["Donovan Edwards","RB",74],["Ronnie Bell","WR",68],["Luke Schoonmaker","TE",62],["Olusegun Oluwatimi","OL",76]),
+  "2023 CFP \u00b7 National Champion": T(["Jim Harbaugh","HC",88],["J.J. McCarthy","QB",84],["Blake Corum","RB",86],["Donovan Edwards","RB",74],["Roman Wilson","WR",74],["Colston Loveland","TE",78],["Zak Zinter","OL",74]),
+},
+"Wisconsin": {
+  "1999 Rose Bowl \u00b7 Heisman": T(["Barry Alvarez","HC",80],["Brooks Bollinger","QB",64],["Ron Dayne","RB",88],["Chris Chambers","WR",72],["Lee Evans","WR",70],["Chris McIntosh","OL",72]),
+},
+"BYU": {
+  "1990 Holiday Bowl \u00b7 Heisman": T(["LaVell Edwards","HC",78],["Ty Detmer","QB",86],["Matt Bellini","RB",60],["Andy Boyce","WR",62],["Chris Smith","WR",58],["Brent Nyberg","TE",56]),
+},
+"Auburn": {
+  "2010 BCS Title \u00b7 Champion": T(["Gene Chizik","HC",78],["Cam Newton","QB",90],["Michael Dyer","RB",72],["Onterio McCalebb","RB",64],["Darvin Adams","WR",68],["Emory Blake","WR",62],["Lee Ziemba","OL",66]),
+  "2013 BCS Title \u00b7 Runner-Up": T(["Gus Malzahn","HC",78],["Nick Marshall","QB",74],["Tre Mason","RB",80],["Cameron Artis-Payne","RB",64],["Sammie Coates","WR",68],["Ricardo Louis","WR",60],["Greg Robinson","OL",80]),
+},
+"Oregon": {
+  "2010 BCS Title \u00b7 Runner-Up": T(["Chip Kelly","HC",84],["Darron Thomas","QB",72],["LaMichael James","RB",84],["Kenjon Barner","RB",72],["Jeff Maehl","WR",66],["D.J. Davis","WR",58],["Mark Asper","OL",62]),
+  "2014 CFP \u00b7 Runner-Up": T(["Mark Helfrich","HC",76],["Marcus Mariota","QB",90],["Royce Freeman","RB",78],["Thomas Tyner","RB",64],["Byron Marshall","WR",66],["Devon Allen","WR",64],["Hroniss Grasu","OL",72]),
+  "2024 CFP \u00b7 Quarterfinalist": T(["Dan Lanning","HC",82],["Dillon Gabriel","QB",82],["Jordan James","RB",72],["Tez Johnson","WR",74],["Traeshon Holden","WR",66],["Terrance Ferguson","TE",70],["Josh Conerly Jr.","OL",72]),
+},
+"Clemson": {
+  "2015 CFP \u00b7 Runner-Up": T(["Dabo Swinney","HC",88],["Deshaun Watson","QB",88],["Wayne Gallman","RB",74],["Artavis Scott","WR",70],["Charone Peake","WR",62],["Hunter Renfrow","WR",66],["Mitch Hyatt","OL",74]),
+  "2016 CFP \u00b7 National Champion": T(["Dabo Swinney","HC",90],["Deshaun Watson","QB",90],["Wayne Gallman","RB",76],["Mike Williams","WR",82],["Hunter Renfrow","WR",74],["Deon Cain","WR",66],["Mitch Hyatt","OL",76]),
+  "2017 CFP \u00b7 Semifinalist": T(["Dabo Swinney","HC",88],["Kelly Bryant","QB",68],["Travis Etienne","RB",78],["Tavien Feaster","RB",64],["Hunter Renfrow","WR",72],["Deon Cain","WR",66],["Mitch Hyatt","OL",76]),
+  "2018 CFP \u00b7 National Champion": T(["Dabo Swinney","HC",90],["Trevor Lawrence","QB",88],["Travis Etienne","RB",84],["Tee Higgins","WR",82],["Justyn Ross","WR",76],["Hunter Renfrow","WR",72],["Mitch Hyatt","OL",78]),
+  "2019 CFP \u00b7 Runner-Up": T(["Dabo Swinney","HC",88],["Trevor Lawrence","QB",90],["Travis Etienne","RB",86],["Tee Higgins","WR",82],["Justyn Ross","WR",74],["Amari Rodgers","WR",64]),
+  "2020 CFP \u00b7 Semifinalist": T(["Dabo Swinney","HC",86],["Trevor Lawrence","QB",90],["Travis Etienne","RB",84],["Amari Rodgers","WR",70],["Cornell Powell","WR",62],["Braden Galloway","TE",60]),
+  "2024 CFP \u00b7 First Round": T(["Dabo Swinney","HC",84],["Cade Klubnik","QB",76],["Phil Mafah","RB",72],["Antonio Williams","WR",70],["Bryant Wesco Jr.","WR",64],["Jake Briningstool","TE",64]),
+},
+"Georgia": {
+  "2017 CFP \u00b7 Runner-Up": T(["Kirby Smart","HC",86],["Jake Fromm","QB",76],["Nick Chubb","RB",86],["Sony Michel","RB",80],["D'Andre Swift","RB",72],["Javon Wims","WR",64],["Andrew Thomas","OL",78],["Isaiah Wynn","OL",78]),
+  "2021 CFP \u00b7 National Champion": T(["Kirby Smart","HC",90],["Stetson Bennett","QB",76],["James Cook","RB",74],["Zamir White","RB",72],["Brock Bowers","TE",86],["George Pickens","WR",74],["Ladd McConkey","WR",68],["Jamaree Salyer","OL",72]),
+  "2022 CFP \u00b7 National Champion": T(["Kirby Smart","HC",92],["Stetson Bennett","QB",78],["Kenny McIntosh","RB",70],["Brock Bowers","TE",88],["Ladd McConkey","WR",72],["Marcus Rosemy-Jacksaint","WR",62],["Broderick Jones","OL",80],["Sedrick Van Pran","OL",74]),
+  "2024 CFP \u00b7 Quarterfinalist": T(["Kirby Smart","HC",90],["Carson Beck","QB",78],["Trevor Etienne","RB",70],["Dominic Lovett","WR",70],["Arian Smith","WR",66],["Oscar Delp","TE",62],["Tate Ratledge","OL",72]),
+},
+"Notre Dame": {
+  "2012 BCS Title \u00b7 Runner-Up": T(["Brian Kelly","HC",82],["Everett Golson","QB",68],["Theo Riddick","RB",66],["Cierre Wood","RB",64],["Tyler Eifert","TE",82],["T.J. Jones","WR",64],["Zack Martin","OL",84]),
+  "2018 CFP \u00b7 Semifinalist": T(["Brian Kelly","HC",82],["Ian Book","QB",72],["Dexter Williams","RB",66],["Miles Boykin","WR",70],["Chase Claypool","WR",72],["Alize Mack","TE",60],["Robert Hainsey","OL",64]),
+  "2020 CFP \u00b7 Semifinalist": T(["Brian Kelly","HC",80],["Ian Book","QB",74],["Kyren Williams","RB",76],["Javon McKinley","WR",62],["Ben Skowronek","WR",60],["Tommy Tremble","TE",62],["Liam Eichenberg","OL",74]),
+  "2024 CFP \u00b7 Runner-Up": T(["Marcus Freeman","HC",80],["Riley Leonard","QB",74],["Jeremiyah Love","RB",80],["Jadarian Price","RB",66],["Beaux Collins","WR",64],["Mitchell Evans","TE",64],["Charles Jagusah","OL",64]),
+},
+"Michigan State": {
+  "2015 CFP \u00b7 Semifinalist": T(["Mark Dantonio","HC",82],["Connor Cook","QB",76],["LJ Scott","RB",68],["Aaron Burbridge","WR",66],["Macgarrett Kings","WR",58],["Jack Conklin","OL",80],["Jack Allen","OL",70]),
+},
+"TCU": {
+  "2010 Rose Bowl \u00b7 No. 2": T(["Gary Patterson","HC",82],["Andy Dalton","QB",80],["Ed Wesley","RB",64],["Jeremy Kerley","WR",66],["Bart Johnson","WR",56],["Marcus Cannon","OL",74]),
+  "2022 CFP \u00b7 Runner-Up": T(["Sonny Dykes","HC",80],["Max Duggan","QB",80],["Kendre Miller","RB",74],["Quentin Johnston","WR",82],["Derius Davis","WR",66],["Taye Barber","WR",60],["Steve Avila","OL",74]),
+},
+"Cincinnati": {
+  "2021 CFP \u00b7 Semifinalist": T(["Luke Fickell","HC",82],["Desmond Ridder","QB",80],["Jerome Ford","RB",72],["Alec Pierce","WR",74],["Tyler Scott","WR",64],["Josh Whyle","TE",64],["Dylan O'Quinn","OL",58]),
+},
+"Virginia Tech": {
+  "1999 Sugar Bowl \u00b7 Runner-Up": T(["Frank Beamer","HC",84],["Michael Vick","QB",88],["Shyrone Stith","RB",64],["Andre Davis","WR",66],["Ricky Hall","WR",56],["Lamont Pegues","RB",56]),
+},
+"Baylor": {
+  "2011 Alamo Bowl \u00b7 Heisman": T(["Art Briles","HC",76],["Robert Griffin III","QB",88],["Terrance Ganaway","RB",68],["Kendall Wright","WR",78],["Terrance Williams","WR",70],["Philip Blake","OL",62]),
+},
+"Texas A&M": {
+  "2012 Cotton Bowl \u00b7 Heisman": T(["Kevin Sumlin","HC",76],["Johnny Manziel","QB",88],["Ben Malena","RB",64],["Mike Evans","WR",82],["Ryan Swope","WR",68],["Luke Joeckel","OL",80],["Jake Matthews","OL",78]),
+},
+"Louisville": {
+  "2016 Citrus Bowl \u00b7 Heisman": T(["Bobby Petrino","HC",76],["Lamar Jackson","QB",90],["Brandon Radcliff","RB",60],["Jaylen Smith","WR",64],["James Quick","WR",62],["Cole Hikutini","TE",62]),
+},
+"Boise State": {
+  "2024 CFP \u00b7 Quarterfinalist": T(["Spencer Danielson","HC",72],["Maddux Madsen","QB",66],["Ashton Jeanty","RB",90],["Cam Camper","WR",60],["Matt Lauter","TE",58]),
+},
+"Arizona State": {
+  "2024 CFP \u00b7 Quarterfinalist": T(["Kenny Dillingham","HC",74],["Sam Leavitt","QB",72],["Cam Skattebo","RB",82],["Jordyn Tyson","WR",74],["Melquan Stovall","WR",60],["Ben Coleman","OL",62]),
+},
+"Indiana": {
+  "2024 CFP \u00b7 First Round": T(["Curt Cignetti","HC",76],["Kurtis Rourke","QB",72],["Justice Ellison","RB",66],["Elijah Sarratt","WR",70],["Myles Price","WR",60],["Mike Katic","OL",58]),
+},
+"SMU": {
+  "2024 CFP \u00b7 First Round": T(["Rhett Lashlee","HC",74],["Kevin Jennings","QB",70],["Brashard Smith","RB",72],["Roderick Daniels Jr.","WR",62],["Key'Shawn Smith","WR",58],["PJ Williams","OL",56]),
+},
+"Tennessee": {
+  "1998 Fiesta Bowl \u00b7 Champion": T(["Phillip Fulmer","HC",86],["Tee Martin","QB",74],["Jamal Lewis","RB",78],["Travis Henry","RB",72],["Peerless Price","WR",76],["Cedrick Wilson","WR",64],["Cosey Coleman","OL",64]),
+  "2024 CFP \u00b7 First Round": T(["Josh Heupel","HC",80],["Nico Iamaleava","QB",74],["Dylan Sampson","RB",78],["Bru McCoy","WR",66],["Squirrel White","WR",64],["Cooper Mays","OL",70]),
+},
+};
+
+/* Heisman Trophy winners present in the college pool (offense, on their actual
+   Heisman-season team). Each carries +2 via the league-gated heisman flag. */
+const HEISMAN = new Set([
+  "Ty Detmer","Desmond Howard","Gino Torretta","Charlie Ward","Rashaan Salaam","Eddie George","Danny Wuerffel",
+  "Charles Woodson","Ricky Williams","Ron Dayne","Chris Weinke","Eric Crouch","Carson Palmer","Jason White",
+  "Matt Leinart","Reggie Bush","Troy Smith","Tim Tebow","Sam Bradford","Mark Ingram","Cam Newton",
+  "Robert Griffin III","Johnny Manziel","Jameis Winston","Marcus Mariota","Derrick Henry","Lamar Jackson",
+  "Baker Mayfield","Kyler Murray","Joe Burrow","DeVonta Smith","Bryce Young","Caleb Williams","Jayden Daniels",
+  "Travis Hunter"
+]);
+
 /* ---- scoring ---- */
 function ratingFromRoster(roster, mode){
   // offense side: weighted average over the offensive + coach slots (unchanged)
@@ -1024,41 +1297,60 @@ function ratingFromRoster(roster, mode){
   return 0.60 * off + 0.40 * def;               // Full Squad blend
 }
 
-function seasonOutcome(R, mode){
-  const OFFENSE_BANDS = [
-    [92, "17-0",  "Historic Champion",             "HISTORIC CHAMPION"],
-    [91, "16-1",  "Won the Super Bowl",            "SUPER BOWL CHAMPION"],
-    [89, "15-2",  "Lost the Super Bowl",           "SUPER BOWL RUNNER-UP"],
-    [86, "14-3",  "Conference Championship Game",  "CONTENDER"],
-    [83, "13-4",  "Divisional Round",              "PLAYOFF TEAM"],
-    [80, "12-5",  "Divisional Round",              "PLAYOFF TEAM"],
-    [77, "11-6",  "Wild Card Round",               "PLAYOFF TEAM"],
-    [74, "10-7",  "Wild Card Round (bubble)",      "FRINGE"],
-    [71, "9-8",   "Missed the playoffs",           "FRINGE"],
-    [68, "8-9",   "Missed the playoffs",           "MEDIOCRE"],
-    [64, "7-10",  "Out of contention",             "REBUILDING"],
-    [60, "5-12",  "Top-10 draft pick",             "REBUILDING"],
-    [55, "4-13",  "Top-5 draft pick",              "BASEMENT"],
-    [0,  "2-15",  "No. 1 overall pick",            "BASEMENT"],
-  ];
-  // Full Squad blends a 60/40 offense/defense average, which sits higher and tighter,
-  // so its ladder is recentered (median random build lands at FRINGE, tails reach Basement..Champion).
-  const FULLSQUAD_BANDS = [
-    [89,   "17-0", "Historic Champion",             "HISTORIC CHAMPION"],
-    [88,   "16-1", "Won the Super Bowl",            "SUPER BOWL CHAMPION"],
-    [86.5, "15-2", "Lost the Super Bowl",           "SUPER BOWL RUNNER-UP"],
-    [85,   "14-3", "Conference Championship Game",  "CONTENDER"],
-    [83.5, "13-4", "Divisional Round",              "PLAYOFF TEAM"],
-    [82,   "12-5", "Divisional Round",              "PLAYOFF TEAM"],
-    [80.8, "11-6", "Wild Card Round",               "PLAYOFF TEAM"],
-    [79.5, "10-7", "Wild Card Round (bubble)",      "FRINGE"],
-    [78,   "9-8",  "Missed the playoffs",           "FRINGE"],
-    [76.5, "8-9",  "Missed the playoffs",           "MEDIOCRE"],
-    [75,   "7-10", "Out of contention",             "REBUILDING"],
-    [73,   "5-12", "Top-10 draft pick",             "REBUILDING"],
-    [0,    "4-13", "Top-5 draft pick",              "BASEMENT"],
-  ];
-  const bands = (mode === "fullsquad") ? FULLSQUAD_BANDS : OFFENSE_BANDS;
+const OFFENSE_BANDS = [
+  [92, "17-0",  "Historic Champion",             "HISTORIC CHAMPION"],
+  [91, "16-1",  "Won the Super Bowl",            "SUPER BOWL CHAMPION"],
+  [89, "15-2",  "Lost the Super Bowl",           "SUPER BOWL RUNNER-UP"],
+  [86, "14-3",  "Conference Championship Game",  "CONTENDER"],
+  [83, "13-4",  "Divisional Round",              "PLAYOFF TEAM"],
+  [80, "12-5",  "Divisional Round",              "PLAYOFF TEAM"],
+  [77, "11-6",  "Wild Card Round",               "PLAYOFF TEAM"],
+  [74, "10-7",  "Wild Card Round (bubble)",      "FRINGE"],
+  [71, "9-8",   "Missed the playoffs",           "FRINGE"],
+  [68, "8-9",   "Missed the playoffs",           "MEDIOCRE"],
+  [64, "7-10",  "Out of contention",             "REBUILDING"],
+  [60, "5-12",  "Top-10 draft pick",             "REBUILDING"],
+  [55, "4-13",  "Top-5 draft pick",              "BASEMENT"],
+  [0,  "2-15",  "No. 1 overall pick",            "BASEMENT"],
+];
+// Full Squad blends a 60/40 offense/defense average, which sits higher and tighter,
+// so its ladder is recentered (median random build lands at FRINGE).
+const FULLSQUAD_BANDS = [
+  [89,   "17-0", "Historic Champion",             "HISTORIC CHAMPION"],
+  [88,   "16-1", "Won the Super Bowl",            "SUPER BOWL CHAMPION"],
+  [86.5, "15-2", "Lost the Super Bowl",           "SUPER BOWL RUNNER-UP"],
+  [85,   "14-3", "Conference Championship Game",  "CONTENDER"],
+  [83.5, "13-4", "Divisional Round",              "PLAYOFF TEAM"],
+  [82,   "12-5", "Divisional Round",              "PLAYOFF TEAM"],
+  [80.8, "11-6", "Wild Card Round",               "PLAYOFF TEAM"],
+  [79.5, "10-7", "Wild Card Round (bubble)",      "FRINGE"],
+  [78,   "9-8",  "Missed the playoffs",           "FRINGE"],
+  [76.5, "8-9",  "Missed the playoffs",           "MEDIOCRE"],
+  [75,   "7-10", "Out of contention",             "REBUILDING"],
+  [73,   "5-12", "Top-10 draft pick",             "REBUILDING"],
+  [0,    "4-13", "Top-5 draft pick",              "BASEMENT"],
+];
+// College ladder: same 40-99 offense scale, recentered to the college pool's
+// real range (a random build lands at a bowl; a skilled build contends; an
+// excellent one wins it all). Calibrated from Monte Carlo of random + skilled play.
+const COLLEGE_BANDS = [
+  [84.5, "15-0", "Won the National Championship (undefeated)", "NATIONAL CHAMPION"],
+  [83,   "14-1", "Won the National Championship",              "NATIONAL CHAMPION"],
+  [81.5, "13-1", "Lost the National Championship",             "TITLE RUNNER-UP"],
+  [80,   "12-2", "Reached the Playoff Semifinal",              "PLAYOFF SEMIFINALIST"],
+  [78.5, "11-2", "New Year's Six Bowl win",                    "MAJOR BOWL"],
+  [77,   "10-3", "New Year's Six Bowl",                        "MAJOR BOWL"],
+  [75,   "9-4",  "Won its bowl game",                          "BOWL TEAM"],
+  [73,   "8-5",  "Played in a bowl game",                      "BOWL TEAM"],
+  [71,   "7-6",  "Bowl eligible",                              "MIDDLE OF THE PACK"],
+  [69,   "6-7",  "Just bowl eligible",                         "MIDDLE OF THE PACK"],
+  [66,   "5-7",  "Missed a bowl",                              "REBUILDING"],
+  [62,   "4-8",  "Losing season",                              "REBUILDING"],
+  [55,   "3-9",  "Bottom of the conference",                   "CELLAR"],
+  [0,    "2-10", "Worst in the conference",                    "CELLAR"],
+];
+function seasonOutcome(R, mode, bandsOverride){
+  const bands = bandsOverride ? bandsOverride : ((mode === "fullsquad") ? FULLSQUAD_BANDS : OFFENSE_BANDS);
   for (const [min, rec, finish, tier] of bands){
     if (R >= min) return { rec, finish, tier };
   }
@@ -1075,7 +1367,8 @@ function seasonOutcome(R, mode){
 (function(){
 "use strict";
 
-var TEAMS = Object.keys(DATA).sort();
+var league = "nfl";   // "nfl" | "college"
+var TEAMS  = [];      // (re)built for the active league
 
 /* team -> [primary, accent, text-on-primary] */
 var TEAM_COLORS = {
@@ -1112,7 +1405,7 @@ var TEAM_COLORS = {
   "Tennessee Titans":["#0C2340","#4B92DB","#ffffff"],
   "Washington Commanders":["#5A1414","#FFB612","#ffffff"]
 };
-function colorsOf(team){ return TEAM_COLORS[team] || ["#27d6ff","#27d6ff","#03131c"]; }
+function colorsOf(team){ return (LG().colors[team]) || ["#27d6ff","#27d6ff","#03131c"]; }
 function colorVars(team){ var c=colorsOf(team); return "--c1:"+c[0]+";--c2:"+c[1]+";--ct:"+c[2]+";"; }
 
 /* ---- original team crests (generic roundel in each franchise's colors; NOT the trademarked logos) ---- */
@@ -1126,8 +1419,84 @@ var TEAM_ABBR = {
   "New York Jets":"NYJ","Philadelphia Eagles":"PHI","Pittsburgh Steelers":"PIT","San Francisco 49ers":"SF",
   "Seattle Seahawks":"SEA","Tampa Bay Buccaneers":"TB","Tennessee Titans":"TEN","Washington Commanders":"WAS"
 };
+
+/* ---- college program identity ---- */
+var CTEAM_COLORS = {
+  "Alabama":["#9E1B32","#828A8F","#ffffff"],
+  "Georgia":["#BA0C2F","#000000","#ffffff"],
+  "Ohio State":["#BB0000","#666666","#ffffff"],
+  "Michigan":["#00274C","#FFCB05","#FFCB05"],
+  "Notre Dame":["#0C2340","#C99700","#C99700"],
+  "Clemson":["#F56600","#522D80","#ffffff"],
+  "LSU":["#461D7C","#FDD023","#FDD023"],
+  "Florida State":["#782F40","#CEB888","#CEB888"],
+  "Florida":["#0021A5","#FA4616","#ffffff"],
+  "Miami":["#F47321","#046A38","#ffffff"],
+  "Nebraska":["#E41C38","#F5F1E7","#ffffff"],
+  "Tennessee":["#FF8200","#58595B","#ffffff"],
+  "Oklahoma":["#841617","#FDF9D8","#ffffff"],
+  "USC":["#990000","#FFCC00","#ffffff"],
+  "Texas":["#BF5700","#ffffff","#ffffff"],
+  "Oregon":["#154733","#FEE123","#FEE123"],
+  "Auburn":["#0C2340","#E87722","#ffffff"],
+  "Penn State":["#041E42","#ffffff","#ffffff"],
+  "Washington":["#4B2E83","#B7A57A","#ffffff"],
+  "Colorado":["#CFB87C","#000000","#0b0b0b"],
+  "Virginia Tech":["#630031","#CF4420","#ffffff"],
+  "Michigan State":["#18453B","#ffffff","#ffffff"],
+  "TCU":["#4D1979","#A3A9AC","#ffffff"],
+  "Cincinnati":["#000000","#E00122","#ffffff"],
+  "Georgia Tech":["#B3A369","#003057","#003057"],
+  "BYU":["#002E5D","#ffffff","#ffffff"],
+  "Wisconsin":["#C5050C","#ffffff","#ffffff"],
+  "Baylor":["#154734","#FFB81C","#FFB81C"],
+  "Texas A&M":["#500000","#ffffff","#ffffff"],
+  "Louisville":["#AD0000","#000000","#ffffff"],
+  "Boise State":["#0033A0","#D64309","#ffffff"],
+  "Arizona State":["#8C1D40","#FFC627","#FFC627"],
+  "Indiana":["#990000","#EEEDEB","#ffffff"],
+  "SMU":["#0033A0","#C8102E","#ffffff"]
+};
+var CTEAM_ABBR = {
+  "Alabama":"BAMA","Georgia":"UGA","Ohio State":"OSU","Michigan":"MICH","Notre Dame":"ND",
+  "Clemson":"CLEM","LSU":"LSU","Florida State":"FSU","Florida":"UF","Miami":"MIA","Nebraska":"NEB",
+  "Tennessee":"TENN","Oklahoma":"OU","USC":"USC","Texas":"TEX","Oregon":"ORE","Auburn":"AUB",
+  "Penn State":"PSU","Washington":"UW","Colorado":"COLO","Virginia Tech":"VT","Michigan State":"MSU",
+  "TCU":"TCU","Cincinnati":"CIN",
+  "Georgia Tech":"GT","BYU":"BYU","Wisconsin":"WIS","Baylor":"BAY","Texas A&M":"TAMU",
+  "Louisville":"LOU","Boise State":"BSU","Arizona State":"ASU","Indiana":"IU","SMU":"SMU"
+};
+
+/* ---- league registry: one engine, two datasets ---- */
+var LEAGUES = {
+  nfl: {
+    data: DATA,
+    defense: (typeof DEFENSE !== "undefined" ? DEFENSE : {}),
+    colors: TEAM_COLORS, abbr: TEAM_ABBR, hasDefense: true, bands: null,
+    eras: { all: DECADE_ORDER, modern: ["80s","90s","00s","10s","20s"], nineties: ["90s","00s","10s","20s"] },
+    eraButtons: [ {k:"all",l:"All-Era"}, {k:"modern",l:"80s+"}, {k:"nineties",l:"90s+"} ],
+    coin: "Gridiron Arcade &middot; Insert Coin",
+    subtitle: "All&ndash;Era Offense Draft",
+    rulesSub: "Gridiron Blitz &middot; All-Era Roster Draft",
+    shareTag: "PRO FOOTBALL", hofLabel: "All-Era", unitLabel: "Franchise"
+  },
+  college: {
+    data: CDATA,
+    defense: {}, colors: CTEAM_COLORS, abbr: CTEAM_ABBR, hasDefense: false, bands: COLLEGE_BANDS,
+    eras: { all: ["90s","00s","10s","20s"], c00: ["00s","10s","20s"], c10: ["10s","20s"] },
+    eraButtons: [ {k:"all",l:"All Years"}, {k:"c00",l:"2000s on"}, {k:"c10",l:"2010s on"} ],
+    coin: "Gridiron Arcade &middot; Campus Kings",
+    subtitle: "College Football Offense Draft",
+    rulesSub: "Gridiron Blitz &middot; College Football Draft",
+    shareTag: "COLLEGE FOOTBALL", hofLabel: "90s+", unitLabel: "University"
+  }
+};
+function LG(){ return LEAGUES[league]; }
+function rebuildTeams(){ TEAMS = Object.keys(LG().data).sort(); }
+
 function abbrOf(team){
-  if(TEAM_ABBR[team]) return TEAM_ABBR[team];
+  var m = LG().abbr;
+  if(m[team]) return m[team];
   var w=String(team).trim().split(/\s+/);
   return (w.length>=2 ? (w[w.length-2][0]+w[w.length-1][0]) : String(team).slice(0,2)).toUpperCase();
 }
@@ -1148,15 +1517,28 @@ var picks  = 0;
 var hand   = null; // { team, decade, players:[{name,pos,grade,note,idx}] }
 var rolling = false;
 var mode   = "blitz";  // "blitz" (ratings fully hidden) | "rookie" (star marks 90+)
-var era    = "all";    // "all" (60s-20s) | "modern" (80s+) | "nineties" (90s+)
+var era    = "all";    // key into the active league's eras map
 var squad  = "offense"; // "offense" (12 slots) | "fullsquad" (12 offense + 4 defense)
-var ERAS = {
-  all:      DECADE_ORDER,
-  modern:   ["80s","90s","00s","10s","20s"],
-  nineties: ["90s","00s","10s","20s"]
-};
-function allowedDecades(){ return ERAS[era] || DECADE_ORDER; }
+function allowedDecades(){ return LG().eras[era] || LG().eras.all; }
 function decadeAllowed(d){ return allowedDecades().indexOf(d)>=0; }
+/* ---- bucket abstraction: NFL 2nd-level key is a decade; college key is a specific
+   season-team label ("2005 Rose Bowl · Champion"). These keep the engine generic. ---- */
+function bucketsOf(team){ var d=LG().data[team]; return d ? Object.keys(d) : []; }
+function bucketDecade(key){
+  if(league!=="college") return key;                 // NFL keys already are decade buckets
+  var y=parseInt(String(key).slice(0,4),10);
+  if(isNaN(y)) return key;
+  return y<2000 ? "90s" : y<2010 ? "00s" : y<2020 ? "10s" : "20s";
+}
+function bucketLabel(key){ return league==="college" ? key : (DECADE_LABEL[key]||key); }
+function seasonTag(key){                              // compact, HTML
+  if(league==="college") return String(key).slice(0,4);
+  return "&rsquo;"+String(key).replace("s","")+"s";
+}
+function seasonTagTxt(key){                           // compact, plaintext (share)
+  if(league==="college") return String(key).slice(0,4);
+  return "'"+String(key).replace("s","")+"s";
+}
 var ELITE  = 90;
 function eliteStar(grade){ return (mode==="rookie" && grade>=ELITE) ? '<span class="star">&#9733;</span>' : ""; }
 
@@ -1185,17 +1567,23 @@ var el = {
 
 /* ---- helpers ---- */
 function poolFor(team,decade){
-  var off=(DATA[team]&&DATA[team][decade])||[];
-  if(squad!=="fullsquad") return off;
-  var def=(typeof DEFENSE!=="undefined" && DEFENSE[team]&&DEFENSE[team][decade])||[];
+  var D=LG().data, off=(D[team]&&D[team][decade])||[];
+  if(squad!=="fullsquad" || !LG().hasDefense) return off;
+  var DEF=LG().defense, def=(DEF[team]&&DEF[team][decade])||[];
   return def.length ? off.concat(def) : off;
 }
 function openSlots(){ return activeSlots().filter(function(s){ return !roster[s.key]; }); }
 function eligibleSlotsFor(pos){ return openSlots().filter(function(s){ return slotAccepts(s.pos,pos); }).map(function(s){ return s.key; }); }
 // a player-season is identified by name + decade; the same name from a different decade is a distinct, draftable entry
-function isUsed(name,decade){ for(var k in roster){ var r=roster[k]; if(r && r.name===name && r.decade===decade) return true; } return false; }
+function isUsed(name,decade){
+  for(var k in roster){ var r=roster[k]; if(!r) continue;
+    if(league==="college"){ if(r.name===name) return true; }   // one human, regardless of season-team
+    else if(r.name===name && r.decade===decade) return true;
+  }
+  return false;
+}
 function poolIsValid(team,decade){
-  if(!decadeAllowed(decade)) return false;
+  if(!decadeAllowed(bucketDecade(decade))) return false;
   var pool=poolFor(team,decade); if(!pool||!pool.length) return false;
   var open=openSlots();
   for(var i=0;i<pool.length;i++){
@@ -1204,8 +1592,8 @@ function poolIsValid(team,decade){
   }
   return false;
 }
-function validTeams(){ return TEAMS.filter(function(t){ return allowedDecades().some(function(d){ return poolIsValid(t,d); }); }); }
-function validDecades(team){ return allowedDecades().filter(function(d){ return poolIsValid(team,d); }); }
+function validTeams(){ return TEAMS.filter(function(t){ return bucketsOf(t).some(function(k){ return poolIsValid(t,k); }); }); }
+function validDecades(team){ return bucketsOf(team).filter(function(k){ return poolIsValid(team,k); }); }
 function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
 function pad(n){ return (n<10?"0":"")+n; }
 function chipLabel(key){ return key; }
@@ -1215,7 +1603,7 @@ function posBadge(p){
   if(p.pos==="WR") return wrClass(p.name)==="S" ? "SLOT" : "WR";
   return p.pos;
 }
-function abbr(team){ var p=team.split(" "); return p[p.length-1].slice(0,3).toUpperCase(); }
+function abbr(team){ return abbrOf(team); }
 function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
 
 /* ---- lineup board ---- */
@@ -1232,7 +1620,7 @@ function renderLineup(){
         html+='<div class="slot filled" data-slot="'+key+'" style="'+colorVars(p.team)+'">'
           +'<div class="pos-chip">'+chipLabel(key)+'</div>'
           +'<div class="who"><div class="name">'+eliteStar(p.grade)+esc(p.name)+'</div>'
-          +'<div class="meta">'+esc(abbr(p.team))+' &middot; '+DECADE_LABEL[p.decade]
+          +'<div class="meta">'+esc(abbr(p.team))+' &middot; '+esc(bucketLabel(p.decade))
           +(p.note?' <span class="note">('+esc(p.note)+')</span>':'')
           +((mode==="rookie"&&posFit(key,p)<0)?' <span class="offpos">off-pos</span>':'')+'</div></div>'
           +'<div class="signed">SIGNED</div></div>';
@@ -1291,7 +1679,7 @@ function doRoll(){
 
   var teams=validTeams(); if(!teams.length) teams=TEAMS.slice();
   var team=pick(teams);
-  var decs=validDecades(team); if(!decs.length) decs=allowedDecades().filter(function(d){ return poolFor(team,d).length; });
+  var decs=validDecades(team); if(!decs.length) decs=bucketsOf(team).filter(function(k){ return poolFor(team,k).length; });
   var decade=pick(decs);
 
   el.teamReel.classList.remove("locked"); el.decadeReel.classList.remove("locked");
@@ -1308,11 +1696,11 @@ function doRoll(){
       el.teamFace.innerHTML=teamCrest(team)+'<span class="rl-name">'+esc(team)+'</span>';
       var dTick=0;
       var di=setInterval(function(){
-        el.decadeFace.textContent=DECADE_LABEL[pick(decs)];
+        el.decadeFace.textContent=bucketLabel(pick(decs));
         if(++dTick>=12){
           clearInterval(di);
           el.decadeReel.classList.remove("spin"); el.decadeReel.classList.add("locked");
-          el.decadeFace.textContent=DECADE_LABEL[decade];
+          el.decadeFace.textContent=bucketLabel(decade);
           rolling=false;
           revealHand(team,decade);
         }
@@ -1324,7 +1712,7 @@ function doRoll(){
 /* ---- reveal hand (ratings hidden, so order does NOT use grade) ---- */
 function revealHand(team,decade){
   var pool=poolFor(team,decade);
-  var players=pool.map(function(t,i){ return {name:t[0],pos:t[1],grade:t[2],note:t[3]||"",idx:i}; });
+  var players=pool.map(function(t,i){ return {name:t[0],pos:t[1],grade:t[2],note:t[3]||"",idx:i,heisman:(league==="college" && HEISMAN.has(t[0]))}; });
   players.sort(function(a,b){
     var ae=!isUsed(a.name,decade) && eligibleSlotsFor(a.pos).length>0, be=!isUsed(b.name,decade) && eligibleSlotsFor(b.pos).length>0;
     if(ae!==be) return ae?-1:1;                       // eligible first
@@ -1338,14 +1726,14 @@ function revealHand(team,decade){
 
 function renderHand(){
   if(!hand){
-    el.hand.innerHTML='<div class="hand-idle">Hit ROLL &mdash; the dice pick a franchise &amp; era. You sign one of whoever was there. Ratings stay hidden until the final whistle.</div>';
+    el.hand.innerHTML='<div class="hand-idle">Hit ROLL &mdash; the dice pick a '+LG().unitLabel.toLowerCase()+' &amp; era. You sign one of whoever was there. Ratings stay hidden until the final whistle.</div>';
     return;
   }
   var eligCount=hand.players.filter(function(p){ return !isUsed(p.name,hand.decade) && eligibleSlotsFor(p.pos).length>0; }).length;
   var legend=(mode==="rookie")?' &middot; <span class="legend-star">&#9733; elite</span>':'';
   var html='<div style="'+colorVars(hand.team)+'">'
-    +'<div class="hand-head">'+esc(hand.team)+' <span class="era">&rsquo;'+hand.decade.replace("s","")+'s</span></div>'
-    +'<div class="hand-sub">'+DECADE_LABEL[hand.decade]+' &middot; '+eligCount+' can fill an open spot'+legend+'</div>'
+    +'<div class="hand-head">'+esc(hand.team)+' <span class="era">'+seasonTag(hand.decade)+'</span></div>'
+    +'<div class="hand-sub">'+esc(bucketLabel(hand.decade))+' &middot; '+eligCount+' can fill an open spot'+legend+'</div>'
     +'<div class="cards">';
   hand.players.forEach(function(p){
     var used=isUsed(p.name,hand.decade);
@@ -1397,7 +1785,7 @@ function onCardClick(idx,cardEl){
 function assign(slotKey,p){
   if(roster[slotKey]) return;
   if(isUsed(p.name,hand.decade)) return;
-  roster[slotKey]={name:p.name,pos:p.pos,grade:p.grade,note:p.note,team:hand.team,decade:hand.decade};
+  roster[slotKey]={name:p.name,pos:p.pos,grade:p.grade,note:p.note,team:hand.team,decade:hand.decade,heisman:!!p.heisman};
   picks++;
   logPick(slotKey,roster[slotKey]);
   hand=null;
@@ -1414,7 +1802,7 @@ function flash(slotKey){
 /* ---- ticker (no grades shown) ---- */
 function logPick(slotKey,p){
   prependTick('<span class="tn">PICK '+pad(picks)+'</span> &middot; <span class="tp">'+chipLabel(slotKey)
-    +'</span> '+esc(p.name.toUpperCase())+' &middot; '+abbr(p.team)+" &rsquo;"+p.decade.replace("s","")+'s');
+    +'</span> '+esc(p.name.toUpperCase())+' &middot; '+abbr(p.team)+" "+seasonTag(p.decade));
 }
 function prependTick(html){
   var idle=el.wire.querySelector(".tick-idle"); if(idle) idle.parentNode.removeChild(idle);
@@ -1426,7 +1814,7 @@ function prependTick(html){
 function grade(){
   if(picks!==TOTAL) return;
   var R=ratingFromRoster(roster, squad);
-  showResults(R,seasonOutcome(R, squad));
+  showResults(R,seasonOutcome(R, squad, LG().bands));
 }
 function showResults(R,out){
   var tc="t-"+out.tier.replace(/[^A-Z]/g,"");
@@ -1462,8 +1850,8 @@ function showResults(R,out){
    actually reached the global board ("saved globally") or fell back ("offline"). */
 var LB_API = "https://gridiron-hof.joeysamowitz.workers.dev";  // global board (Cloudflare Worker)
 var LB_KEY="gridironBlitzHOF", LB_MAX=5, lbScope="", lbMem={};
-function lbBoard(){ return squad==="fullsquad" ? "squad" : "offense"; }  // offense -> KV "board"; squad -> KV "board:squad"
-function lbEligible(){ return mode==="blitz" && era==="all"; }   // Hall of Fame is Blitz + All-Era only
+function lbBoard(){ return league==="college" ? "college" : (squad==="fullsquad" ? "squad" : "offense"); }
+function lbEligible(){ return mode==="blitz" && era==="all"; }   // Hall of Fame is Blitz + full-span only
 function lbSort(b){ b.sort(function(a,c){ return c.s-a.s; }); return b; }
 async function lbLoad(){
   var bd=lbBoard(), mk=LB_KEY+":"+bd;
@@ -1510,7 +1898,8 @@ async function renderHiScores(board){
   var sc=$("hsScope");
   if(sc){
     var scopeL = ({global:"saved globally",offline:"offline \u2014 not saved",shared:"shared",device:"this device",session:"this session"})[lbScope]||"";
-    sc.textContent = (squad==="fullsquad"?"Full Squad \u00b7 ":"")+"Blitz \u00b7 All-Era"+(scopeL?" \u00b7 "+scopeL:"");
+    var leaguePrefix = league==="college" ? "College \u00b7 " : (squad==="fullsquad"?"Full Squad \u00b7 ":"");
+    sc.textContent = leaguePrefix+"Blitz \u00b7 "+LG().hofLabel+(scopeL?" \u00b7 "+scopeL:"");
   }
 }
 async function maybeHighScore(R){
@@ -1553,12 +1942,15 @@ function boxscore(){
     var p=roster[s.key], c=colorsOf(p.team);
     var fit=posFit(s.key,p), eff=effGrade(s.key,p);
     var fitTag = fit>0 ? ' <span class="fitd up">+'+fit+' fit</span>' : (fit<0 ? ' <span class="fitd dn">'+fit+' off</span>' : '');
+    var heisTag = p.heisman ? ' <span class="fitd up">+2 Heisman</span>' : '';
+    var heis = p.heisman ? ' <span class="heis" title="Heisman winner (+2)">H</span>' : '';
     rows+='<tr><td class="k">'+chipLabel(s.key)+'</td>'
-      +'<td class="nm"><span class="cdot" style="background:'+c[0]+';border-color:'+c[1]+'"></span>'+esc(p.name)+'</td>'
-      +'<td class="mt">'+abbr(p.team)+' &rsquo;'+p.decade.replace("s","")+'s'+fitTag+'</td>'
+      +'<td class="nm"><span class="cdot" style="background:'+c[0]+';border-color:'+c[1]+'"></span>'+esc(p.name)+heis+'</td>'
+      +'<td class="mt">'+abbr(p.team)+' '+seasonTag(p.decade)+fitTag+heisTag+'</td>'
       +'<td class="num g '+gradeTier(eff)+'">'+eff+'</td></tr>';
   });
-  return '<table class="boxscore"><thead><tr><th>Pos</th><th>Player</th><th>Franchise</th><th class="num">Rating</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  var col = LG().unitLabel;
+  return '<table class="boxscore"><thead><tr><th>Pos</th><th>Player</th><th>'+col+'</th><th class="num">Rating</th></tr></thead><tbody>'+rows+'</tbody></table>';
 }
 function countUp(node,target){
   var start=performance.now(),dur=1200;
@@ -1570,8 +1962,9 @@ function countUp(node,target){
   requestAnimationFrame(step);
 }
 function shareText(R,out){
+  var eraLbl = (LG().eraButtons.filter(function(b){return b.k===era;})[0]||{l:""}).l.replace(/&middot;/g,"\u00b7").replace(/&[a-z]+;/g,"");
   var L=[];
-  L.push("GRIDIRON BLITZ \u2014 "+(era==="modern"?"80s+ OFFENSE":era==="nineties"?"90s+ OFFENSE":"ALL-ERA OFFENSE"));
+  L.push("GRIDIRON BLITZ \u2014 "+LG().shareTag+" \u2014 "+eraLbl);
   L.push("FINAL: "+R.toFixed(1)+"/100  \u00b7  "+out.tier);
   L.push("Projected "+out.rec+"  \u00b7  "+out.finish);
   L.push("--------------------------------");
@@ -1579,7 +1972,8 @@ function shareText(R,out){
     var p=roster[s.key], tag=(chipLabel(s.key)+"   ").slice(0,3);
     var fit=posFit(s.key,p), eff=effGrade(s.key,p);
     var fm = fit>0?" (+"+fit+")":(fit<0?" ("+fit+")":"");
-    L.push(tag+"  "+p.name+"  ("+abbr(p.team)+" '"+p.decade.replace("s","")+"s)  "+eff+fm);
+    var hm = p.heisman ? " [H]" : "";
+    L.push(tag+"  "+p.name+hm+"  ("+abbr(p.team)+" "+seasonTagTxt(p.decade)+")  "+eff+fm);
   });
   L.push("--------------------------------");
   L.push("No re-rolls. Pure draw. bankregbro.github.io");
@@ -1618,16 +2012,20 @@ function setMode(m){
 }
 
 /* ---- era mode (defines the draftable pool, so it restarts the draft) ---- */
+function buildEraButtons(){
+  var track=document.querySelector("#eraToggle .dt-track"); if(!track) return;
+  track.innerHTML=LG().eraButtons.map(function(b){
+    return '<button class="et-seg'+(b.k===era?" active":"")+'" data-era="'+b.k+'" type="button">'+b.l+'</button>';
+  }).join("");
+}
 function setEra(e){
   if(e===era) return;
   era=e;
-  Array.prototype.forEach.call(document.querySelectorAll(".et-seg"),function(b){
-    b.classList.toggle("active", b.getAttribute("data-era")===era);
-  });
+  buildEraButtons();
   newGame();
 }
 function setSquad(s){
-  if(s===squad) return;
+  if(s===squad || !LG().hasDefense) return;
   squad=s;
   Array.prototype.forEach.call(document.querySelectorAll(".sq-seg"),function(b){
     b.classList.toggle("active", b.getAttribute("data-squad")===squad);
@@ -1635,6 +2033,43 @@ function setSquad(s){
   newGame();          // recomputes TOTAL and rebuilds the board with/without defense
   renderHiScores();   // the leaderboard board differs by squad mode
 }
+
+/* ---- league (NFL / College) defines the whole dataset, so it restarts the draft ---- */
+function buildTierLadder(bands){
+  return bands.map(function(b){ return '<b>'+b[0]+'+</b><span>'+b[2]+' &middot; '+b[1]+'</span>'; }).join("");
+}
+function renderRules(){
+  var de=document.documentElement;
+  de.classList.remove("league-nfl","league-college");
+  de.classList.add("league-"+league);
+  var sub=$("rgSub"); if(sub) sub.innerHTML=LG().rulesSub;
+  var tier=$("rgTier"); if(tier) tier.innerHTML=buildTierLadder(league==="college"?COLLEGE_BANDS:OFFENSE_BANDS);
+}
+function applyLeague(lg){
+  league=lg;
+  rebuildTeams();
+  era="all"; squad="offense";
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){
+    b.classList.toggle("active", b.getAttribute("data-league")===league);
+  });
+  var coin=$("coinLine"), sub=$("subtitle");
+  if(coin) coin.innerHTML=LG().coin;
+  if(sub)  sub.innerHTML=LG().subtitle;
+  var reelTag=$("teamReelTag");
+  if(reelTag) reelTag.textContent=LG().unitLabel;
+  var decTag=$("decadeReelTag");
+  if(decTag) decTag.textContent=(league==="college"?"Season":"Era");
+  var sqWrap=$("squadToggle");
+  if(sqWrap) sqWrap.style.display = LG().hasDefense ? "" : "none";
+  Array.prototype.forEach.call(document.querySelectorAll(".sq-seg"),function(b){
+    b.classList.toggle("active", b.getAttribute("data-squad")===squad);
+  });
+  buildEraButtons();
+  renderRules();
+  newGame();
+  renderHiScores();
+}
+function setLeague(lg){ if(lg===league) return; applyLeague(lg); }
 
 /* ---- responsive view (auto-detect, user can override) ---- */
 var viewLocked=false;
@@ -1664,11 +2099,15 @@ function boot(){
   Array.prototype.forEach.call(document.querySelectorAll(".dt-seg"),function(b){
     b.addEventListener("click",function(){ setMode(b.getAttribute("data-mode")); });
   });
-  Array.prototype.forEach.call(document.querySelectorAll(".et-seg"),function(b){
-    b.addEventListener("click",function(){ setEra(b.getAttribute("data-era")); });
+  var eraToggle=$("eraToggle");
+  if(eraToggle) eraToggle.addEventListener("click",function(e){
+    var b=e.target.closest && e.target.closest(".et-seg"); if(b) setEra(b.getAttribute("data-era"));
   });
   Array.prototype.forEach.call(document.querySelectorAll(".sq-seg"),function(b){
     b.addEventListener("click",function(){ setSquad(b.getAttribute("data-squad")); });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){
+    b.addEventListener("click",function(){ setLeague(b.getAttribute("data-league")); });
   });
   Array.prototype.forEach.call(document.querySelectorAll(".vt-seg"),function(b){
     b.addEventListener("click",function(){ setView(b.getAttribute("data-view"), true); });
@@ -1680,8 +2119,7 @@ function boot(){
   if(rulesOv) rulesOv.addEventListener("click",function(e){ if(e.target===rulesOv) rulesOv.classList.remove("show"); });
   document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&rulesOv) rulesOv.classList.remove("show"); });
   window.addEventListener("resize",autoView);
-  renderHiScores();
-  newGame();
+  applyLeague("nfl");   // builds TEAMS, era buttons, rules, board, and Hall of Fame for the default league
 }
 if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot);
 else boot();
