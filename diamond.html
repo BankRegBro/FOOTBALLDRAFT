@@ -513,6 +513,10 @@ h1.title .b{
 .view-mobile .res-actions button{font-size:16px;min-width:130px}
 .view-mobile .dt-lbl{font-size:7px}
 .view-mobile .dt-seg,.view-mobile .vt-seg,.view-mobile .et-seg,.view-mobile .sq-seg{font-size:8px;padding:7px 9px}
+.hs-tabs{display:flex;gap:6px;justify-content:center;margin:6px 0 8px}
+.hs-tab{font-family:"Press Start 2P",monospace;font-size:8px;letter-spacing:.06em;color:#8ea0b6;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);border-radius:4px;padding:6px 10px;cursor:pointer}
+.hs-tab.on{color:#ffd400;border-color:rgba(255,212,0,.55);background:rgba(255,212,0,.08);text-shadow:0 0 8px rgba(255,212,0,.45)}
+.hs-g{font-style:normal;font-family:"Oswald",sans-serif;font-weight:600;font-size:10px;letter-spacing:.08em;color:#8ea0b6;border:1px solid rgba(255,255,255,.18);border-radius:3px;padding:1px 5px;margin:0 7px 0 6px}
 </style>
 <script>(function(){try{var w=window.innerWidth||document.documentElement.clientWidth||1200;document.documentElement.classList.add(w<=820?'view-mobile':'view-desktop');}catch(e){document.documentElement.classList.add('view-desktop');}})();</script>
 </head>
@@ -528,6 +532,7 @@ h1.title .b{
 
   <div class="hiscore" id="hiscore">
     <span class="hs-title">&#9733; Hall of Fame &#9733;</span>
+    <div class="hs-tabs"><button class="hs-tab on" id="hsTabDay" type="button">Today</button><button class="hs-tab" id="hsTabAll" type="button">All-Time</button></div>
     <div class="hs-list" id="hsList"></div>
     <span class="hs-scope" id="hsScope"></span>
   </div>
@@ -1164,87 +1169,81 @@ function showResults(R,out){
 /* ---- high-score / hall of fame ----
    ONE shared global board per game, namespaced on the same Worker as the other
    games (this game posts board id "baseball"). Only Blitz + All-Era runs log. */
-var LB_API = "https://gridiron-hof.joeysamowitz.workers.dev";  // shared Worker (per-game board id)
-var LB_KEY="diamondKingsHOF", LB_MAX=5, lbScope="", lbMem={};
+/* ---- hall of fame v2: two arcade-wide boards (daily ET + all-time), fed by every game ---- */
+var LB_API="https://gridiron-hof.joeysamowitz.workers.dev";
+var LB_MAX=5, lbScope="", lbMem={}, lbTab="day";
 function lbBoard(){ return "baseball"; }                          // Worker maps -> KV "board:baseball"
-function lbEligible(){ return mode==="blitz" && era==="all"; }    // Hall of Fame is Blitz + All-Era only
+function lbEligible(){ return mode==="blitz" && era==="all"; }    // boards take Blitz + All-Era only
+function lbTag(){ return "DIAM"; }
 function lbSort(b){ b.sort(function(a,c){ return c.s-a.s; }); return b; }
-async function lbLoad(){
-  var bd=lbBoard(), mk=LB_KEY+":"+bd;
+async function lbFetch(scope){
+  var key="g:"+scope;
   if(LB_API){
-    try{ var r=await fetch(LB_API+"?b="+encodeURIComponent(bd),{cache:"no-store"}); if(r.ok){ lbScope="global"; lbMem[bd]=(await r.json()).slice(); return lbMem[bd].slice(); } }catch(e){}
-    lbScope="offline"; return (lbMem[bd]||[]).slice();
-  }
-  if(window.storage && window.storage.get){
-    lbScope="shared";
-    try{ var s=await window.storage.get(mk,true); return (s&&s.value)?JSON.parse(s.value):[]; }
-    catch(e){ return []; }
-  }
-  try{ if(window.localStorage){ lbScope="device"; var v=localStorage.getItem(mk); return v?JSON.parse(v):[]; } }catch(e){}
-  lbScope="session"; return (lbMem[bd]||[]).slice();
-}
-async function lbSubmit(entry){
-  var bd=lbBoard(), mk=LB_KEY+":"+bd;
-  if(LB_API){
-    try{
-      var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({b:bd,i:entry.i,s:entry.s})});
-      if(r.ok){ lbScope="global"; var b=await r.json(); lbMem[bd]=b.slice(); return b; }
-    }catch(e){}
+    try{ var r=await fetch(LB_API+"?b=global"+(scope==="day"?"&scope=day":""),{cache:"no-store"});
+      if(r.ok){ lbScope="global"; lbMem[key]=(await r.json()).slice(); return lbMem[key].slice(); } }catch(e){}
     lbScope="offline";
   }
-  var board=lbSort(await lbLoad());
-  board.push({i:entry.i,s:entry.s,t:Date.now()});
-  board=lbSort(board).slice(0,LB_MAX);
-  lbMem[bd]=board.slice();
-  try{ if(window.storage && window.storage.set){ await window.storage.set(mk,JSON.stringify(board),true); return board; } }catch(e){}
-  try{ if(window.localStorage){ localStorage.setItem(mk,JSON.stringify(board)); } }catch(e){}
-  return board;
+  return (lbMem[key]||[]).slice();
 }
-async function renderHiScores(board){
+async function lbSubmit(entry){
+  if(LB_API){
+    try{ var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({b:lbBoard(),i:entry.i,s:entry.s})});
+      if(r.ok){ lbScope="global"; await r.json(); return true; } }catch(e){}
+    lbScope="offline";
+  }
+  ["day","all"].forEach(function(scope){
+    var key="g:"+scope, b=lbSort((lbMem[key]||[]).slice());
+    b.push({i:entry.i,s:entry.s,t:Date.now(),g:lbTag()});
+    lbMem[key]=lbSort(b).slice(0,LB_MAX);
+  });
+  return false;
+}
+async function renderHiScores(){
   var list=$("hsList"); if(!list) return;
-  board=lbSort((board||await lbLoad()).slice());
-  if(!board.length){
-    list.innerHTML='<span class="hs-empty">No scores yet &mdash; be the first to make the board</span>';
-  } else {
+  var d=$("hsTabDay"), a=$("hsTabAll");
+  if(d){ d.classList.toggle("on",lbTab==="day"); a.classList.toggle("on",lbTab==="all"); }
+  var board=lbSort(await lbFetch(lbTab));
+  if(!board.length){ list.innerHTML='<span class="hs-empty">'+(lbTab==="day"?"No scores yet today \u2014 set the pace":"No scores yet \u2014 be the first on the board")+'</span>'; }
+  else{
     var ord=["1ST","2ND","3RD","4TH","5TH"];
     list.innerHTML=board.slice(0,LB_MAX).map(function(e,i){
-      return '<span class="hs-row'+(i===0?' top1':'')+'"><b class="hs-rank">'+ord[i]+'</b><b class="hs-init">'+esc(e.i)+'</b><span class="hs-score">'+(+e.s).toFixed(1)+'</span></span>';
+      return '<span class="hs-row'+(i===0?' top1':'')+'"><b class="hs-rank">'+ord[i]+'</b><b class="hs-init">'+esc(e.i)+'</b><i class="hs-g">'+esc(e.g||"")+'</i><span class="hs-score">'+(+e.s).toFixed(1)+'</span></span>';
     }).join("");
   }
   var sc=$("hsScope");
-  if(sc){
-    var scopeL = ({global:"saved globally",offline:"offline \u2014 not saved",shared:"shared",device:"this device",session:"this session"})[lbScope]||"";
-    sc.textContent = "Blitz \u00b7 All-Era"+(scopeL?" \u00b7 "+scopeL:"");
-  }
+  if(sc){ var scopeL=({global:"whole arcade",offline:"offline \u2014 not saved"})[lbScope]||"whole arcade";
+    sc.textContent=(lbTab==="day"?"Today (ET)":"All-Time")+" \u00b7 "+scopeL+" \u00b7 Blitz All-Era runs post"; }
+}
+function initHsTabs(){
+  var d=$("hsTabDay"), a=$("hsTabAll"); if(!d||!a) return;
+  d.addEventListener("click",function(){ if(lbTab!=="day"){ lbTab="day"; renderHiScores(); } });
+  a.addEventListener("click",function(){ if(lbTab!=="all"){ lbTab="all"; renderHiScores(); } });
 }
 async function maybeHighScore(R){
   var wrap=$("hsEntryWrap"); if(!wrap) return;
-  if(!lbEligible()){
-    wrap.innerHTML='<div class="hs-entry note"><div class="sub">Hall of Fame logs <b>Blitz &middot; All-Era</b> runs only.</div></div>';
-    return;
-  }
-  var board=lbSort(await lbLoad());
-  var qualifies = board.length<LB_MAX || R > board[board.length-1].s;
+  if(!lbEligible()){ wrap.innerHTML='<div class="hs-entry note"><div class="sub">The boards log <b>Blitz + All-Era</b> runs only.</div></div>'; return; }
+  var board=lbSort(await lbFetch("day"));
+  var qualifies=board.length<LB_MAX || R>board[board.length-1].s;
   if(!qualifies) return;
-  var rank=board.filter(function(e){ return e.s>R; }).length + 1;
-  wrap.innerHTML='<div class="hs-entry">'
-    +'<div class="hl">New High Score &middot; #'+rank+'</div>'
-    +'<div class="sub">'+R.toFixed(1)+' / 100 &mdash; enter your initials for the Hall of Fame</div>'
-    +'<div class="row"><input id="hsInit" maxlength="3" placeholder="AAA" autocomplete="off" spellcheck="false"><button id="hsSave">Enter</button></div>'
-    +'</div>';
+  var rank=board.filter(function(e){ return e.s>R; }).length+1;
+  wrap.innerHTML='<div class="hs-entry"><div class="hl">Today\u2019s Board &middot; #'+rank+'</div>'
+    +'<div class="sub">'+R.toFixed(1)+' / 100 \u2014 enter your initials for the arcade boards</div>'
+    +'<div class="row"><input id="hsInit" maxlength="3" placeholder="AAA" autocomplete="off" spellcheck="false"><button id="hsSave">Enter</button></div></div>';
   var inp=$("hsInit"), btn=$("hsSave");
   inp.addEventListener("input",function(){ inp.value=inp.value.replace(/[^A-Za-z]/g,"").toUpperCase().slice(0,3); });
   try{ inp.focus(); }catch(e){}
   function submit(){
     if(btn.disabled) return;
-    var ini=(inp.value||"").replace(/[^A-Za-z]/g,"").toUpperCase().slice(0,3) || "AAA";
-    btn.disabled=true;
-    var sc=Math.round(R*10)/10;
-    lbSubmit({i:ini,s:sc}).then(function(b){
-      renderHiScores(b);
-      var pos=b.findIndex(function(e){ return e.i===ini && e.s===sc; })+1;
-      var note = lbScope==="offline" ? '<div class="sub">saved on this device only &mdash; global board unreachable</div>' : '';
-      wrap.innerHTML='<div class="hs-entry"><div class="done">&#10003; '+esc(ini)+' enshrined at #'+(pos||1)+'</div>'+note+'</div>';
+    var ini=(inp.value||"").replace(/[^A-Za-z]/g,"").toUpperCase().slice(0,3)||"AAA";
+    btn.disabled=true; var sc=Math.round(R*10)/10;
+    lbSubmit({i:ini,s:sc}).then(function(){
+      lbFetch("day").then(function(b){
+        lbSort(b);
+        var pos=b.filter(function(e){ return e.s>sc; }).length+1;
+        renderHiScores();
+        var note=lbScope==="offline"?'<div class="sub">saved on this device only \u2014 arcade boards unreachable</div>':'';
+        wrap.innerHTML='<div class="hs-entry"><div class="done">&#10003; '+esc(ini)+' on today\u2019s board at #'+pos+'</div>'+note+'</div>';
+      });
     });
   }
   btn.addEventListener("click",submit);
@@ -1381,6 +1380,7 @@ function boot(){
   if(rulesOv) rulesOv.addEventListener("click",function(e){ if(e.target===rulesOv) rulesOv.classList.remove("show"); });
   document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&rulesOv) rulesOv.classList.remove("show"); });
   window.addEventListener("resize",autoView);
+  initHsTabs();
   renderHiScores();
   newGame();
 }
