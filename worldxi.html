@@ -516,6 +516,12 @@ h1.title .b{
 .reel .face.dec{font-size:clamp(15px,3.6vw,23px);letter-spacing:.04em}
 .field.pitch{border-radius:8px;display:block}
 .led.amber #ledForm{letter-spacing:.02em}
+.reels{flex-wrap:wrap}
+#coachReel .face{font-size:clamp(12px,2.6vw,17px)}
+#coachReel .rl-name{font-size:clamp(11px,2.4vw,15px)}
+.scard.coach{border-color:rgba(255,212,0,.4)}
+.scard.coach .sc-tag{color:var(--neon-yellow)}
+.scard.coach.filled{background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(0,0,0,.34)),var(--c1,#141c2c)}
 </style>
 <script>(function(){try{var w=window.innerWidth||document.documentElement.clientWidth||1200;document.documentElement.classList.add(w<=820?'view-mobile':'view-desktop');}catch(e){document.documentElement.classList.add('view-desktop');}})();</script>
 </head>
@@ -536,7 +542,7 @@ h1.title .b{
   </div>
 
   <div class="scorestrip">
-    <div class="led blue"><span class="lbl">Filled</span><span id="ledSigned">00/16</span></div>
+    <div class="led blue"><span class="lbl">Filled</span><span id="ledSigned">00/13</span></div>
     <div class="led amber"><span class="lbl">Formation</span><span id="ledForm">&mdash;</span></div>
     <div class="diff-toggle" id="diffToggle">
       <span class="dt-lbl">Difficulty</span>
@@ -557,7 +563,7 @@ h1.title .b{
 
   <main class="board">
     <section class="formation" id="formationPanel">
-      <button class="panel-head formation-head" id="formationToggle" type="button">Your Squad<span class="fsig" id="fSig">0/16</span><span class="chev" id="fChev">&#9662;</span></button>
+      <button class="panel-head formation-head" id="formationToggle" type="button">Your Squad<span class="fsig" id="fSig">0/13</span><span class="chev" id="fChev">&#9662;</span></button>
       <div class="pipstrip" id="pipStrip"></div>
       <div id="lineupWrap"><div class="cabinet"><div id="lineup"></div></div></div>
     </section>
@@ -567,9 +573,10 @@ h1.title .b{
       <div class="cabinet">
         <div class="reels">
           <div class="reel" id="formReel"><div class="tag">Formation</div><div class="face dec" id="formFace">&mdash;</div></div>
+          <div class="reel" id="coachReel"><div class="tag">Coach</div><div class="face" id="coachFace">&mdash;</div></div>
           <div class="reel team" id="teamReel"><div class="tag">Nation</div><div class="face" id="teamFace">&mdash;</div></div>
         </div>
-        <button class="arcade-btn red pulse" id="rollBtn"><span>&#9654; Roll Formation</span></button>
+        <button class="arcade-btn red pulse" id="rollBtn"><span>&#9654; Roll Formation &amp; Coach</span></button>
         <button class="arcade-btn reroll" id="rerollBtn" hidden><span>&#8635; Reroll Nation</span></button>
         <div class="draw-hint" id="drawHint">First, roll your formation to set the shape</div>
         <div class="hand" id="hand"></div>
@@ -584,7 +591,7 @@ h1.title .b{
 
   <div class="whistle">
     <button id="gradeBtn" disabled><span>&#9201; Final Whistle</span></button>
-    <div class="hint" id="gradeHint">Fill all sixteen spots to blow the final whistle</div>
+    <div class="hint" id="gradeHint">Fill all thirteen spots to blow the final whistle</div>
   </div>
 
   <div class="foot">GK goalkeeper &middot; DEF defenders &middot; MID midfield &middot; FWD forwards &middot; subs take any outfielder<br>Official 2026 World Cup squads &middot; nations reroll with equal odds &middot; no data leaves this page &middot; The Ledger Arcade</div>
@@ -599,17 +606,17 @@ h1.title .b{
 
   <div class="rg-h">The Drill</div>
   <ul class="rg-list">
-    <li>First, <b>roll a formation</b> (4-3-3, 4-4-2, 4-2-3-1, 3-5-2, 3-4-3 or 5-3-2). It sets the shape of your starting XI on the pitch and is locked for the game.</li>
+    <li>First, <b>roll your formation and head coach</b>. The formation (4-3-3, 4-4-2, 4-2-3-1, 3-5-2, 3-4-3 or 5-3-2) sets the shape of your XI; the coach is one of the 48 nations' real managers. Both lock for the game.</li>
     <li>Then <b>roll a nation</b>. Every one of the 48 World Cup teams comes up with the same, equal odds each roll.</li>
     <li>Draft one player from that nation into an open slot, or hit <b>Reroll</b> for a different nation. Reroll as often as you like.</li>
-    <li>Fill all <b>sixteen</b> spots: the eleven of your formation, plus a five-man bench (a sub keeper and four outfield subs).</li>
-    <li>Every slot takes its own position; the four bench outfield spots take any outfielder. When the squad is full it grades out of 100 and projects a World Cup run.</li>
+    <li>Fill all <b>thirteen</b> drafted spots: the eleven of your formation, plus two subs. The head coach makes fourteen, and is rolled for you, not drafted.</li>
+    <li>Every slot takes its own position; the two subs take any outfielder. When the squad is full it grades out of 100 &mdash; coach included &mdash; and projects a World Cup run.</li>
     <li>You cannot draft the same player twice.</li>
   </ul>
 
   <div class="rg-h">What's Scored</div>
   <ul class="rg-list">
-    <li>Slots are weighted. The <b>striker</b> and <b>keeper</b> carry a small premium, and the starting XI counts for far more than the bench.</li>
+    <li>Slots are weighted. The <b>striker</b> and <b>keeper</b> carry a small premium, the starting XI counts for far more than the bench, and the <b>head coach</b> adds a modest boost.</li>
     <li>There is no position-fit bonus: a player rates the same wherever they are eligible to play.</li>
     <li>Every squad is built from real internationals, so the raw average always runs high. The club rating stretches that band onto a full 40&ndash;100 scale, which is why a blind draft bows out in the group and a sharp one can win it.</li>
     <li>Because rerolls are unlimited and every nation has plenty of players, you can never get stuck &mdash; if a nation does not fit, just reroll.</li>
@@ -636,9 +643,9 @@ h1.title .b{
 
   <div class="rg-h">Glossary</div>
   <div class="rg-term"><b>GK</b> goalkeeper &middot; <b>DEF</b> defenders, including full-backs and wing-backs &middot; <b>MID</b> midfielders &middot; <b>FWD</b> forwards and wingers.</div>
-  <div class="rg-term"><b>Formation</b> the shape of your XI, rolled once per game. <b>Bench</b> a sub keeper and four outfield subs who can cover any outfield role.</div>
-  <div class="rg-term"><b>Filled</b> how many of the sixteen spots are set. <b>Draft Drive</b> the meter tracking progress to a full squad.</div>
-  <div class="rg-term">Squads are the official 26-man lists confirmed for the tournament; ratings are an editorial /100 call, hidden until the whistle in Blitz.</div>
+  <div class="rg-term"><b>Formation</b> the shape of your XI, rolled at kickoff. <b>Coach</b> a real 2026 World Cup manager, also rolled at kickoff, who counts toward your rating. <b>Bench</b> two outfield subs who cover any outfield role.</div>
+  <div class="rg-term"><b>Filled</b> how many of the thirteen drafted spots are set. <b>Draft Drive</b> the meter tracking progress to a full squad.</div>
+  <div class="rg-term">Each nation's pool is the best of its official squad; coaches and ratings are an editorial /100 call, hidden until the whistle in Blitz.</div>
 </div></div>
 
 <script>
@@ -651,12 +658,12 @@ h1.title .b{
 
 // ---- bench (appended to every rolled formation) ----
 const BENCH = [
-  { key:"SUBGK", label:"Sub Keeper", pos:"GK",  w:0.55 },
-  { key:"BEN1",  label:"Bench",      pos:"OUT", w:0.60 },
-  { key:"BEN2",  label:"Bench",      pos:"OUT", w:0.60 },
-  { key:"BEN3",  label:"Bench",      pos:"OUT", w:0.60 },
-  { key:"BEN4",  label:"Bench",      pos:"OUT", w:0.60 },
+  { key:"BEN1", label:"Bench", pos:"OUT", w:0.60 },
+  { key:"BEN2", label:"Bench", pos:"OUT", w:0.60 },
 ];
+
+// Rolled once at kickoff (not drafted): the head coach = one of the 48 nations' real managers.
+const COACH_SLOT = { key:"COACH", label:"Head Coach", pos:"COACH", w:0.90 };
 
 // ---- rollable formations: each is a starting XI (GK + 10) with pitch coords (x/y %) ----
 const FORMATIONS = {
@@ -740,7 +747,8 @@ const FORMATIONS = {
   ],
 };
 const FORMATION_NAMES = Object.keys(FORMATIONS);
-function squadSlots(formation){ return FORMATIONS[formation].concat(BENCH); }
+function squadSlots(formation){ return FORMATIONS[formation].concat(BENCH); }        // 13 drafted (XI + 2 subs)
+function allSlots(formation){ return squadSlots(formation).concat([COACH_SLOT]); }    // 14 graded (+ coach)
 
 // bench flex accepts any outfielder; every other slot takes its own position
 function slotAccepts(slotPos, playerPos){
@@ -762,7 +770,7 @@ function ratingFromRoster(roster, slots){
   // Squads are full of real internationals, so the raw average always runs high; stretch it
   // onto a full 40-99 club rating so a blind draft bows out in the group and a sharp,
   // reroll-savvy draft can win the whole thing (calibrated to the draft simulator).
-  return Math.max(40, Math.min(99, Math.round(82.5 + (avg - 84) * 2.3)));
+  return Math.max(40, Math.min(99, Math.round(81.5 + (avg - 84) * 2.74)));
 }
 
 // Rating (40-99) -> furthest World Cup stage. Calibrated to the random-draft distribution.
@@ -783,55 +791,105 @@ function seasonOutcome(R){
 }
 
 const DATA = {
-  "Algeria":[["Luca Zidane","GK",76],["Oussama Benbot","GK",73],["Melvin Mastil","GK",73],["Rafik Belghali","DEF",76],["Samir Chergui","DEF",74],["Rayan A\u00eft-Nouri","DEF",83],["Jaouen Hadjam","DEF",77],["A\u00efssa Mandi","DEF",78],["Ramy Benseba\u00efni","DEF",80],["Zinedine Bela\u00efd","DEF",73],["Mohamed Amine Touga\u00ef","DEF",76],["Achraf Abada","DEF",73],["Nabil Bentaleb","MID",78],["Hicham Boudaoui","MID",78],["Houssem Aouar","MID",80],["Far\u00e8s Cha\u00efbi","MID",79],["Ibrahim Maza","MID",78],["Yacine Titraoui","MID",74],["Ramiz Zerrouki","MID",78],["Mohamed Amine Amoura","FWD",82],["Nadhir Benbouali","FWD",74],["Adil Boulbina","FWD",75],["Far\u00e8s Ghedjemis","FWD",75],["Amine Gouiri","FWD",82],["Anis Hadj Moussa","FWD",78],["Riyad Mahrez","FWD",84]],
-  "Argentina":[["Emiliano Mart\u00ednez","GK",88],["Ger\u00f3nimo Rulli","GK",78],["Juan Musso","GK",77],["Gonzalo Montiel","DEF",78],["Nahuel Molina","DEF",80],["Lisandro Mart\u00ednez","DEF",84],["Nicol\u00e1s Otamendi","DEF",81],["Leonardo Balerdi","DEF",78],["Cristian Romero","DEF",86],["Facundo Medina","DEF",78],["Nicol\u00e1s Tagliafico","DEF",80],["Leandro Paredes","MID",81],["Rodrigo De Paul","MID",84],["Exequiel Palacios","MID",81],["Enzo Fern\u00e1ndez","MID",87],["Alexis Mac Allister","MID",88],["Giovani Lo Celso","MID",81],["Valent\u00edn Barco","MID",77],["Lionel Messi","FWD",96],["Nico Paz","FWD",80],["Thiago Almada","FWD",81],["Nicol\u00e1s Gonz\u00e1lez","FWD",82],["Giuliano Simeone","FWD",79],["Lautaro Mart\u00ednez","FWD",90],["Jos\u00e9 Manuel L\u00f3pez","FWD",77],["Juli\u00e1n \u00c1lvarez","FWD",90]],
-  "Australia":[["Mathew Ryan","GK",79],["Paul Izzo","GK",74],["Tom Glover","GK",75],["Aziz Behich","DEF",77],["Jordan Bos","DEF",78],["Harry Souttar","DEF",79],["Alessandro Circati","DEF",78],["Milos Degenek","DEF",75],["Jason Geria","DEF",74],["Nathaniel Atkinson","DEF",75],["Fran Karacic","DEF",75],["Joel King","DEF",75],["Kye Rowles","DEF",77],["Cameron Devlin","MID",75],["Ajdin Hrustic","MID",77],["Jackson Irvine","MID",80],["Connor Metcalfe","MID",77],["Aiden O'Neill","MID",76],["Nestory Irankunda","FWD",78],["Mathew Leckie","FWD",78],["Marco Tilio","FWD",75],["Kusini Yengi","FWD",76],["Riley McGree","FWD",78],["Christian Volpato","FWD",77]],
-  "Austria":[["Patrick Pentz","GK",75],["Alexander Schlager","GK",77],["Florian Wiegele","GK",73],["David Affengruber","DEF",76],["David Alaba","DEF",84],["Kevin Danso","DEF",80],["Marco Friedl","DEF",78],["Philipp Lienhart","DEF",78],["Phillipp Mwene","DEF",76],["Stefan Posch","DEF",77],["Alexander Prass","DEF",77],["Michael Svoboda","DEF",74],["Christoph Baumgartner","MID",81],["Carney Chukwuemeka","MID",78],["Florian Grillitsch","MID",77],["Konrad Laimer","MID",82],["Marcel Sabitzer","MID",82],["Xaver Schlager","MID",80],["Nicolas Seiwald","MID",79],["Romano Schmid","MID",78],["Alessandro Sch\u00f6pf","MID",74],["Paul Wanner","MID",80],["Patrick Wimmer","MID",77],["Marko Arnautovi\u0107","FWD",80],["Michael Gregoritsch","FWD",78],["Sasa Kalajdzic","FWD",76]],
-  "Belgium":[["Thibaut Courtois","GK",90],["Senne Lammens","GK",77],["Mike Penders","GK",74],["Timothy Castagne","DEF",79],["Zeno Debast","DEF",78],["Maxim De Cuyper","DEF",78],["Koni De Winter","DEF",78],["Brandon Mechele","DEF",76],["Thomas Meunier","DEF",77],["Nathan Ngoy","DEF",74],["Joaquin Seys","DEF",74],["Arthur Theate","DEF",78],["Kevin De Bruyne","MID",89],["Amadou Onana","MID",82],["Nicolas Raskin","MID",78],["Youri Tielemans","MID",82],["Hans Vanaken","MID",78],["Axel Witsel","MID",79],["Charles De Ketelaere","FWD",82],["Jeremy Doku","FWD",84],["Matias Fernandez-Pardo","FWD",76],["Romelu Lukaku","FWD",85],["Dodi Lukebakio","FWD",79],["Diego Moreira","FWD",76],["Alexis Saelemaekers","FWD",80],["Leandro Trossard","FWD",83]],
-  "Bosnia and Herzegovina":[["Nikola Vasilj","GK",76],["Martin Zlomisli\u0107","GK",73],["Osman Had\u017eiki\u0107","GK",73],["Sead Kola\u0161inac","DEF",80],["Amar Dedi\u0107","DEF",80],["Nihad Mujaki\u0107","DEF",74],["Nikola Kati\u0107","DEF",76],["Tarik Muharemovi\u0107","DEF",76],["Stjepan Radelji\u0107","DEF",73],["Dennis Had\u017eikaduni\u0107","DEF",74],["Nidal \u010celik","DEF",73],["Amir Had\u017eiahmetovi\u0107","MID",76],["Ivan \u0160unji\u0107","MID",76],["Ivan Ba\u0161i\u0107","MID",74],["D\u017eenis Burni\u0107","MID",74],["Ermin Mahmi\u0107","MID",72],["Benjamin Tahirovi\u0107","MID",76],["Amar Memi\u0107","MID",73],["Armin Gigovi\u0107","MID",76],["Kerim Alajbegovi\u0107","FWD",76],["Esmir Bajraktarevi\u0107","FWD",78],["Ermedin Demirovi\u0107","FWD",82],["Jovo Luki\u0107","FWD",73],["Samed Ba\u017edar","FWD",74],["Haris Tabakovi\u0107","FWD",78],["Edin D\u017eeko","FWD",82]],
-  "Brazil":[["Alisson","GK",90],["Ederson","GK",84],["Weverton","GK",76],["Wesley","DEF",78],["Douglas Santos","DEF",78],["Alex Sandro","DEF",78],["Gabriel Magalh\u00e3es","DEF",88],["Marquinhos","DEF",88],["Danilo","DEF",80],["Bremer","DEF",84],["Iba\u00f1ez","DEF",79],["L\u00e9o Pereira","DEF",78],["Bruno Guimar\u00e3es","MID",87],["Casemiro","MID",83],["Danilo (Botafogo)","MID",78],["Fabinho","MID",79],["Lucas Paquet\u00e1","MID",84],["Raphinha","MID",91],["Neymar","MID",88],["Vin\u00edcius J\u00fanior","FWD",94],["Luiz Henrique","FWD",80],["Matheus Cunha","FWD",84],["Gabriel Martinelli","FWD",83],["Igor Thiago","FWD",77],["Endrick","FWD",82],["Rayan","FWD",77]],
-  "Canada":[["Dayne St. Clair","GK",78],["Maxime Cr\u00e9peau","GK",77],["Owen Goodman","GK",74],["Alistair Johnston","DEF",79],["Derek Cornelius","DEF",78],["Richie Laryea","DEF",77],["Niko Sigur","DEF",75],["Joel Waterman","DEF",75],["Luc De Fougerolles","DEF",74],["Mo\u00efse Bombito","DEF",79],["Alphonso Davies","DEF",87],["Alfie Jones","DEF",74],["Stephen Eust\u00e1quio","MID",81],["Isma\u00ebl Kon\u00e9","MID",78],["Tajon Buchanan","MID",80],["Mathieu Choini\u00e8re","MID",76],["Ali Ahmed","MID",75],["Nathan Saliba","MID",74],["Liam Miller","MID",74],["Marcelo Flores","MID",77],["Jonathan Osorio","MID",77],["Jonathan David","FWD",86],["Cyle Larin","FWD",80],["Tani Oluwaseyi","FWD",77],["Promise David","FWD",76],["Jacob Shaffelburg","FWD",76]],
-  "Cape Verde":[["Vozinha","GK",75],["M\u00e1rcio da Rosa","GK",73],["Carlos Santos","GK",73],["Steven Moreira","DEF",76],["Wagner Pina","DEF",75],["Jo\u00e3o Paulo Fernandes","DEF",74],["Sidny Lopes Cabral","DEF",76],["Logan Costa","DEF",79],["Roberto Lopes","DEF",76],["Kelvin Pires","DEF",73],["Stopira","DEF",75],["Diney","DEF",73],["Jamiro Monteiro","MID",79],["Telmo Arcanjo","MID",76],["Yannick Semedo","MID",74],["Laros Duarte","MID",76],["Deroy Duarte","MID",76],["Kevin Pina","MID",75],["Ryan Mendes","FWD",78],["Willy Semedo","FWD",75],["Garry Rodrigues","FWD",78],["Jovane Cabral","FWD",78],["Nuno Da Costa","FWD",75],["Dailon Livramento","FWD",75],["Gilson Benchimol","FWD",74],["H\u00e9lio Varela","FWD",74]],
-  "Colombia":[["Camilo Vargas","GK",78],["David Ospina","GK",78],["\u00c1lvaro Montero","GK",75],["Johan Mojica","DEF",78],["Devier Machado","DEF",76],["Daniel Mu\u00f1oz","DEF",81],["Santiago Arias","DEF",77],["Yerry Mina","DEF",79],["Davinson S\u00e1nchez","DEF",81],["Jhon Lucum\u00ed","DEF",80],["Willer Ditta","DEF",76],["James Rodr\u00edguez","MID",84],["Jefferson Lerma","MID",80],["Richard R\u00edos","MID",81],["Juan Fernando Quintero","MID",80],["Jorge Carrascal","MID",78],["Kevin Casta\u00f1o","MID",78],["Jaminton Campaz","MID",76],["Luis D\u00edaz","FWD",89],["Carlos Andr\u00e9s G\u00f3mez","FWD",77],["Jhon C\u00f3rdoba","FWD",79],["Juan Camilo Hern\u00e1ndez","FWD",79],["Jhon Arias","FWD",82]],
-  "Croatia":[["Dominik Livakovi\u0107","GK",80],["Dominik Kotarski","GK",75],["Ivor Pandur","GK",74],["Jo\u0161ko Gvardiol","DEF",87],["Duje \u0106aleta-Car","DEF",78],["Josip \u0160utalo","DEF",78],["Josip Stani\u0161i\u0107","DEF",80],["Marin Pongra\u010di\u0107","DEF",77],["Martin Erli\u0107","DEF",76],["Luka Vu\u0161kovi\u0107","DEF",76],["Luka Modri\u0107","MID",86],["Mateo Kova\u010di\u0107","MID",86],["Mario Pa\u0161ali\u0107","MID",80],["Nikola Vla\u0161i\u0107","MID",80],["Luka Su\u010di\u0107","MID",79],["Martin Baturina","MID",79],["Kristijan Jaki\u0107","MID",76],["Petar Su\u010di\u0107","MID",79],["Nikola Moro","MID",77],["Toni Fruk","MID",75],["Ivan Peri\u0161i\u0107","FWD",82],["Andrej Kramari\u0107","FWD",82],["Ante Budimir","FWD",79],["Marco Pa\u0161ali\u0107","FWD",77],["Petar Musa","FWD",79],["Igor Matanovi\u0107","FWD",77]],
-  "Cura\u00e7ao":[["Tyrick Bodak","GK",73],["Trevor Doornbusch","GK",73],["Eloy Room","GK",76],["Riechedly Bazoer","DEF",78],["Joshua Brenet","DEF",76],["Roshon Van Eijma","DEF",73],["Sherel Floranus","DEF",74],["Deveron Fonville","DEF",74],["Juri\u00ebn Gaari","DEF",73],["Armando Obispo","DEF",77],["Shurandy Sambo","DEF",75],["Juninho Bacuna","MID",77],["Leandro Bacuna","MID",78],["Livano Comenencia","MID",75],["Kevin Felida","MID",74],["Ar'Jany Martha","MID",74],["Tyrese Noslin","MID",74],["Godfried Roemeratoe","MID",73],["Jeremy Antonisse","FWD",73],["Tahith Chong","FWD",79],["Kenji Gorr\u00e9","FWD",75],["Sontje Hansen","FWD",76],["Gervane Kastaneer","FWD",74],["Brandley Kuwas","FWD",76],["J\u00fcrgen Locadia","FWD",77],["Jearl Margaritha","FWD",74]],
-  "Czechia":[["Luk\u00e1\u0161 Horn\u00ed\u010dek","GK",75],["Mat\u011bj Kov\u00e1\u0159","GK",77],["Jind\u0159ich Stan\u011bk","GK",78],["Vladim\u00edr Coufal","DEF",79],["David Doudera","DEF",75],["Tom\u00e1\u0161 Hole\u0161","DEF",78],["Robin Hran\u00e1\u010d","DEF",77],["\u0160t\u011bp\u00e1n Chaloupek","DEF",74],["David Jur\u00e1sek","DEF",77],["Ladislav Krej\u010d\u00ed","DEF",81],["Jaroslav Zelen\u00fd","DEF",74],["David Zima","DEF",76],["Luk\u00e1\u0161 \u010cerv","MID",76],["Vladim\u00edr Darida","MID",76],["Luk\u00e1\u0161 Provod","MID",80],["Michal Sad\u00edlek","MID",76],["Hugo Soch\u016frek","MID",73],["Alexandr Sojka","MID",73],["Tom\u00e1\u0161 Sou\u010dek","MID",83],["Pavel \u0160ulc","MID",80],["Denis Vi\u0161insk\u00fd","MID",74],["Adam Hlo\u017eek","FWD",81],["Tom\u00e1\u0161 Chor\u00fd","FWD",78],["Mojm\u00edr Chytil","FWD",75],["Jan Kuchta","FWD",77],["Patrik Schick","FWD",84]],
-  "DR Congo":[["Timothy Fayulu","GK",74],["Lionel Mpasi","GK",75],["Mike Epolo","GK",73],["Aaron Wan-Bissaka","DEF",82],["G\u00e9d\u00e9on Kalulu","DEF",76],["Joris Kayembe","DEF",76],["Arthur Masuaku","DEF",77],["Steve Kapuadi","DEF",74],["Rocky Bushiri","DEF",75],["Axel Tuanzebe","DEF",76],["Chancel Mbemba","DEF",80],["Dylan Batubinsika","DEF",75],["Noah Sadiki","MID",79],["Samuel Moutoussamy","MID",76],["Edo Kayembe","MID",77],["Nathan Mukau","MID",77],["Charles Pickel","MID",77],["Ngal'ayel Mukau","MID",76],["Brian Cipenga","MID",74],["Th\u00e9o Bongonda","MID",78],["Ga\u00ebl Kakuta","MID",78],["Meschack Elia","FWD",77],["Fiston Mayele","FWD",78],["C\u00e9dric Bakambu","FWD",79],["Simon Banza","FWD",78],["Yoane Wissa","FWD",83]],
-  "Ecuador":[["Hern\u00e1n Gal\u00edndez","GK",76],["Mois\u00e9s Ram\u00edrez","GK",76],["Gonzalo Valle","GK",74],["Willian Pacho","DEF",85],["Piero Hincapi\u00e9","DEF",84],["Joel Ord\u00f3\u00f1ez","DEF",79],["F\u00e9lix Torres","DEF",78],["Pervis Estupi\u00f1\u00e1n","DEF",82],["\u00c1ngelo Preciado","DEF",78],["Jackson Porozo","DEF",76],["Mois\u00e9s Caicedo","MID",89],["Jordy Alc\u00edvar","MID",76],["Denil Castillo","MID",76],["Alan Franco","MID",78],["Pedro Vite","MID",77],["Kendry P\u00e1ez","MID",81],["Yaimar Medina","MID",76],["Kevin Rodr\u00edguez","FWD",78],["Anthony Valencia","FWD",76],["Enner Valencia","FWD",80],["Jordy Caicedo","FWD",75],["Jeremy Ar\u00e9valo","FWD",76],["Gonzalo Plata","FWD",80],["Alan Minda","FWD",75],["John Yeboah","FWD",75],["Nilson Angulo","FWD",77]],
-  "Egypt":[["Mohamed El Shenawy","GK",78],["Mostafa Shobeir","GK",74],["Mohamed Alaa","GK",73],["Mohamed Hani","DEF",76],["Tarek Alaa","DEF",74],["Hamdy Fathy","DEF",76],["Rami Rabia","DEF",76],["Yasser Ibrahim","DEF",76],["Hossam Abdelmaguid","DEF",75],["Mohamed Abdelmonem","DEF",79],["Ahmed Fotouh","DEF",76],["Karim Hafez","DEF",75],["Marwan Attia","MID",75],["Mohanad Lasheen","MID",75],["Nabil Emad","MID",74],["Mahmoud Saber","MID",74],["Ahmed Zizo","MID",80],["Emam Ashour","MID",80],["Mostafa Ziko","MID",74],["Mahmoud Trezeguet","MID",81],["Ibrahim Adel","MID",78],["Haissem Hassan","MID",76],["Mohamed Salah","FWD",93],["Omar Marmoush","FWD",86],["Aqtay Abdallah","FWD",73],["Hamza Abdelkarim","FWD",74]],
-  "England":[["Jordan Pickford","GK",84],["Dean Henderson","GK",79],["James Trafford","GK",77],["Reece James","DEF",83],["Tino Livramento","DEF",79],["Marc Gu\u00e9hi","DEF",83],["Ezri Konsa","DEF",80],["John Stones","DEF",84],["Jarell Quansah","DEF",78],["Nico O'Reilly","DEF",78],["Dan Burn","DEF",78],["Djed Spence","DEF",78],["Declan Rice","MID",89],["Elliot Anderson","MID",80],["Jude Bellingham","MID",93],["Jordan Henderson","MID",78],["Morgan Rogers","MID",81],["Kobbie Mainoo","MID",82],["Eberechi Eze","MID",84],["Harry Kane","FWD",92],["Ivan Toney","FWD",80],["Ollie Watkins","FWD",83],["Bukayo Saka","FWD",90],["Noni Madueke","FWD",80],["Marcus Rashford","FWD",83],["Anthony Gordon","FWD",82]],
-  "France":[["Mike Maignan","GK",85],["Brice Samba","GK",78],["Robin Risser","GK",74],["Dayot Upamecano","DEF",85],["William Saliba","DEF",88],["Lucas Digne","DEF",79],["Theo Hern\u00e1ndez","DEF",83],["Lucas Hern\u00e1ndez","DEF",80],["Ibrahima Konat\u00e9","DEF",85],["Jules Kound\u00e9","DEF",85],["Malo Gusto","DEF",79],["Maxence Lacroix","DEF",79],["N'Golo Kant\u00e9","MID",85],["Adrien Rabiot","MID",84],["Manu Kon\u00e9","MID",80],["Aur\u00e9lien Tchouam\u00e9ni","MID",87],["Warren Za\u00efre-Emery","MID",81],["Maghnes Akliouche","FWD",79],["Kylian Mbapp\u00e9","FWD",97],["Ousmane Demb\u00e9l\u00e9","FWD",90],["Michael Olise","FWD",88],["D\u00e9sir\u00e9 Dou\u00e9","FWD",84],["Bradley Barcola","FWD",83],["Rayan Cherki","FWD",82],["Marcus Thuram","FWD",84],["Jean-Philippe Mateta","FWD",80]],
-  "Germany":[["Oliver Baumann","GK",76],["Manuel Neuer","GK",84],["Alexander N\u00fcbel","GK",79],["Waldemar Anton","DEF",78],["Nathaniel Brown","DEF",76],["Joshua Kimmich","DEF",88],["David Raum","DEF",80],["Antonio R\u00fcdiger","DEF",87],["Nico Schlotterbeck","DEF",83],["Jonathan Tah","DEF",82],["Malick Thiaw","DEF",80],["Nadiem Amiri","MID",78],["Leon Goretzka","MID",82],["Pascal Gro\u00df","MID",79],["Jamie Leweling","MID",77],["Lennart Karl","MID",76],["Jamal Musiala","MID",91],["Felix Nmecha","MID",77],["Aleksandar Pavlovi\u0107","MID",81],["Angelo Stiller","MID",80],["Florian Wirtz","MID",91],["Maximilian Beier","FWD",79],["Kai Havertz","FWD",85],["Leroy San\u00e9","FWD",84],["Denis Undav","FWD",81],["Nick Woltemade","FWD",80]],
-  "Ghana":[["Benjamin Asare","GK",74],["Lawrence Ati-Zigi","GK",76],["Joseph Anang","GK",73],["Baba Rahman","DEF",76],["Derrick Luckassen","DEF",74],["Gideon Mensah","DEF",76],["Marvin Senaya","DEF",74],["Alidu Seidu","DEF",77],["Abdul Mumin","DEF",77],["Jerome Opoku","DEF",75],["Jonas Adjetey","DEF",74],["Kojo Oppong Peprah","DEF",73],["Thomas Partey","MID",84],["Kamaldeen Sulemana","MID",81],["Kwasi Sibo","MID",74],["Augustine Boakye","MID",75],["Caleb Yirenkyi","MID",74],["Abdul Fatawu Issahaku","MID",79],["Elisha Owusu","MID",75],["Christopher Bonsu Baah","FWD",76],["Ernest Nuamah","FWD",79],["Antoine Semenyo","FWD",82],["Brandon Thomas-Asante","FWD",76],["Prince Kwabena Adu","FWD",74],["I\u00f1aki Williams","FWD",82],["Jordan Ayew","FWD",79]],
-  "Haiti":[["Johnny Placide","GK",76],["Alexandre Pierre","GK",73],["Josu\u00e9 Duverger","GK",72],["Carlens Arcus","DEF",75],["Wilguens Paugain","DEF",73],["Duke Lacroix","DEF",74],["Martin Experience","DEF",73],["Jean-Kevin Duverne","DEF",76],["Ricardo Ad\u00e9","DEF",74],["Hannes Delcroix","DEF",77],["Keeto Thermoncy","DEF",72],["Leverton Pierre","MID",74],["Carl-Fred Sainthe","MID",73],["Jean-Jacques Danley","MID",73],["Jeanricner Bellegarde","MID",80],["Pierre Woodenski","MID",72],["Dominique Simon","MID",72],["Louicius Deedson","FWD",74],["Ruben Providence","FWD",76],["Josu\u00e9 Casimir","FWD",75],["Derrick Etienne","FWD",77],["Wilson Isidor","FWD",80],["Duckens Nazon","FWD",76],["Frantzdy Pierrot","FWD",78],["Yassin Fortune","FWD",73],["Lenny Joseph","FWD",74]],
-  "Iran":[["Alireza Beiranvand","GK",77],["Hossein Hosseini","GK",76],["Payam Niazmand","GK",76],["Danial Eiri","DEF",73],["Ehsan Hajsafi","DEF",77],["Saleh Hardani","DEF",75],["Hossein Kanaani","DEF",74],["Shoja Khalilzadeh","DEF",76],["Milad Mohammadi","DEF",76],["Ali Nemati","DEF",73],["Omid Noorafkan","DEF",75],["Ramin Rezaeian","DEF",77],["Rouzbeh Cheshmi","MID",76],["Saeid Ezatolahi","MID",77],["Mehdi Ghaedi","MID",77],["Saman Ghoddos","MID",78],["Mohammad Ghorbani","MID",74],["Alireza Jahanbakhsh","MID",79],["Mohammad Mohebi","MID",76],["Mehdi Torabi","MID",77],["Aria Yousefi","MID",73],["Ali Alipour","FWD",76],["Dennis Dargahi","FWD",74],["Amirhossein Hosseinzadeh","FWD",76],["Mehdi Taremi","FWD",84],["Shahriyar Moghanlou","FWD",75]],
-  "Iraq":[["Fahad Talib","GK",74],["Jalal Hassan","GK",74],["Ahmed Basil","GK",73],["Hussein Ali","DEF",75],["Manaf Younis","DEF",74],["Zaid Tahseen","DEF",74],["Rebin Sulaka","DEF",75],["Akam Hashem","DEF",73],["Merchas Doski","DEF",76],["Ahmed Yahya","DEF",73],["Zaid Ismail","DEF",73],["Frans Putros","DEF",75],["Mustafa Saadoon","DEF",73],["Amir Al-Ammari","MID",78],["Kevin Yakob","MID",77],["Zidane Iqbal","MID",78],["Aimar Sher","MID",76],["Ibrahim Bayesh","MID",75],["Ahmed Qasem","MID",78],["Youssef Amyn","MID",76],["Marko Farji","MID",75],["Ali Jassim","FWD",78],["Ali Al-Hamadi","FWD",78],["Ali Youssef","FWD",75],["Aymen Hussein","FWD",77],["Mohanad Ali","FWD",78]],
-  "Ivory Coast":[["Yahia Fofana","GK",76],["Mohamed Kon\u00e9","GK",74],["Alban Lafont","GK",78],["Emmanuel Agbadou","DEF",78],["Cl\u00e9ment Akpa","DEF",74],["Ousmane Diomand\u00e9","DEF",82],["Gu\u00e9la Dou\u00e9","DEF",78],["Ghislain Konan","DEF",75],["Odilon Kossounou","DEF",80],["Evan Ndicka","DEF",82],["Wilfried Singo","DEF",82],["Seko Fofana","MID",80],["Parfait Guiagon","MID",74],["Christ Inao Oula\u00ef","MID",75],["Franck Kessi\u00e9","MID",83],["Ibrahim Sangar\u00e9","MID",81],["Jean-Micha\u00ebl Seri","MID",77],["Simon Adingra","FWD",80],["Ange-Yoan Bonny","FWD",79],["Amad Diallo","FWD",84],["Oumar Diakit\u00e9","FWD",75],["Yan Diomand\u00e9","FWD",76],["Evann Guessand","FWD",79],["Nicolas P\u00e9p\u00e9","FWD",79],["Bazoumana Tour\u00e9","FWD",75],["Elye Wahi","FWD",78]],
-  "Japan":[["Tomoki Hayakawa","GK",75],["Zion Suzuki","GK",80],["Keisuke Osako","GK",76],["Yuto Nagatomo","DEF",75],["Shogo Taniguchi","DEF",77],["Takehiro Tomiyasu","DEF",81],["Ko Itakura","DEF",81],["Tsuyoshi Watanabe","DEF",77],["Hiroki Ito","DEF",80],["Junnosuke Suzuki","DEF",75],["Ayumu Seko","DEF",77],["Yukinari Sugawara","DEF",78],["Daichi Kamada","MID",83],["Kaishu Sano","MID",77],["Ao Tanaka","MID",80],["Wataru Endo","MID",82],["Yuito Suzuki","MID",78],["Kento Shiogai","MID",75],["Keito Nakamura","FWD",80],["Ritsu Doan","FWD",83],["Junya Ito","FWD",82],["Takefusa Kubo","FWD",86],["Ayase Ueda","FWD",80],["Koki Ogawa","FWD",77],["Daizen Maeda","FWD",81],["Keisuke Goto","FWD",75]],
-  "Jordan":[["Yazid Abulaila","GK",74],["Abdallah Al-Fakhouri","GK",73],["Nour Bani Attiah","GK",73],["Mohammad Abualnadi","DEF",75],["Husam Abu Dahab","DEF",73],["Mohammad Abu Hashish","DEF",73],["Yazan Al-Arab","DEF",76],["Abdallah Nasib","DEF",73],["Saleem Obaid","DEF",74],["Ehsan Haddad","DEF",73],["Saed Al-Rosan","DEF",73],["Anas Banawi","DEF",74],["Mohannad Abu Taha","DEF",73],["Mohammad Al-Dawoud","MID",75],["Nizar Al-Rashdan","MID",77],["Noor Al-Rawabdeh","MID",75],["Rajaei Ayed","MID",75],["Amer Jamous","MID",74],["Ibrahim Sadeh","MID",74],["Mahmoud Al-Mardi","MID",74],["Mousa Al-Taamari","FWD",82],["Odeh Al-Fakhouri","FWD",76],["Mohammad Abu Zrayq","FWD",75],["Ali Azaizeh","FWD",76],["Ali Olwan","FWD",77],["Ibrahim Sabra","FWD",74]],
-  "Mexico":[["Ra\u00fal Rangel","GK",77],["Carlos Acevedo","GK",76],["Guillermo Ochoa","GK",79],["Israel Reyes","DEF",78],["Jes\u00fas Gallardo","DEF",78],["Jorge S\u00e1nchez","DEF",77],["C\u00e9sar Montes","DEF",80],["Johan V\u00e1squez","DEF",81],["Mateo Ch\u00e1vez","DEF",76],["Erik Lira","MID",77],["Luis Romo","MID",79],["Obed Vargas","MID",77],["Brian Guti\u00e9rrez","MID",76],["Orbel\u00edn Pineda","MID",80],["Edson \u00c1lvarez","MID",83],["Gilberto Mora","MID",80],["C\u00e9sar Huerta","MID",79],["\u00c1lvaro Fidalgo","MID",80],["Luis Ch\u00e1vez","MID",79],["Roberto Alvarado","FWD",79],["Alexis Vega","FWD",80],["Juli\u00e1n Qui\u00f1ones","FWD",80],["Santiago Gim\u00e9nez","FWD",83],["Guillermo Mart\u00ednez","FWD",76],["Armando Gonz\u00e1lez","FWD",75],["Ra\u00fal Jim\u00e9nez","FWD",81]],
-  "Morocco":[["Yassine Bounou","GK",84],["Munir El Kajoui","GK",75],["Ahmed Reda Tagnaouti","GK",75],["Noussair Mazraoui","DEF",82],["Anass Salah-Eddine","DEF",76],["Youssef Belammari","DEF",74],["Nayef Aguerd","DEF",82],["Chadi Riad","DEF",78],["Issa Diop","DEF",77],["Redouane Halhal","DEF",73],["Achraf Hakimi","DEF",89],["Zakaria El Ouahdi","DEF",75],["Samir El Mourabet","MID",74],["Ayyoub Bouaddi","MID",77],["Neil El Aynaoui","MID",78],["Sofyan Amrabat","MID",81],["Azzedine Ounahi","MID",80],["Bilal El Khannouss","MID",81],["Ismael Saibari","MID",80],["Abdessamad Ezzalzouli","FWD",80],["Chemsdine Talbi","FWD",77],["Soufiane Rahimi","FWD",78],["Ayoub El Kaabi","FWD",81],["Brahim D\u00edaz","FWD",84],["Yassine Gessime","FWD",74],["Ayoube Amaimouni","FWD",74]],
-  "Netherlands":[["Mark Flekken","GK",78],["Robin Roefs","GK",76],["Bart Verbruggen","GK",81],["Nathan Ak\u00e9","DEF",83],["Denzel Dumfries","DEF",84],["Jorrel Hato","DEF",80],["Jurri\u00ebn Timber","DEF",82],["Micky van de Ven","DEF",84],["Virgil van Dijk","DEF",90],["Jan Paul van Hecke","DEF",77],["Mats Wieffer","DEF",78],["Frenkie de Jong","MID",88],["Marten de Roon","MID",79],["Ryan Gravenberch","MID",85],["Justin Kluivert","MID",80],["Teun Koopmeiners","MID",82],["Tijjani Reijnders","MID",85],["Guus Til","MID",77],["Quinten Timber","MID",79],["Brian Brobbey","FWD",79],["Memphis Depay","FWD",83],["Cody Gakpo","FWD",86],["Noa Lang","FWD",79],["Donyell Malen","FWD",81],["Crysencio Summerville","FWD",80],["Wout Weghorst","FWD",78]],
-  "New Zealand":[["Max Crocombe","GK",74],["Alex Paulsen","GK",75],["Michael Woud","GK",73],["Tim Payne","DEF",74],["Francis De Vries","DEF",73],["Tyler Bindon","DEF",77],["Michael Boxall","DEF",75],["Liberato Cacace","DEF",77],["Nando Pijnaker","DEF",74],["Finn Surman","DEF",75],["Callan Elliot","DEF",73],["Tommy Smith","DEF",73],["Joe Bell","MID",76],["Marko Stameni\u0107","MID",77],["Alex Rufer","MID",75],["Ryan Thomas","MID",75],["Lachlan Bayliss","MID",73],["Matt Garbett","FWD",75],["Chris Wood","FWD",82],["Sarpreet Singh","FWD",75],["Eli Just","FWD",74],["Kosta Barbarouses","FWD",75],["Ben Waine","FWD",74],["Ben Old","FWD",77],["Callum McCowatt","FWD",74],["Jesse Randall","FWD",73]],
-  "Norway":[["\u00d8rjan Nyland","GK",78],["Egil Selvik","GK",74],["Sander Tangvik","GK",73],["Julian Ryerson","DEF",80],["Kristoffer Ajer","DEF",79],["Leo Skiri \u00d8stig\u00e5rd","DEF",79],["David M\u00f8ller Wolfe","DEF",76],["Marcus Holmgren Pedersen","DEF",77],["Torbj\u00f8rn Heggem","DEF",76],["Fredrik Bj\u00f8rkan","DEF",76],["Henrik Falchener","DEF",73],["Sondre Lang\u00e5s","DEF",74],["Martin \u00d8degaard","MID",89],["Sander Berge","MID",79],["Patrick Berg","MID",77],["Kristian Thorstvedt","MID",78],["Morten Thorsby","MID",76],["Thelo Aasgaard","MID",77],["Andreas Schjelderup","MID",78],["Jens Petter Hauge","MID",77],["Fredrik Aursnes","MID",79],["Erling Haaland","FWD",95],["Alexander S\u00f8rloth","FWD",84],["J\u00f8rgen Strand Larsen","FWD",80],["Oscar Bobb","FWD",79],["Antonio Nusa","FWD",81]],
-  "Panama":[["Orlando Mosquera","GK",76],["Luis Mej\u00eda","GK",75],["C\u00e9sar Samudio","GK",73],["C\u00e9sar Blackman","DEF",74],["Jorge Guti\u00e9rrez","DEF",73],["Amir Murillo","DEF",78],["Fidel Escobar","DEF",75],["Andr\u00e9s Andrade","DEF",77],["Edgardo Fari\u00f1a","DEF",73],["Jos\u00e9 C\u00f3rdoba","DEF",78],["Eric Davis","DEF",76],["Jiovani Ramos","DEF",73],["Roderick Miller","DEF",74],["An\u00edbal Godoy","MID",77],["Adalberto Carrasquilla","MID",79],["Carlos Harvey","MID",76],["Cristian Mart\u00ednez","MID",74],["Jos\u00e9 Luis Rodr\u00edguez","MID",76],["Cesar Yanis","MID",73],["Yoel B\u00e1rcenas","MID",78],["Alberto Quintero","MID",75],["Azar\u00edas Londo\u00f1o","MID",74],["Ismael D\u00edaz","FWD",78],["Cecilio Waterman","FWD",75],["Jos\u00e9 Fajardo","FWD",75],["Tom\u00e1s Rodr\u00edguez","FWD",73]],
-  "Paraguay":[["Gatito Fern\u00e1ndez","GK",77],["Orlando Gill","GK",74],["Gast\u00f3n Olveira","GK",74],["Gustavo G\u00f3mez","DEF",82],["J\u00fanior Alonso","DEF",79],["Fabi\u00e1n Balbuena","DEF",78],["Omar Alderete","DEF",80],["Juan Jos\u00e9 C\u00e1ceres","DEF",75],["Gustavo Vel\u00e1zquez","DEF",75],["Jos\u00e9 Canale","DEF",76],["Alexandro Maidana","DEF",75],["Miguel Almir\u00f3n","MID",81],["Kaku","MID",78],["Andr\u00e9s Cubas","MID",79],["Ram\u00f3n Sosa","MID",80],["Diego G\u00f3mez","MID",80],["Dami\u00e1n Bobadilla","MID",76],["Braian Ojeda","MID",76],["Mat\u00edas Galarza","MID",76],["Maur\u00edcio","MID",78],["Antonio Sanabria","FWD",80],["Julio Enciso","FWD",80],["Gabriel \u00c1valos","FWD",76],["\u00c1lex Arce","FWD",76],["Isidro Pitta","FWD",75],["Gustavo Caballero","FWD",75]],
-  "Portugal":[["Diogo Costa","GK",85],["Jos\u00e9 S\u00e1","GK",78],["Rui Silva","GK",78],["Diogo Dalot","DEF",83],["Matheus Nunes","DEF",81],["N\u00e9lson Semedo","DEF",79],["Jo\u00e3o Cancelo","DEF",84],["Nuno Mendes","DEF",86],["Gon\u00e7alo In\u00e1cio","DEF",81],["Renato Veiga","DEF",79],["R\u00faben Dias","DEF",88],["Tom\u00e1s Ara\u00fajo","DEF",77],["R\u00faben Neves","MID",81],["Samuel Costa","MID",76],["Jo\u00e3o Neves","MID",86],["Vitinha","MID",88],["Bruno Fernandes","MID",89],["Bernardo Silva","MID",88],["Jo\u00e3o F\u00e9lix","FWD",82],["Francisco Trinc\u00e3o","FWD",80],["Francisco Concei\u00e7\u00e3o","FWD",81],["Pedro Neto","FWD",83],["Rafael Le\u00e3o","FWD",86],["Gon\u00e7alo Guedes","FWD",79],["Gon\u00e7alo Ramos","FWD",82],["Cristiano Ronaldo","FWD",87]],
-  "Qatar":[["Salah Zakaria","GK",74],["Mahmoud Abunada","GK",73],["Meshaal Barsham","GK",76],["Hashmi Hussein","DEF",73],["Ayoub Alawi","DEF",74],["Boualem Khoukhi","DEF",77],["Pedro Miguel","DEF",76],["Issa Laaye","DEF",73],["Lucas Mendes","DEF",75],["Sultan Al-Brake","DEF",74],["Homam Al-Amin","DEF",74],["Mohammed Al-Manai","MID",73],["Jassem Jaber","MID",74],["Karim Boudiaf","MID",77],["Ahmed Fathi","MID",73],["Abdulaziz Hatem","MID",76],["Assim Madibo","MID",76],["Tahseen Mohammed","FWD",74],["Edmilson Junior","FWD",79],["Almoez Ali","FWD",80],["Akram Afif","FWD",82],["Mohammed Muntari","FWD",75],["Youssef Abdulrazzaq","FWD",73],["Ahmed Alaa","FWD",73],["Hassan Al-Haydos","FWD",78],["Ahmed Al-Janahi","FWD",72]],
-  "Saudi Arabia":[["Nawaf Al-Aqidi","GK",76],["Mohammed Al-Owais","GK",76],["Ahmed Alkassar","GK",74],["Saud Abdulhamid","DEF",78],["Jehad Thakri","DEF",74],["Abdulelah Al-Amri","DEF",78],["Hassan Tambakti","DEF",78],["Ali Lajami","DEF",76],["Hassan Kadesh","DEF",76],["Moteb Al-Harbi","DEF",74],["Nawaf Boushal","DEF",74],["Ali Al-Majrashi","DEF",75],["Mohammed Abu Alshamat","DEF",74],["Ziyad Al-Johani","MID",75],["Nasser Al-Dawsari","MID",78],["Mohamed Kanno","MID",79],["Abdullah Al-Khaibari","MID",77],["Alaa Al-Hejji","MID",74],["Musab Al-Juwayr","MID",78],["Sultan Mandash","MID",74],["Ayman Yahya","MID",76],["Khalid Al-Ghannam","MID",76],["Salem Al-Dawsari","FWD",83],["Abdullah Al-Hamdan","FWD",78],["Feras Al-Brikan","FWD",78],["Saleh Al-Shehri","FWD",78]],
-  "Scotland":[["Craig Gordon","GK",77],["Angus Gunn","GK",77],["Liam Kelly","GK",74],["Grant Hanley","DEF",76],["Jack Hendry","DEF",77],["Aaron Hickey","DEF",78],["Dom Hyam","DEF",74],["Scott McKenna","DEF",76],["Nathan Patterson","DEF",77],["Anthony Ralston","DEF",75],["Andy Robertson","DEF",85],["John Souttar","DEF",77],["Kieran Tierney","DEF",81],["Ryan Christie","MID",79],["Findlay Curtis","MID",73],["Lewis Ferguson","MID",82],["Ben Gannon-Doak","MID",77],["Tyler Fletcher","MID",74],["John McGinn","MID",82],["Kenny McLean","MID",77],["Scott McTominay","MID",85],["Ch\u00e9 Adams","FWD",79],["Lyndon Dykes","FWD",77],["George Hirst","FWD",75],["Lawrence Shankland","FWD",78],["Ross Stewart","FWD",75]],
-  "Senegal":[["\u00c9douard Mendy","GK",82],["Mory Diaw","GK",74],["Yehvann Diouf","GK",75],["Kr\u00e9pin Diatta","DEF",79],["Antoine Mendy","DEF",75],["Kalidou Koulibaly","DEF",83],["El Hadji Malick Diouf","DEF",78],["Mamadou Sarr","DEF",76],["Moussa Niakhat\u00e9","DEF",79],["Abdoulaye Seck","DEF",75],["Isma\u00efl Jakobs","DEF",78],["Idrissa Gana Gueye","MID",81],["Pape Gueye","MID",78],["Lamine Camara","MID",80],["Habib Diarra","MID",80],["Path\u00e9 Ciss","MID",76],["Pape Matar Sarr","MID",82],["Bara Ndiaye","MID",75],["Sadio Man\u00e9","FWD",85],["Isma\u00efla Sarr","FWD",82],["Iliman Ndiaye","FWD",81],["Assane Diao","FWD",78],["Ibrahim Mbaye","FWD",77],["Nicolas Jackson","FWD",82],["Bamba Dieng","FWD",76],["Ch\u00e9rif Ndiaye","FWD",75]],
-  "South Africa":[["Ronwen Williams","GK",80],["Ricardo Goss","GK",74],["Sipho Chaine","GK",74],["Khuliso Mudau","DEF",77],["Olwethu Makhanya","DEF",74],["Bradley Cross","DEF",74],["Thabang Matuludi","DEF",73],["Nkosinathi Sibisi","DEF",75],["Aubrey Modiba","DEF",77],["Khulumani Ndamane","DEF",73],["Ime Okon","DEF",74],["Samukele Kabini","DEF",74],["Mbekezeli Mbokazi","DEF",74],["Teboho Mokoena","MID",79],["Jayden Adams","MID",75],["Thalente Mbatha","MID",75],["Kamogelo Sebelebele","MID",74],["Sphephelo Sithole","MID",75],["Oswin Appollis","FWD",77],["Tshepang Moremi","FWD",74],["Evidence Makgopa","FWD",76],["Lyle Foster","FWD",79],["Iqraam Rayners","FWD",76],["Relebohile Mofokeng","FWD",78],["Themba Zwane","FWD",78],["Thapelo Maseko","FWD",75]],
-  "South Korea":[["Song Bum-keun","GK",76],["Jo Hyeon-woo","GK",79],["Kim Seung-gyu","GK",77],["Jens Castrop","DEF",76],["Lee Han-beom","DEF",75],["Park Jin-seob","DEF",74],["Lee Ki-hyuk","DEF",74],["Kim Min-jae","DEF",87],["Kim Moon-hwan","DEF",76],["Kim Tae-hyeon","DEF",74],["Lee Tae-seok","DEF",74],["Seol Young-woo","DEF",77],["Cho Wije","DEF",75],["Lee Dong-gyeong","MID",77],["Hwang Hee-chan","MID",83],["Yang Hyun-jun","MID",77],["Hwang In-beom","MID",81],["Lee Jae-sung","MID",80],["Kim Jin-gyu","MID",75],["Eom Ji-sung","MID",76],["Bae Jun-ho","MID",79],["Lee Kang-in","MID",85],["Paik Seung-ho","MID",78],["Cho Gue-sung","FWD",79],["Son Heung-min","FWD",89],["Oh Hyeon-gyu","FWD",77]],
-  "Spain":[["Unai Sim\u00f3n","GK",83],["David Raya","GK",84],["Joan Garc\u00eda","GK",79],["Marc Cucurella","DEF",83],["Alejandro Grimaldo","DEF",82],["Pau Cubars\u00ed","DEF",84],["Aymeric Laporte","DEF",83],["Marc Pubill","DEF",76],["Eric Garc\u00eda","DEF",79],["Marcos Llorente","DEF",82],["Pedro Porro","DEF",80],["Pedri","MID",90],["Fabi\u00e1n Ruiz","MID",84],["Mart\u00edn Zubimendi","MID",84],["Gavi","MID",84],["Rodri","MID",92],["\u00c1lex Baena","MID",81],["Mikel Merino","MID",83],["Mikel Oyarzabal","FWD",84],["Dani Olmo","FWD",86],["Nico Williams","FWD",88],["Y\u00e9remy Pino","FWD",79],["Ferran Torres","FWD",82],["Borja Iglesias","FWD",76],["V\u00edctor Mu\u00f1oz","FWD",75],["Lamine Yamal","FWD",94]],
-  "Sweden":[["Viktor Johansson","GK",77],["Kristoffer Nordfeldt","GK",74],["Jacob Widell Zetterstr\u00f6m","GK",74],["Hjalmar Ekdal","DEF",76],["Gabriel Gudmundsson","DEF",78],["Isak Hien","DEF",82],["Gustaf Lagerbielke","DEF",75],["Victor Lindel\u00f6f","DEF",81],["Eric Smith","DEF",75],["Carl Starfelt","DEF",77],["Elliot Stroud","DEF",73],["Daniel Svensson","DEF",77],["Jesper Karlstr\u00f6m","MID",76],["Yasin Ayari","MID",78],["Mattias Svanberg","MID",78],["Lucas Bergvall","MID",80],["Besfort Zeneli","MID",75],["Herman Johansson","MID",74],["Taha Ali","FWD",74],["Alexander Bernhardsson","FWD",74],["Anthony Elanga","FWD",83],["Viktor Gy\u00f6keres","FWD",89],["Alexander Isak","FWD",90],["Gustaf Nilsson","FWD",76],["Benjamin Nygren","FWD",77],["Ken Sema","FWD",76]],
-  "Switzerland":[["Marvin Keller","GK",74],["Gregor Kobel","GK",84],["Yvon Mvogo","GK",74],["Manuel Akanji","DEF",85],["Aur\u00e8le Amenda","DEF",76],["Eray C\u00f6mert","DEF",76],["Nico Elvedi","DEF",79],["Luca Jaquez","DEF",74],["Miro Muheim","DEF",75],["Ricardo Rodr\u00edguez","DEF",80],["Silvan Widmer","DEF",77],["Michel Aebischer","MID",78],["Remo Freuler","MID",80],["Ardon Jashari","MID",80],["Fabian Rieder","MID",77],["Djibril Sow","MID",78],["Granit Xhaka","MID",85],["Denis Zakaria","MID",82],["Zeki Amdouni","FWD",78],["Breel Embolo","FWD",81],["Dan Ndoye","FWD",82],["Noah Okafor","FWD",79],["Rub\u00e9n Vargas","FWD",79],["Christian Fassnacht","FWD",75],["Cedric Itten","FWD",74],["Johan Manzambi","FWD",76]],
-  "Tunisia":[["Sabri Ben Hassan","GK",74],["Abdelmouhib Chamakh","GK",73],["Aymen Dahmen","GK",77],["Ali Abdi","DEF",76],["Adem Arous","DEF",74],["Mohamed Amine Ben Hamida","DEF",74],["Dylan Bronn","DEF",77],["Raed Chikhaoui","DEF",73],["Moutaz Neffati","DEF",73],["Omar Rekik","DEF",76],["Montassar Talbi","DEF",78],["Yan Valery","DEF",76],["Mortadha Ben Ouanes","MID",74],["Anis Ben Slimane","MID",77],["Ismael Gharbi","MID",76],["Rani Khedira","MID",78],["Mohamed Hadj Mahmoud","MID",73],["Hannibal Mejbri","MID",79],["Ellyes Skhiri","MID",81],["Elias Achouri","FWD",78],["Khalil Ayari","FWD",74],["Firas Chaouat","FWD",74],["Rayan Elloumi","FWD",73],["Hazem Mastouri","FWD",72],["Elias Saad","FWD",78],["Sebastian Tounekti","FWD",77]],
-  "T\u00fcrkiye":[["Altay Bay\u0131nd\u0131r","GK",77],["Mert G\u00fcnok","GK",76],["U\u011furcan \u00c7ak\u0131r","GK",79],["Abd\u00fclkerim Bardakc\u0131","DEF",78],["\u00c7a\u011flar S\u00f6y\u00fcnc\u00fc","DEF",79],["Eren Elmal\u0131","DEF",76],["Ferdi Kad\u0131o\u011flu","DEF",81],["Merih Demiral","DEF",81],["Mert M\u00fcld\u00fcr","DEF",77],["Ozan Kabak","DEF",80],["Samet Akayd\u0131n","DEF",75],["Zeki \u00c7elik","DEF",79],["Hakan \u00c7alhano\u011flu","MID",87],["\u0130smail Y\u00fcksek","MID",76],["Kaan Ayhan","MID",76],["Orkun K\u00f6k\u00e7\u00fc","MID",82],["Salih \u00d6zcan","MID",77],["Arda G\u00fcler","FWD",85],["Bar\u0131\u015f Alper Y\u0131lmaz","FWD",79],["Can Uzun","FWD",79],["Deniz G\u00fcl","FWD",74],["\u0130rfan Can Kahveci","FWD",78],["Kenan Y\u0131ld\u0131z","FWD",84],["Kerem Akt\u00fcrko\u011flu","FWD",81],["O\u011fuz Ayd\u0131n","FWD",74],["Yunus Akg\u00fcn","FWD",78]],
-  "United States":[["Chris Brady","GK",74],["Matt Freese","GK",76],["Matt Turner","GK",79],["Max Arfsten","DEF",75],["Sergi\u00f1o Dest","DEF",80],["Alex Freeman","DEF",75],["Mark McKenzie","DEF",77],["Tim Ream","DEF",78],["Chris Richards","DEF",80],["Antonee Robinson","DEF",82],["Miles Robinson","DEF",78],["Joe Scally","DEF",77],["Auston Trusty","DEF",77],["Tyler Adams","MID",82],["Sebastian Berhalter","MID",75],["Weston McKennie","MID",83],["Gio Reyna","MID",80],["Cristian Roldan","MID",75],["Malik Tillman","MID",81],["Brenden Aaronson","FWD",79],["Folarin Balogun","FWD",81],["Ricardo Pepi","FWD",79],["Christian Pulisic","FWD",87],["Tim Weah","FWD",80],["Haji Wright","FWD",76],["Alejandro Zendejas","FWD",77]],
-  "Uruguay":[["Sergio Rochet","GK",79],["Fernando Muslera","GK",78],["Santiago Mele","GK",75],["Guillermo Varela","DEF",78],["Ronald Ara\u00fajo","DEF",87],["Jos\u00e9 Mar\u00eda Gim\u00e9nez","DEF",85],["Santiago Bueno","DEF",78],["Sebasti\u00e1n C\u00e1ceres","DEF",77],["Math\u00edas Olivera","DEF",80],["Joaqu\u00edn Piquerez","DEF",80],["Mat\u00edas Vi\u00f1a","DEF",78],["Manuel Ugarte","MID",82],["Emiliano Mart\u00ednez (URU)","MID",76],["Rodrigo Bentancur","MID",83],["Federico Valverde","MID",90],["Agust\u00edn Canobbio","MID",77],["Giorgian de Arrascaeta","MID",83],["Nicol\u00e1s de la Cruz","MID",82],["Rodrigo Zalazar","MID",77],["Facundo Pellistri","MID",79],["Maximiliano Ara\u00fajo","MID",78],["Brian Rodr\u00edguez","MID",78],["Rodrigo Aguirre","FWD",77],["Federico Vi\u00f1as","FWD",76],["Darwin N\u00fa\u00f1ez","FWD",85]],
-  "Uzbekistan":[["Utkir Yusupov","GK",74],["Abduvohid Nematov","GK",73],["Botirali Ergashev","GK",73],["Rustam Ashurmatov","DEF",76],["Farrukh Sayfiev","DEF",74],["Khojiakbar Alijonov","DEF",75],["Sherzod Nasrullaev","DEF",75],["Umar Eshmurodov","DEF",74],["Abdukodir Khusanov","DEF",82],["Abdulla Abdullaev","DEF",74],["Bekhruz Karimov","DEF",74],["Jakhongir Urozov","DEF",74],["Avazbek Ulmasaliev","DEF",73],["Otabek Shukurov","MID",77],["Jaloliddin Masharipov","MID",78],["Odiljon Hamrobekov","MID",76],["Oston Urunov","MID",76],["Jamshid Iskanderov","MID",76],["Dostonbek Khamdamov","MID",77],["Abbosbek Fayzullaev","MID",81],["Akmal Mozgovoy","MID",74],["Azizjon Ganiev","MID",75],["Sherzod Esanov","MID",73],["Eldor Shomurodov","FWD",80],["Igor Sergeev","FWD",76],["Azizbek Amonov","FWD",74]]
+  "Algeria":[["Luca Zidane","GK",76],["Rafik Belghali","DEF",76],["Rayan A\u00eft-Nouri","DEF",83],["Jaouen Hadjam","DEF",77],["A\u00efssa Mandi","DEF",78],["Ramy Benseba\u00efni","DEF",80],["Mohamed Amine Touga\u00ef","DEF",76],["Nabil Bentaleb","MID",78],["Hicham Boudaoui","MID",78],["Houssem Aouar","MID",80],["Far\u00e8s Cha\u00efbi","MID",79],["Ibrahim Maza","MID",78],["Ramiz Zerrouki","MID",78],["Mohamed Amine Amoura","FWD",82],["Far\u00e8s Ghedjemis","FWD",75],["Amine Gouiri","FWD",82],["Anis Hadj Moussa","FWD",78],["Riyad Mahrez","FWD",84]],
+  "Argentina":[["Emiliano Mart\u00ednez","GK",88],["Nahuel Molina","DEF",80],["Lisandro Mart\u00ednez","DEF",84],["Nicol\u00e1s Otamendi","DEF",81],["Cristian Romero","DEF",86],["Nicol\u00e1s Tagliafico","DEF",80],["Leandro Paredes","MID",81],["Rodrigo De Paul","MID",84],["Exequiel Palacios","MID",81],["Enzo Fern\u00e1ndez","MID",87],["Alexis Mac Allister","MID",88],["Giovani Lo Celso","MID",81],["Lionel Messi","FWD",96],["Nico Paz","FWD",80],["Thiago Almada","FWD",81],["Nicol\u00e1s Gonz\u00e1lez","FWD",82],["Lautaro Mart\u00ednez","FWD",90],["Juli\u00e1n \u00c1lvarez","FWD",90]],
+  "Australia":[["Mathew Ryan","GK",79],["Aziz Behich","DEF",77],["Jordan Bos","DEF",78],["Harry Souttar","DEF",79],["Alessandro Circati","DEF",78],["Kye Rowles","DEF",77],["Ajdin Hrustic","MID",77],["Jackson Irvine","MID",80],["Connor Metcalfe","MID",77],["Aiden O'Neill","MID",76],["Nestory Irankunda","FWD",78],["Mathew Leckie","FWD",78],["Marco Tilio","FWD",75],["Kusini Yengi","FWD",76],["Riley McGree","FWD",78],["Christian Volpato","FWD",77]],
+  "Austria":[["Alexander Schlager","GK",77],["David Alaba","DEF",84],["Kevin Danso","DEF",80],["Marco Friedl","DEF",78],["Philipp Lienhart","DEF",78],["Alexander Prass","DEF",77],["Christoph Baumgartner","MID",81],["Carney Chukwuemeka","MID",78],["Florian Grillitsch","MID",77],["Konrad Laimer","MID",82],["Marcel Sabitzer","MID",82],["Xaver Schlager","MID",80],["Nicolas Seiwald","MID",79],["Romano Schmid","MID",78],["Paul Wanner","MID",80],["Patrick Wimmer","MID",77],["Marko Arnautovi\u0107","FWD",80],["Michael Gregoritsch","FWD",78]],
+  "Belgium":[["Thibaut Courtois","GK",90],["Timothy Castagne","DEF",79],["Zeno Debast","DEF",78],["Maxim De Cuyper","DEF",78],["Koni De Winter","DEF",78],["Arthur Theate","DEF",78],["Kevin De Bruyne","MID",89],["Amadou Onana","MID",82],["Nicolas Raskin","MID",78],["Youri Tielemans","MID",82],["Hans Vanaken","MID",78],["Axel Witsel","MID",79],["Charles De Ketelaere","FWD",82],["Jeremy Doku","FWD",84],["Romelu Lukaku","FWD",85],["Dodi Lukebakio","FWD",79],["Alexis Saelemaekers","FWD",80],["Leandro Trossard","FWD",83]],
+  "Bosnia and Herzegovina":[["Nikola Vasilj","GK",76],["Sead Kola\u0161inac","DEF",80],["Amar Dedi\u0107","DEF",80],["Nikola Kati\u0107","DEF",76],["Tarik Muharemovi\u0107","DEF",76],["Dennis Had\u017eikaduni\u0107","DEF",74],["Amir Had\u017eiahmetovi\u0107","MID",76],["Ivan \u0160unji\u0107","MID",76],["Ivan Ba\u0161i\u0107","MID",74],["D\u017eenis Burni\u0107","MID",74],["Benjamin Tahirovi\u0107","MID",76],["Armin Gigovi\u0107","MID",76],["Kerim Alajbegovi\u0107","FWD",76],["Esmir Bajraktarevi\u0107","FWD",78],["Ermedin Demirovi\u0107","FWD",82],["Samed Ba\u017edar","FWD",74],["Haris Tabakovi\u0107","FWD",78],["Edin D\u017eeko","FWD",82]],
+  "Brazil":[["Alisson","GK",90],["Ederson","GK",84],["Gabriel Magalh\u00e3es","DEF",88],["Marquinhos","DEF",88],["Danilo","DEF",80],["Bremer","DEF",84],["Iba\u00f1ez","DEF",79],["Bruno Guimar\u00e3es","MID",87],["Casemiro","MID",83],["Fabinho","MID",79],["Lucas Paquet\u00e1","MID",84],["Raphinha","MID",91],["Neymar","MID",88],["Vin\u00edcius J\u00fanior","FWD",94],["Luiz Henrique","FWD",80],["Matheus Cunha","FWD",84],["Gabriel Martinelli","FWD",83],["Endrick","FWD",82]],
+  "Canada":[["Dayne St. Clair","GK",78],["Maxime Cr\u00e9peau","GK",77],["Alistair Johnston","DEF",79],["Derek Cornelius","DEF",78],["Richie Laryea","DEF",77],["Mo\u00efse Bombito","DEF",79],["Alphonso Davies","DEF",87],["Stephen Eust\u00e1quio","MID",81],["Isma\u00ebl Kon\u00e9","MID",78],["Tajon Buchanan","MID",80],["Mathieu Choini\u00e8re","MID",76],["Marcelo Flores","MID",77],["Jonathan Osorio","MID",77],["Jonathan David","FWD",86],["Cyle Larin","FWD",80],["Tani Oluwaseyi","FWD",77],["Promise David","FWD",76],["Jacob Shaffelburg","FWD",76]],
+  "Cape Verde":[["Vozinha","GK",75],["Steven Moreira","DEF",76],["Wagner Pina","DEF",75],["Sidny Lopes Cabral","DEF",76],["Logan Costa","DEF",79],["Roberto Lopes","DEF",76],["Stopira","DEF",75],["Jamiro Monteiro","MID",79],["Telmo Arcanjo","MID",76],["Laros Duarte","MID",76],["Deroy Duarte","MID",76],["Kevin Pina","MID",75],["Ryan Mendes","FWD",78],["Willy Semedo","FWD",75],["Garry Rodrigues","FWD",78],["Jovane Cabral","FWD",78],["Nuno Da Costa","FWD",75],["Dailon Livramento","FWD",75]],
+  "Colombia":[["Camilo Vargas","GK",78],["Daniel Mu\u00f1oz","DEF",81],["Yerry Mina","DEF",79],["Davinson S\u00e1nchez","DEF",81],["Jhon Lucum\u00ed","DEF",80],["James Rodr\u00edguez","MID",84],["Jefferson Lerma","MID",80],["Richard R\u00edos","MID",81],["Juan Fernando Quintero","MID",80],["Jorge Carrascal","MID",78],["Kevin Casta\u00f1o","MID",78],["Luis D\u00edaz","FWD",89],["Jhon C\u00f3rdoba","FWD",79],["Juan Camilo Hern\u00e1ndez","FWD",79],["Jhon Arias","FWD",82]],
+  "Croatia":[["Dominik Livakovi\u0107","GK",80],["Jo\u0161ko Gvardiol","DEF",87],["Duje \u0106aleta-Car","DEF",78],["Josip \u0160utalo","DEF",78],["Josip Stani\u0161i\u0107","DEF",80],["Luka Modri\u0107","MID",86],["Mateo Kova\u010di\u0107","MID",86],["Mario Pa\u0161ali\u0107","MID",80],["Nikola Vla\u0161i\u0107","MID",80],["Luka Su\u010di\u0107","MID",79],["Martin Baturina","MID",79],["Petar Su\u010di\u0107","MID",79],["Ivan Peri\u0161i\u0107","FWD",82],["Andrej Kramari\u0107","FWD",82],["Ante Budimir","FWD",79],["Marco Pa\u0161ali\u0107","FWD",77],["Petar Musa","FWD",79],["Igor Matanovi\u0107","FWD",77]],
+  "Cura\u00e7ao":[["Eloy Room","GK",76],["Riechedly Bazoer","DEF",78],["Joshua Brenet","DEF",76],["Armando Obispo","DEF",77],["Shurandy Sambo","DEF",75],["Juninho Bacuna","MID",77],["Leandro Bacuna","MID",78],["Livano Comenencia","MID",75],["Kevin Felida","MID",74],["Ar'Jany Martha","MID",74],["Tyrese Noslin","MID",74],["Tahith Chong","FWD",79],["Kenji Gorr\u00e9","FWD",75],["Sontje Hansen","FWD",76],["Gervane Kastaneer","FWD",74],["Brandley Kuwas","FWD",76],["J\u00fcrgen Locadia","FWD",77],["Jearl Margaritha","FWD",74]],
+  "Czechia":[["Mat\u011bj Kov\u00e1\u0159","GK",77],["Jind\u0159ich Stan\u011bk","GK",78],["Vladim\u00edr Coufal","DEF",79],["Tom\u00e1\u0161 Hole\u0161","DEF",78],["Robin Hran\u00e1\u010d","DEF",77],["David Jur\u00e1sek","DEF",77],["Ladislav Krej\u010d\u00ed","DEF",81],["David Zima","DEF",76],["Luk\u00e1\u0161 \u010cerv","MID",76],["Vladim\u00edr Darida","MID",76],["Luk\u00e1\u0161 Provod","MID",80],["Michal Sad\u00edlek","MID",76],["Tom\u00e1\u0161 Sou\u010dek","MID",83],["Pavel \u0160ulc","MID",80],["Adam Hlo\u017eek","FWD",81],["Tom\u00e1\u0161 Chor\u00fd","FWD",78],["Jan Kuchta","FWD",77],["Patrik Schick","FWD",84]],
+  "DR Congo":[["Lionel Mpasi","GK",75],["Aaron Wan-Bissaka","DEF",82],["Arthur Masuaku","DEF",77],["Axel Tuanzebe","DEF",76],["Chancel Mbemba","DEF",80],["Noah Sadiki","MID",79],["Samuel Moutoussamy","MID",76],["Edo Kayembe","MID",77],["Nathan Mukau","MID",77],["Charles Pickel","MID",77],["Ngal'ayel Mukau","MID",76],["Th\u00e9o Bongonda","MID",78],["Ga\u00ebl Kakuta","MID",78],["Meschack Elia","FWD",77],["Fiston Mayele","FWD",78],["C\u00e9dric Bakambu","FWD",79],["Simon Banza","FWD",78],["Yoane Wissa","FWD",83]],
+  "Ecuador":[["Hern\u00e1n Gal\u00edndez","GK",76],["Willian Pacho","DEF",85],["Piero Hincapi\u00e9","DEF",84],["Joel Ord\u00f3\u00f1ez","DEF",79],["F\u00e9lix Torres","DEF",78],["Pervis Estupi\u00f1\u00e1n","DEF",82],["\u00c1ngelo Preciado","DEF",78],["Mois\u00e9s Caicedo","MID",89],["Alan Franco","MID",78],["Pedro Vite","MID",77],["Kendry P\u00e1ez","MID",81],["Yaimar Medina","MID",76],["Kevin Rodr\u00edguez","FWD",78],["Anthony Valencia","FWD",76],["Enner Valencia","FWD",80],["Jeremy Ar\u00e9valo","FWD",76],["Gonzalo Plata","FWD",80],["Nilson Angulo","FWD",77]],
+  "Egypt":[["Mohamed El Shenawy","GK",78],["Mohamed Hani","DEF",76],["Hamdy Fathy","DEF",76],["Rami Rabia","DEF",76],["Yasser Ibrahim","DEF",76],["Hossam Abdelmaguid","DEF",75],["Mohamed Abdelmonem","DEF",79],["Ahmed Fotouh","DEF",76],["Karim Hafez","DEF",75],["Marwan Attia","MID",75],["Mohanad Lasheen","MID",75],["Ahmed Zizo","MID",80],["Emam Ashour","MID",80],["Mahmoud Trezeguet","MID",81],["Ibrahim Adel","MID",78],["Haissem Hassan","MID",76],["Mohamed Salah","FWD",93],["Omar Marmoush","FWD",86]],
+  "England":[["Jordan Pickford","GK",84],["Reece James","DEF",83],["Marc Gu\u00e9hi","DEF",83],["Ezri Konsa","DEF",80],["John Stones","DEF",84],["Declan Rice","MID",89],["Elliot Anderson","MID",80],["Jude Bellingham","MID",93],["Morgan Rogers","MID",81],["Kobbie Mainoo","MID",82],["Eberechi Eze","MID",84],["Harry Kane","FWD",92],["Ivan Toney","FWD",80],["Ollie Watkins","FWD",83],["Bukayo Saka","FWD",90],["Noni Madueke","FWD",80],["Marcus Rashford","FWD",83],["Anthony Gordon","FWD",82]],
+  "France":[["Mike Maignan","GK",85],["Dayot Upamecano","DEF",85],["William Saliba","DEF",88],["Theo Hern\u00e1ndez","DEF",83],["Ibrahima Konat\u00e9","DEF",85],["Jules Kound\u00e9","DEF",85],["N'Golo Kant\u00e9","MID",85],["Adrien Rabiot","MID",84],["Aur\u00e9lien Tchouam\u00e9ni","MID",87],["Warren Za\u00efre-Emery","MID",81],["Kylian Mbapp\u00e9","FWD",97],["Ousmane Demb\u00e9l\u00e9","FWD",90],["Michael Olise","FWD",88],["D\u00e9sir\u00e9 Dou\u00e9","FWD",84],["Bradley Barcola","FWD",83],["Rayan Cherki","FWD",82],["Marcus Thuram","FWD",84],["Jean-Philippe Mateta","FWD",80]],
+  "Germany":[["Manuel Neuer","GK",84],["Joshua Kimmich","DEF",88],["David Raum","DEF",80],["Antonio R\u00fcdiger","DEF",87],["Nico Schlotterbeck","DEF",83],["Jonathan Tah","DEF",82],["Malick Thiaw","DEF",80],["Leon Goretzka","MID",82],["Pascal Gro\u00df","MID",79],["Jamal Musiala","MID",91],["Aleksandar Pavlovi\u0107","MID",81],["Angelo Stiller","MID",80],["Florian Wirtz","MID",91],["Maximilian Beier","FWD",79],["Kai Havertz","FWD",85],["Leroy San\u00e9","FWD",84],["Denis Undav","FWD",81],["Nick Woltemade","FWD",80]],
+  "Ghana":[["Lawrence Ati-Zigi","GK",76],["Baba Rahman","DEF",76],["Gideon Mensah","DEF",76],["Alidu Seidu","DEF",77],["Abdul Mumin","DEF",77],["Jerome Opoku","DEF",75],["Thomas Partey","MID",84],["Kamaldeen Sulemana","MID",81],["Augustine Boakye","MID",75],["Abdul Fatawu Issahaku","MID",79],["Elisha Owusu","MID",75],["Christopher Bonsu Baah","FWD",76],["Ernest Nuamah","FWD",79],["Antoine Semenyo","FWD",82],["Brandon Thomas-Asante","FWD",76],["Prince Kwabena Adu","FWD",74],["I\u00f1aki Williams","FWD",82],["Jordan Ayew","FWD",79]],
+  "Haiti":[["Johnny Placide","GK",76],["Carlens Arcus","DEF",75],["Duke Lacroix","DEF",74],["Jean-Kevin Duverne","DEF",76],["Ricardo Ad\u00e9","DEF",74],["Hannes Delcroix","DEF",77],["Leverton Pierre","MID",74],["Jean-Jacques Danley","MID",73],["Jeanricner Bellegarde","MID",80],["Louicius Deedson","FWD",74],["Ruben Providence","FWD",76],["Josu\u00e9 Casimir","FWD",75],["Derrick Etienne","FWD",77],["Wilson Isidor","FWD",80],["Duckens Nazon","FWD",76],["Frantzdy Pierrot","FWD",78],["Yassin Fortune","FWD",73],["Lenny Joseph","FWD",74]],
+  "Iran":[["Alireza Beiranvand","GK",77],["Hossein Hosseini","GK",76],["Payam Niazmand","GK",76],["Ehsan Hajsafi","DEF",77],["Shoja Khalilzadeh","DEF",76],["Milad Mohammadi","DEF",76],["Ramin Rezaeian","DEF",77],["Rouzbeh Cheshmi","MID",76],["Saeid Ezatolahi","MID",77],["Mehdi Ghaedi","MID",77],["Saman Ghoddos","MID",78],["Alireza Jahanbakhsh","MID",79],["Mohammad Mohebi","MID",76],["Mehdi Torabi","MID",77],["Ali Alipour","FWD",76],["Amirhossein Hosseinzadeh","FWD",76],["Mehdi Taremi","FWD",84],["Shahriyar Moghanlou","FWD",75]],
+  "Iraq":[["Fahad Talib","GK",74],["Hussein Ali","DEF",75],["Rebin Sulaka","DEF",75],["Merchas Doski","DEF",76],["Frans Putros","DEF",75],["Amir Al-Ammari","MID",78],["Kevin Yakob","MID",77],["Zidane Iqbal","MID",78],["Aimar Sher","MID",76],["Ibrahim Bayesh","MID",75],["Ahmed Qasem","MID",78],["Youssef Amyn","MID",76],["Marko Farji","MID",75],["Ali Jassim","FWD",78],["Ali Al-Hamadi","FWD",78],["Ali Youssef","FWD",75],["Aymen Hussein","FWD",77],["Mohanad Ali","FWD",78]],
+  "Ivory Coast":[["Alban Lafont","GK",78],["Emmanuel Agbadou","DEF",78],["Ousmane Diomand\u00e9","DEF",82],["Gu\u00e9la Dou\u00e9","DEF",78],["Odilon Kossounou","DEF",80],["Evan Ndicka","DEF",82],["Wilfried Singo","DEF",82],["Seko Fofana","MID",80],["Franck Kessi\u00e9","MID",83],["Ibrahim Sangar\u00e9","MID",81],["Jean-Micha\u00ebl Seri","MID",77],["Simon Adingra","FWD",80],["Ange-Yoan Bonny","FWD",79],["Amad Diallo","FWD",84],["Yan Diomand\u00e9","FWD",76],["Evann Guessand","FWD",79],["Nicolas P\u00e9p\u00e9","FWD",79],["Elye Wahi","FWD",78]],
+  "Japan":[["Zion Suzuki","GK",80],["Takehiro Tomiyasu","DEF",81],["Ko Itakura","DEF",81],["Hiroki Ito","DEF",80],["Ayumu Seko","DEF",77],["Yukinari Sugawara","DEF",78],["Daichi Kamada","MID",83],["Kaishu Sano","MID",77],["Ao Tanaka","MID",80],["Wataru Endo","MID",82],["Yuito Suzuki","MID",78],["Keito Nakamura","FWD",80],["Ritsu Doan","FWD",83],["Junya Ito","FWD",82],["Takefusa Kubo","FWD",86],["Ayase Ueda","FWD",80],["Koki Ogawa","FWD",77],["Daizen Maeda","FWD",81]],
+  "Jordan":[["Yazid Abulaila","GK",74],["Mohammad Abualnadi","DEF",75],["Yazan Al-Arab","DEF",76],["Saleem Obaid","DEF",74],["Anas Banawi","DEF",74],["Mohammad Al-Dawoud","MID",75],["Nizar Al-Rashdan","MID",77],["Noor Al-Rawabdeh","MID",75],["Rajaei Ayed","MID",75],["Amer Jamous","MID",74],["Ibrahim Sadeh","MID",74],["Mahmoud Al-Mardi","MID",74],["Mousa Al-Taamari","FWD",82],["Odeh Al-Fakhouri","FWD",76],["Mohammad Abu Zrayq","FWD",75],["Ali Azaizeh","FWD",76],["Ali Olwan","FWD",77],["Ibrahim Sabra","FWD",74]],
+  "Mexico":[["Guillermo Ochoa","GK",79],["Israel Reyes","DEF",78],["Jes\u00fas Gallardo","DEF",78],["C\u00e9sar Montes","DEF",80],["Johan V\u00e1squez","DEF",81],["Luis Romo","MID",79],["Obed Vargas","MID",77],["Orbel\u00edn Pineda","MID",80],["Edson \u00c1lvarez","MID",83],["Gilberto Mora","MID",80],["C\u00e9sar Huerta","MID",79],["\u00c1lvaro Fidalgo","MID",80],["Luis Ch\u00e1vez","MID",79],["Roberto Alvarado","FWD",79],["Alexis Vega","FWD",80],["Juli\u00e1n Qui\u00f1ones","FWD",80],["Santiago Gim\u00e9nez","FWD",83],["Ra\u00fal Jim\u00e9nez","FWD",81]],
+  "Morocco":[["Yassine Bounou","GK",84],["Noussair Mazraoui","DEF",82],["Anass Salah-Eddine","DEF",76],["Nayef Aguerd","DEF",82],["Chadi Riad","DEF",78],["Issa Diop","DEF",77],["Achraf Hakimi","DEF",89],["Ayyoub Bouaddi","MID",77],["Neil El Aynaoui","MID",78],["Sofyan Amrabat","MID",81],["Azzedine Ounahi","MID",80],["Bilal El Khannouss","MID",81],["Ismael Saibari","MID",80],["Abdessamad Ezzalzouli","FWD",80],["Chemsdine Talbi","FWD",77],["Soufiane Rahimi","FWD",78],["Ayoub El Kaabi","FWD",81],["Brahim D\u00edaz","FWD",84]],
+  "Netherlands":[["Bart Verbruggen","GK",81],["Nathan Ak\u00e9","DEF",83],["Denzel Dumfries","DEF",84],["Jorrel Hato","DEF",80],["Jurri\u00ebn Timber","DEF",82],["Micky van de Ven","DEF",84],["Virgil van Dijk","DEF",90],["Frenkie de Jong","MID",88],["Ryan Gravenberch","MID",85],["Justin Kluivert","MID",80],["Teun Koopmeiners","MID",82],["Tijjani Reijnders","MID",85],["Brian Brobbey","FWD",79],["Memphis Depay","FWD",83],["Cody Gakpo","FWD",86],["Noa Lang","FWD",79],["Donyell Malen","FWD",81],["Crysencio Summerville","FWD",80]],
+  "New Zealand":[["Alex Paulsen","GK",75],["Tyler Bindon","DEF",77],["Michael Boxall","DEF",75],["Liberato Cacace","DEF",77],["Nando Pijnaker","DEF",74],["Finn Surman","DEF",75],["Joe Bell","MID",76],["Marko Stameni\u0107","MID",77],["Alex Rufer","MID",75],["Ryan Thomas","MID",75],["Matt Garbett","FWD",75],["Chris Wood","FWD",82],["Sarpreet Singh","FWD",75],["Eli Just","FWD",74],["Kosta Barbarouses","FWD",75],["Ben Waine","FWD",74],["Ben Old","FWD",77],["Callum McCowatt","FWD",74]],
+  "Norway":[["\u00d8rjan Nyland","GK",78],["Julian Ryerson","DEF",80],["Kristoffer Ajer","DEF",79],["Leo Skiri \u00d8stig\u00e5rd","DEF",79],["Marcus Holmgren Pedersen","DEF",77],["Martin \u00d8degaard","MID",89],["Sander Berge","MID",79],["Patrick Berg","MID",77],["Kristian Thorstvedt","MID",78],["Thelo Aasgaard","MID",77],["Andreas Schjelderup","MID",78],["Jens Petter Hauge","MID",77],["Fredrik Aursnes","MID",79],["Erling Haaland","FWD",95],["Alexander S\u00f8rloth","FWD",84],["J\u00f8rgen Strand Larsen","FWD",80],["Oscar Bobb","FWD",79],["Antonio Nusa","FWD",81]],
+  "Panama":[["Orlando Mosquera","GK",76],["Luis Mej\u00eda","GK",75],["Amir Murillo","DEF",78],["Fidel Escobar","DEF",75],["Andr\u00e9s Andrade","DEF",77],["Jos\u00e9 C\u00f3rdoba","DEF",78],["Eric Davis","DEF",76],["An\u00edbal Godoy","MID",77],["Adalberto Carrasquilla","MID",79],["Carlos Harvey","MID",76],["Cristian Mart\u00ednez","MID",74],["Jos\u00e9 Luis Rodr\u00edguez","MID",76],["Yoel B\u00e1rcenas","MID",78],["Alberto Quintero","MID",75],["Azar\u00edas Londo\u00f1o","MID",74],["Ismael D\u00edaz","FWD",78],["Cecilio Waterman","FWD",75],["Jos\u00e9 Fajardo","FWD",75]],
+  "Paraguay":[["Gatito Fern\u00e1ndez","GK",77],["Gustavo G\u00f3mez","DEF",82],["J\u00fanior Alonso","DEF",79],["Fabi\u00e1n Balbuena","DEF",78],["Omar Alderete","DEF",80],["Miguel Almir\u00f3n","MID",81],["Kaku","MID",78],["Andr\u00e9s Cubas","MID",79],["Ram\u00f3n Sosa","MID",80],["Diego G\u00f3mez","MID",80],["Dami\u00e1n Bobadilla","MID",76],["Braian Ojeda","MID",76],["Mat\u00edas Galarza","MID",76],["Maur\u00edcio","MID",78],["Antonio Sanabria","FWD",80],["Julio Enciso","FWD",80],["Gabriel \u00c1valos","FWD",76],["\u00c1lex Arce","FWD",76]],
+  "Portugal":[["Diogo Costa","GK",85],["Diogo Dalot","DEF",83],["Matheus Nunes","DEF",81],["Jo\u00e3o Cancelo","DEF",84],["Nuno Mendes","DEF",86],["Gon\u00e7alo In\u00e1cio","DEF",81],["R\u00faben Dias","DEF",88],["R\u00faben Neves","MID",81],["Jo\u00e3o Neves","MID",86],["Vitinha","MID",88],["Bruno Fernandes","MID",89],["Bernardo Silva","MID",88],["Jo\u00e3o F\u00e9lix","FWD",82],["Francisco Concei\u00e7\u00e3o","FWD",81],["Pedro Neto","FWD",83],["Rafael Le\u00e3o","FWD",86],["Gon\u00e7alo Ramos","FWD",82],["Cristiano Ronaldo","FWD",87]],
+  "Qatar":[["Salah Zakaria","GK",74],["Meshaal Barsham","GK",76],["Ayoub Alawi","DEF",74],["Boualem Khoukhi","DEF",77],["Pedro Miguel","DEF",76],["Lucas Mendes","DEF",75],["Sultan Al-Brake","DEF",74],["Homam Al-Amin","DEF",74],["Jassem Jaber","MID",74],["Karim Boudiaf","MID",77],["Abdulaziz Hatem","MID",76],["Assim Madibo","MID",76],["Tahseen Mohammed","FWD",74],["Edmilson Junior","FWD",79],["Almoez Ali","FWD",80],["Akram Afif","FWD",82],["Mohammed Muntari","FWD",75],["Hassan Al-Haydos","FWD",78]],
+  "Saudi Arabia":[["Nawaf Al-Aqidi","GK",76],["Mohammed Al-Owais","GK",76],["Saud Abdulhamid","DEF",78],["Abdulelah Al-Amri","DEF",78],["Hassan Tambakti","DEF",78],["Ali Lajami","DEF",76],["Hassan Kadesh","DEF",76],["Ziyad Al-Johani","MID",75],["Nasser Al-Dawsari","MID",78],["Mohamed Kanno","MID",79],["Abdullah Al-Khaibari","MID",77],["Musab Al-Juwayr","MID",78],["Ayman Yahya","MID",76],["Khalid Al-Ghannam","MID",76],["Salem Al-Dawsari","FWD",83],["Abdullah Al-Hamdan","FWD",78],["Feras Al-Brikan","FWD",78],["Saleh Al-Shehri","FWD",78]],
+  "Scotland":[["Craig Gordon","GK",77],["Angus Gunn","GK",77],["Jack Hendry","DEF",77],["Aaron Hickey","DEF",78],["Scott McKenna","DEF",76],["Nathan Patterson","DEF",77],["Andy Robertson","DEF",85],["John Souttar","DEF",77],["Kieran Tierney","DEF",81],["Ryan Christie","MID",79],["Lewis Ferguson","MID",82],["Ben Gannon-Doak","MID",77],["John McGinn","MID",82],["Kenny McLean","MID",77],["Scott McTominay","MID",85],["Ch\u00e9 Adams","FWD",79],["Lyndon Dykes","FWD",77],["Lawrence Shankland","FWD",78]],
+  "Senegal":[["\u00c9douard Mendy","GK",82],["Kr\u00e9pin Diatta","DEF",79],["Kalidou Koulibaly","DEF",83],["El Hadji Malick Diouf","DEF",78],["Moussa Niakhat\u00e9","DEF",79],["Isma\u00efl Jakobs","DEF",78],["Idrissa Gana Gueye","MID",81],["Pape Gueye","MID",78],["Lamine Camara","MID",80],["Habib Diarra","MID",80],["Pape Matar Sarr","MID",82],["Sadio Man\u00e9","FWD",85],["Isma\u00efla Sarr","FWD",82],["Iliman Ndiaye","FWD",81],["Assane Diao","FWD",78],["Ibrahim Mbaye","FWD",77],["Nicolas Jackson","FWD",82],["Bamba Dieng","FWD",76]],
+  "South Africa":[["Ronwen Williams","GK",80],["Khuliso Mudau","DEF",77],["Nkosinathi Sibisi","DEF",75],["Aubrey Modiba","DEF",77],["Mbekezeli Mbokazi","DEF",74],["Teboho Mokoena","MID",79],["Jayden Adams","MID",75],["Thalente Mbatha","MID",75],["Kamogelo Sebelebele","MID",74],["Sphephelo Sithole","MID",75],["Oswin Appollis","FWD",77],["Tshepang Moremi","FWD",74],["Evidence Makgopa","FWD",76],["Lyle Foster","FWD",79],["Iqraam Rayners","FWD",76],["Relebohile Mofokeng","FWD",78],["Themba Zwane","FWD",78],["Thapelo Maseko","FWD",75]],
+  "South Korea":[["Jo Hyeon-woo","GK",79],["Kim Seung-gyu","GK",77],["Jens Castrop","DEF",76],["Kim Min-jae","DEF",87],["Kim Moon-hwan","DEF",76],["Seol Young-woo","DEF",77],["Lee Dong-gyeong","MID",77],["Hwang Hee-chan","MID",83],["Yang Hyun-jun","MID",77],["Hwang In-beom","MID",81],["Lee Jae-sung","MID",80],["Eom Ji-sung","MID",76],["Bae Jun-ho","MID",79],["Lee Kang-in","MID",85],["Paik Seung-ho","MID",78],["Cho Gue-sung","FWD",79],["Son Heung-min","FWD",89],["Oh Hyeon-gyu","FWD",77]],
+  "Spain":[["Unai Sim\u00f3n","GK",83],["David Raya","GK",84],["Marc Cucurella","DEF",83],["Alejandro Grimaldo","DEF",82],["Pau Cubars\u00ed","DEF",84],["Aymeric Laporte","DEF",83],["Marcos Llorente","DEF",82],["Pedri","MID",90],["Fabi\u00e1n Ruiz","MID",84],["Mart\u00edn Zubimendi","MID",84],["Gavi","MID",84],["Rodri","MID",92],["Mikel Merino","MID",83],["Mikel Oyarzabal","FWD",84],["Dani Olmo","FWD",86],["Nico Williams","FWD",88],["Ferran Torres","FWD",82],["Lamine Yamal","FWD",94]],
+  "Sweden":[["Viktor Johansson","GK",77],["Hjalmar Ekdal","DEF",76],["Gabriel Gudmundsson","DEF",78],["Isak Hien","DEF",82],["Victor Lindel\u00f6f","DEF",81],["Carl Starfelt","DEF",77],["Daniel Svensson","DEF",77],["Jesper Karlstr\u00f6m","MID",76],["Yasin Ayari","MID",78],["Mattias Svanberg","MID",78],["Lucas Bergvall","MID",80],["Besfort Zeneli","MID",75],["Anthony Elanga","FWD",83],["Viktor Gy\u00f6keres","FWD",89],["Alexander Isak","FWD",90],["Gustaf Nilsson","FWD",76],["Benjamin Nygren","FWD",77],["Ken Sema","FWD",76]],
+  "Switzerland":[["Gregor Kobel","GK",84],["Manuel Akanji","DEF",85],["Nico Elvedi","DEF",79],["Ricardo Rodr\u00edguez","DEF",80],["Silvan Widmer","DEF",77],["Michel Aebischer","MID",78],["Remo Freuler","MID",80],["Ardon Jashari","MID",80],["Fabian Rieder","MID",77],["Djibril Sow","MID",78],["Granit Xhaka","MID",85],["Denis Zakaria","MID",82],["Zeki Amdouni","FWD",78],["Breel Embolo","FWD",81],["Dan Ndoye","FWD",82],["Noah Okafor","FWD",79],["Rub\u00e9n Vargas","FWD",79],["Johan Manzambi","FWD",76]],
+  "Tunisia":[["Aymen Dahmen","GK",77],["Ali Abdi","DEF",76],["Mohamed Amine Ben Hamida","DEF",74],["Dylan Bronn","DEF",77],["Omar Rekik","DEF",76],["Montassar Talbi","DEF",78],["Yan Valery","DEF",76],["Mortadha Ben Ouanes","MID",74],["Anis Ben Slimane","MID",77],["Ismael Gharbi","MID",76],["Rani Khedira","MID",78],["Hannibal Mejbri","MID",79],["Ellyes Skhiri","MID",81],["Elias Achouri","FWD",78],["Khalil Ayari","FWD",74],["Firas Chaouat","FWD",74],["Elias Saad","FWD",78],["Sebastian Tounekti","FWD",77]],
+  "T\u00fcrkiye":[["U\u011furcan \u00c7ak\u0131r","GK",79],["Abd\u00fclkerim Bardakc\u0131","DEF",78],["\u00c7a\u011flar S\u00f6y\u00fcnc\u00fc","DEF",79],["Ferdi Kad\u0131o\u011flu","DEF",81],["Merih Demiral","DEF",81],["Mert M\u00fcld\u00fcr","DEF",77],["Ozan Kabak","DEF",80],["Zeki \u00c7elik","DEF",79],["Hakan \u00c7alhano\u011flu","MID",87],["Orkun K\u00f6k\u00e7\u00fc","MID",82],["Salih \u00d6zcan","MID",77],["Arda G\u00fcler","FWD",85],["Bar\u0131\u015f Alper Y\u0131lmaz","FWD",79],["Can Uzun","FWD",79],["\u0130rfan Can Kahveci","FWD",78],["Kenan Y\u0131ld\u0131z","FWD",84],["Kerem Akt\u00fcrko\u011flu","FWD",81],["Yunus Akg\u00fcn","FWD",78]],
+  "United States":[["Matt Turner","GK",79],["Sergi\u00f1o Dest","DEF",80],["Tim Ream","DEF",78],["Chris Richards","DEF",80],["Antonee Robinson","DEF",82],["Miles Robinson","DEF",78],["Joe Scally","DEF",77],["Auston Trusty","DEF",77],["Tyler Adams","MID",82],["Weston McKennie","MID",83],["Gio Reyna","MID",80],["Malik Tillman","MID",81],["Brenden Aaronson","FWD",79],["Folarin Balogun","FWD",81],["Ricardo Pepi","FWD",79],["Christian Pulisic","FWD",87],["Tim Weah","FWD",80],["Alejandro Zendejas","FWD",77]],
+  "Uruguay":[["Sergio Rochet","GK",79],["Guillermo Varela","DEF",78],["Ronald Ara\u00fajo","DEF",87],["Jos\u00e9 Mar\u00eda Gim\u00e9nez","DEF",85],["Santiago Bueno","DEF",78],["Math\u00edas Olivera","DEF",80],["Joaqu\u00edn Piquerez","DEF",80],["Mat\u00edas Vi\u00f1a","DEF",78],["Manuel Ugarte","MID",82],["Rodrigo Bentancur","MID",83],["Federico Valverde","MID",90],["Giorgian de Arrascaeta","MID",83],["Nicol\u00e1s de la Cruz","MID",82],["Facundo Pellistri","MID",79],["Maximiliano Ara\u00fajo","MID",78],["Brian Rodr\u00edguez","MID",78],["Darwin N\u00fa\u00f1ez","FWD",85]],
+  "Uzbekistan":[["Utkir Yusupov","GK",74],["Rustam Ashurmatov","DEF",76],["Khojiakbar Alijonov","DEF",75],["Sherzod Nasrullaev","DEF",75],["Abdukodir Khusanov","DEF",82],["Jakhongir Urozov","DEF",74],["Otabek Shukurov","MID",77],["Jaloliddin Masharipov","MID",78],["Odiljon Hamrobekov","MID",76],["Oston Urunov","MID",76],["Jamshid Iskanderov","MID",76],["Dostonbek Khamdamov","MID",77],["Abbosbek Fayzullaev","MID",81],["Akmal Mozgovoy","MID",74],["Azizjon Ganiev","MID",75],["Eldor Shomurodov","FWD",80],["Igor Sergeev","FWD",76],["Azizbek Amonov","FWD",74]]
 }; // official 2026 World Cup 26-man squads; see add_data.py
+const COACHES = {
+  "Algeria":["Vladimir Petkovi\u0107",81],
+  "Argentina":["Lionel Scaloni",91],
+  "Australia":["Tony Popovic",82],
+  "Austria":["Ralf Rangnick",86],
+  "Belgium":["Rudi Garcia",84],
+  "Bosnia and Herzegovina":["Sergej Barbarez",78],
+  "Brazil":["Carlo Ancelotti",93],
+  "Canada":["Jesse Marsch",83],
+  "Cape Verde":["Bubista",77],
+  "Colombia":["N\u00e9stor Lorenzo",83],
+  "Croatia":["Zlatko Dali\u0107",84],
+  "Cura\u00e7ao":["Dick Advocaat",84],
+  "Czechia":["Miroslav Koubek",78],
+  "DR Congo":["S\u00e9bastien Desabre",79],
+  "Ecuador":["Sebasti\u00e1n Beccacece",82],
+  "Egypt":["Hossam Hassan",79],
+  "England":["Thomas Tuchel",89],
+  "France":["Didier Deschamps",91],
+  "Germany":["Julian Nagelsmann",88],
+  "Ghana":["Otto Addo",79],
+  "Haiti":["S\u00e9bastien Mign\u00e9",76],
+  "Iran":["Amir Ghalenoei",79],
+  "Iraq":["Graham Arnold",81],
+  "Ivory Coast":["Emerse Fa\u00e9",79],
+  "Japan":["Hajime Moriyasu",83],
+  "Jordan":["Jamal Sellami",77],
+  "Mexico":["Javier Aguirre",84],
+  "Morocco":["Walid Regragui",85],
+  "Netherlands":["Ronald Koeman",87],
+  "New Zealand":["Darren Bazeley",76],
+  "Norway":["St\u00e5le Solbakken",82],
+  "Panama":["Thomas Christiansen",81],
+  "Paraguay":["Gustavo Alfaro",82],
+  "Portugal":["Roberto Mart\u00ednez",87],
+  "Qatar":["Julen Lopetegui",85],
+  "Saudi Arabia":["Giorgos Donis",79],
+  "Scotland":["Steve Clarke",82],
+  "Senegal":["Pape Thiaw",78],
+  "South Africa":["Hugo Broos",83],
+  "South Korea":["Hong Myung-bo",80],
+  "Spain":["Luis de la Fuente",88],
+  "Sweden":["Graham Potter",84],
+  "Switzerland":["Murat Yakin",82],
+  "Tunisia":["Sami Trabelsi",77],
+  "T\u00fcrkiye":["Vincenzo Montella",82],
+  "United States":["Mauricio Pochettino",88],
+  "Uruguay":["Marcelo Bielsa",89],
+  "Uzbekistan":["Fabio Cannavaro",82]
+}; // 2026 World Cup head coaches; see add_data.py
 
 /* ============================================================
    WORLD XI — interaction layer (adapted from Diamond Kings)
@@ -904,8 +962,8 @@ var formation = null;      // e.g. "4-3-3" once rolled
 var SLOTS = [];            // active 16 (XI + bench) once formation set
 var SLOT_BY_KEY = {};
 var FIELD = [];            // the 11 starter slots (with x/y)
-var BENCH_KEYS = [];       // the 5 bench keys
-var TOTAL = 16;
+var BENCH_KEYS = [];       // the 2 bench keys
+var TOTAL = 13;            // drafted slots (XI + 2 subs); the coach is rolled, not drafted
 var roster = {};           // slotKey -> {name,pos,grade,team}
 var picks  = 0;
 var hand   = null;         // { team, players:[{name,pos,grade,idx}] }
@@ -913,7 +971,7 @@ var rolling= false;
 var mode   = "blitz";      // "blitz" hides ratings | "rookie" stars the elite
 var ELITE  = 90;
 
-var CHIP = {SUBGK:"GK",BEN1:"SUB",BEN2:"SUB",BEN3:"SUB",BEN4:"SUB"};
+var CHIP = {BEN1:"SUB",BEN2:"SUB",COACH:"COACH"};
 var POS_ORDER = {GK:0,DEF:1,MID:2,FWD:3};
 function chipLabel(key){ return CHIP[key]||key; }
 function posBadge(p){ return p.pos; }
@@ -929,7 +987,7 @@ function activeSlots(){ return SLOTS; }
 function $(id){ return document.getElementById(id); }
 var el = {
   lineup:$("lineup"), led:$("ledSigned"), ledForm:$("ledForm"), meter:$("meterFill"),
-  formReel:$("formReel"), formFace:$("formFace"), teamReel:$("teamReel"), teamFace:$("teamFace"),
+  formReel:$("formReel"), formFace:$("formFace"), coachReel:$("coachReel"), coachFace:$("coachFace"), teamReel:$("teamReel"), teamFace:$("teamFace"),
   rollBtn:$("rollBtn"), rerollBtn:$("rerollBtn"), drawHint:$("drawHint"), hand:$("hand"), wire:$("wireFeed"),
   gradeBtn:$("gradeBtn"), gradeHint:$("gradeHint"), results:$("results"), sheet:$("resSheet"),
   formationPanel:$("formationPanel"), formationToggle:$("formationToggle"), pipStrip:$("pipStrip"), fSig:$("fSig")
@@ -1002,16 +1060,28 @@ function benchHTML(key){
     +'<div class="sc-who"><div class="sc-name placeholder">'+s.label.toUpperCase()+'</div>'
     +'<div class="sc-meta">awaiting the draw</div></div></div>';
 }
+function coachCardHTML(){
+  var p=roster["COACH"];
+  if(p){
+    return '<div class="scard filled coach" style="'+colorVars(p.team)+'">'
+      +'<div class="sc-tag">Head Coach</div>'
+      +'<div class="sc-who"><div class="sc-name">'+esc(p.name)+'</div>'
+      +'<div class="sc-meta">'+esc(abbr(p.team))+' &middot; Manager</div></div></div>';
+  }
+  return '<div class="scard empty coach"><div class="sc-tag">Head Coach</div>'
+    +'<div class="sc-who"><div class="sc-name placeholder">COACH</div><div class="sc-meta">rolled at kickoff</div></div></div>';
+}
 function renderLineup(){
   if(!formation){
     el.lineup.innerHTML='<div class="field-wrap">'+pitchSVG()
-      +'<div class="dpos empty" style="left:50%;top:50%"><span class="dp-open">ROLL A FORMATION</span></div></div>';
+      +'<div class="dpos empty" style="left:50%;top:50%"><span class="dp-open">ROLL FORMATION &amp; COACH</span></div></div>';
     renderPips(); return;
   }
   var html='<div class="field-wrap">'+pitchSVG();
   FIELD.forEach(function(slot){ html+=markerHTML(slot, roster[slot.key]); });
-  html+='</div><div class="staff"><div class="staff-label">Substitutes</div><div class="staff-row">';
+  html+='</div><div class="staff"><div class="staff-label">Bench &amp; Coach</div><div class="staff-row">';
   BENCH_KEYS.forEach(function(k){ html+=benchHTML(k); });
+  html+=coachCardHTML();
   html+='</div></div>';
   el.lineup.innerHTML=html;
   renderPips();
@@ -1041,9 +1111,9 @@ function show(node,on){ if(node) node.hidden=!on; }
 function updateRollState(){
   if(rolling) return;
   if(!formation){
-    el.rollBtn.disabled=false; el.rollBtn.innerHTML='<span>&#9654; Roll Formation</span>'; show(el.rollBtn,true);
+    el.rollBtn.disabled=false; el.rollBtn.innerHTML='<span>&#9654; Roll Formation &amp; Coach</span>'; show(el.rollBtn,true);
     show(el.rerollBtn,false);
-    el.drawHint.textContent="First, roll your formation to set the shape";
+    el.drawHint.textContent="First, roll your formation and head coach";
   } else if(picks>=TOTAL){
     el.rollBtn.disabled=true; el.rollBtn.innerHTML='<span>Squad Complete</span>'; show(el.rollBtn,true);
     show(el.rerollBtn,false);
@@ -1060,22 +1130,28 @@ function updateRollState(){
 }
 
 /* ---- rolling the formation (once per game) ---- */
-function rollFormation(){
+var COACH_NATIONS = Object.keys(COACHES);
+function rollFormation(){   // kickoff: rolls the formation AND the head coach
   if(rolling||formation||picks>=TOTAL) return;
   rolling=true; el.rollBtn.disabled=true; el.rollBtn.innerHTML='<span>Rolling…</span>';
-  var target=pick(FORMATION_NAMES);
+  var fTarget=pick(FORMATION_NAMES), cNation=pick(COACH_NATIONS), cData=COACHES[cNation];
   el.formReel.classList.remove("locked"); el.formReel.classList.add("spin");
+  if(el.coachReel){ el.coachReel.classList.remove("locked"); el.coachReel.classList.add("spin"); el.coachReel.removeAttribute("style"); }
   var t=0, iv=setInterval(function(){
     el.formFace.textContent=pick(FORMATION_NAMES);
+    if(el.coachFace){ el.coachFace.textContent=lastName(COACHES[pick(COACH_NATIONS)][0]); }
     if(++t>=14){
       clearInterval(iv);
       el.formReel.classList.remove("spin"); el.formReel.classList.add("locked");
-      el.formFace.textContent=target;
-      setFormation(target);
-      if(el.ledForm) el.ledForm.textContent=target;
+      el.formFace.textContent=fTarget;
+      setFormation(fTarget);
+      if(el.ledForm) el.ledForm.textContent=fTarget;
+      roster["COACH"]={name:cData[0],pos:"COACH",grade:cData[1],team:cNation};
+      if(el.coachReel){ el.coachReel.classList.remove("spin"); el.coachReel.classList.add("locked"); el.coachReel.setAttribute("style",colorVars(cNation)); }
+      if(el.coachFace){ el.coachFace.innerHTML=teamCrest(cNation)+'<span class="rl-name">'+esc(lastName(cData[0]))+'</span>'; }
       rolling=false;
       renderLineup(); renderHand(); renderStatus();
-      prependTick('<span class="tn">SHAPE</span> &middot; Formation set: <b>'+target+'</b>');
+      prependTick('<span class="tn">KICKOFF</span> &middot; <b>'+fTarget+'</b> &middot; Coach: '+esc(cData[0])+' ('+abbr(cNation)+')');
     }
   },55);
 }
@@ -1183,7 +1259,7 @@ function prependTick(html){
 /* ---- final whistle ---- */
 function grade(){
   if(picks!==TOTAL) return;
-  var R=ratingFromRoster(roster, SLOTS);
+  var R=ratingFromRoster(roster, allSlots(formation));
   showResults(R,seasonOutcome(R));
 }
 function showResults(R,out){
@@ -1281,7 +1357,7 @@ async function maybeHighScore(R){
 function gradeTier(v){ return v>=90?"gt-hi":(v>=80?"gt-mid":(v>=70?"gt-lo":"gt-bad")); }
 function boxscore(){
   var rows="";
-  SLOTS.forEach(function(s){
+  allSlots(formation).forEach(function(s){
     var p=roster[s.key], c=colorsOf(p.team), eff=effGrade(p);
     rows+='<tr><td class="k">'+chipLabel(s.key)+'</td>'
       +'<td class="nm"><span class="cdot" style="background:'+c[0]+';border-color:'+c[1]+'"></span>'+esc(p.name)+'</td>'
@@ -1302,8 +1378,8 @@ function shareText(R,out){
   L.push("FINAL: "+R.toFixed(1)+"/100  \u00b7  "+out.tier);
   L.push("Group "+out.rec+"  \u00b7  "+out.finish);
   L.push("--------------------------------");
-  SLOTS.forEach(function(s){
-    var p=roster[s.key], tag=(chipLabel(s.key)+"     ").slice(0,5);
+  allSlots(formation).forEach(function(s){
+    var p=roster[s.key]; if(!p) return; var tag=(chipLabel(s.key)+"     ").slice(0,5);
     L.push(tag+" "+p.name+"  ("+abbr(p.team)+")  "+effGrade(p));
   });
   L.push("--------------------------------");
@@ -1323,9 +1399,10 @@ function newGame(){
   roster={}; picks=0; hand=null; rolling=false;
   el.results.classList.remove("show");
   el.formReel.classList.remove("locked","spin"); el.teamReel.classList.remove("locked","spin"); el.teamReel.removeAttribute("style");
-  el.formFace.innerHTML="&mdash;"; el.teamFace.innerHTML="&mdash;";
+  if(el.coachReel){ el.coachReel.classList.remove("locked","spin"); el.coachReel.removeAttribute("style"); }
+  el.formFace.innerHTML="&mdash;"; el.teamFace.innerHTML="&mdash;"; if(el.coachFace) el.coachFace.innerHTML="&mdash;";
   if(el.ledForm) el.ledForm.textContent="\u2014";
-  el.wire.innerHTML='<div class="tick-line tick-idle">&#9654; Wire is quiet. Roll a formation to begin.</div>';
+  el.wire.innerHTML='<div class="tick-line tick-idle">&#9654; Wire is quiet. Roll formation &amp; coach to begin.</div>';
   renderLineup(); renderHand(); renderStatus();
 }
 function setMode(m){
@@ -1371,7 +1448,7 @@ else boot();
 window.__WX__={ rollFormation:function(){return rollFormation();}, rollNation:function(){return rollNation();},
   state:function(){return {formation:formation,picks:picks,hand:hand,rolling:rolling};},
   draftFirst:function(){ if(!hand) return false; var c=el.hand.querySelector(".card.elig"); if(!c) return false; c.click(); return true; },
-  grade:function(){return grade();}, rating:function(){return ratingFromRoster(roster,SLOTS);} };
+  grade:function(){return grade();}, rating:function(){return ratingFromRoster(roster,allSlots(formation));} };
 
 })();
 
