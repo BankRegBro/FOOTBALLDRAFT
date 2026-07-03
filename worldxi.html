@@ -518,6 +518,14 @@ h1.title .b{
 .led.amber #ledForm{letter-spacing:.02em}
 .formflame{font-size:.8em;margin-left:3px;vertical-align:middle;line-height:1}
 .fboost{display:inline-block;margin-left:5px;font-size:11px;font-weight:700;color:#ff7a1a;vertical-align:middle}
+.hs-tabs{display:flex;gap:6px;justify-content:center;margin:6px 0 8px}
+.hs-tab{font-family:"Press Start 2P",monospace;font-size:8px;letter-spacing:.06em;color:#8ea0b6;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);border-radius:4px;padding:6px 10px;cursor:pointer}
+.hs-tab.on{color:#ffd400;border-color:rgba(255,212,0,.55);background:rgba(255,212,0,.08);text-shadow:0 0 8px rgba(255,212,0,.45)}
+.hs-g{font-style:normal;font-family:"Oswald",sans-serif;font-weight:600;font-size:10px;letter-spacing:.08em;color:#8ea0b6;border:1px solid rgba(255,255,255,.18);border-radius:3px;padding:1px 5px;margin:0 7px 0 6px}
+.outchip{display:inline-block;margin-left:6px;font-family:"Press Start 2P",monospace;font-size:7px;letter-spacing:.06em;color:#ff6a5e;border:1px solid rgba(255,106,94,.55);border-radius:3px;padding:2px 4px;vertical-align:middle;background:rgba(255,106,94,.08)}
+.led.green{border-color:rgba(57,208,111,.45)}
+.led.green .lbl{color:#39d06f}
+.led.green span:last-child{color:#8affb6;text-shadow:0 0 10px rgba(57,208,111,.6)}
 .arcade-btn.restart{margin-top:9px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.20);box-shadow:none}
 .arcade-btn.restart span{color:#c9d3e3;text-shadow:none;font-size:14px;letter-spacing:.05em}
 .arcade-btn.restart:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.34)}
@@ -545,6 +553,7 @@ h1.title .b{
 
   <div class="hiscore" id="hiscore">
     <span class="hs-title">&#9733; Hall of Fame &#9733;</span>
+    <div class="hs-tabs"><button class="hs-tab on" id="hsTabDay" type="button">Today</button><button class="hs-tab" id="hsTabAll" type="button">All-Time</button></div>
     <div class="hs-list" id="hsList"></div>
     <span class="hs-scope" id="hsScope"></span>
   </div>
@@ -552,6 +561,7 @@ h1.title .b{
   <div class="scorestrip">
     <div class="led blue"><span class="lbl">Filled</span><span id="ledSigned">00/13</span></div>
     <div class="led amber"><span class="lbl">Formation</span><span id="ledForm">&mdash;</span></div>
+    <div class="led green"><span class="lbl">Chem</span><span id="ledChem">+0</span></div>
     <div class="diff-toggle" id="diffToggle">
       <span class="dt-lbl">Difficulty</span>
       <div class="dt-track">
@@ -585,7 +595,6 @@ h1.title .b{
           <div class="reel team" id="teamReel"><div class="tag">Nation</div><div class="face" id="teamFace">&mdash;</div></div>
         </div>
         <button class="arcade-btn red pulse" id="rollBtn"><span>&#9654; Roll Formation &amp; Coach</span></button>
-        <button class="arcade-btn reroll" id="rerollBtn" hidden><span>&#8635; Reroll Nation</span></button>
         <button class="arcade-btn restart" id="restartBtn" type="button"><span>&#8635; Restart</span></button>
         <div class="draw-hint" id="drawHint">First, roll your formation to set the shape</div>
         <div class="hand" id="hand"></div>
@@ -603,7 +612,7 @@ h1.title .b{
     <div class="hint" id="gradeHint">Fill all thirteen spots to blow the final whistle</div>
   </div>
 
-  <div class="foot">GK goalkeeper &middot; DEF defenders &middot; MID midfield &middot; FWD forwards &middot; subs take any outfielder<br>Official 2026 World Cup squads &middot; nations reroll with equal odds &middot; no data leaves this page &middot; The Ledger Arcade</div>
+  <div class="foot">GK goalkeeper &middot; DEF defenders &middot; MID midfield &middot; FWD forwards &middot; subs take any outfielder<br>Official 2026 World Cup squads &middot; no rerolls, chemistry counts &middot; The Ledger Arcade</div>
 </div>
 
 <div class="results" id="results"><div class="jumbo" id="resSheet"></div></div>
@@ -616,8 +625,8 @@ h1.title .b{
   <div class="rg-h">The Drill</div>
   <ul class="rg-list">
     <li>First, <b>roll your formation and head coach</b>. The formation (4-3-3, 4-4-2, 4-2-3-1, 3-5-2, 3-4-3 or 5-3-2) sets the shape of your XI; the coach is one of the 48 nations' real managers. Both lock for the game.</li>
-    <li>Then <b>roll a nation</b>. Every one of the 48 World Cup teams comes up with the same, equal odds each roll.</li>
-    <li>Draft one player from that nation into an open slot, or hit <b>Reroll</b> for a different nation. Reroll as often as you like.</li>
+    <li>Then <b>roll a nation</b>. Every squad that can still fill one of your open spots comes up with equal odds.</li>
+    <li><b>No rerolls.</b> You draft one player from whatever nation the dice give you, then roll again. Nations knocked out of the real tournament carry an <b>OUT</b> tag, but their players draft the same.</li>
     <li>Fill all <b>thirteen</b> drafted spots: the eleven of your formation, plus two subs. The head coach makes fourteen, and is rolled for you, not drafted.</li>
     <li>Every slot takes its own position; the two subs take any outfielder. When the squad is full it grades out of 100 &mdash; coach included &mdash; and projects a World Cup run.</li>
     <li>You cannot draft the same player twice.</li>
@@ -627,15 +636,16 @@ h1.title .b{
   <ul class="rg-list">
     <li>Slots are weighted. The <b>striker</b> and <b>keeper</b> carry a small premium, the starting XI counts for far more than the bench, and the <b>head coach</b> adds a modest boost.</li>
     <li><b>Form boost.</b> The tournament's hottest scorers get a lift, marked with a &#128293; flame: +1 to +3 on their rating based on their goals in the 2026 World Cup Golden Boot race. Draft the in-form stars and it shows up at the whistle.</li>
+    <li><b>Nation chemistry.</b> Teammates click: +1 to your final rating for every extra player drafted from the same nation, capped at +6. The Chem meter tracks it live.</li>
     <li>There is no position-fit bonus: a player rates the same wherever they are eligible to play.</li>
     <li>Every squad is built from real internationals, so the raw average always runs high. The club rating stretches that band onto a full 40&ndash;100 scale, which is why a blind draft bows out in the group and a sharp one can win it.</li>
-    <li>Because rerolls are unlimited and every nation has plenty of players, you can never get stuck &mdash; if a nation does not fit, just reroll.</li>
+    <li>You can never get stuck: only nations with a player who fits an open spot come out of the hopper.</li>
   </ul>
 
   <div class="rg-h">Modes &amp; the Hall of Fame</div>
   <ul class="rg-list">
     <li><b>Difficulty:</b> Blitz hides ratings while you draft. Rookie marks elite players with a star as you pick. The final score is identical either way; Blitz is simply blind.</li>
-    <li class="rg-keep"><span class="rg-hl">The Hall of Fame records Blitz runs.</span> It shares one global board with the rest of the arcade. Rookie still plays and scores, but will not post.</li>
+    <li class="rg-keep"><span class="rg-hl">The Hall of Fame records Blitz runs</span> on two boards spanning the whole arcade: <b>Today</b> resets at midnight Eastern, <b>All-Time</b> keeps the five best ever, each entry tagged by game. Rookie still plays and scores, but will not post.</li>
   </ul>
 
   <div class="rg-h">World Cup Run</div>
@@ -649,13 +659,13 @@ h1.title .b{
     <b>68</b><span>Group stage &middot; third and agonisingly close</span>
     <b>&lt;68</b><span>Group stage &middot; bottom of the group</span>
   </div>
-  <div class="rg-term" style="margin-top:8px">A blind, random draft usually goes out in the <b>group stage</b>. Rerolling to hunt the players you know is how you climb to the knockouts, a final, and the rare World Cup title.</div>
+  <div class="rg-term" style="margin-top:8px">A blind, random draft usually goes out in the <b>group stage</b>. Knowing which player to take from every nation the dice serve up, and stacking chemistry while you do it, is how you climb to the knockouts and the rare title.</div>
 
   <div class="rg-h">Glossary</div>
   <div class="rg-term"><b>GK</b> goalkeeper &middot; <b>DEF</b> defenders, including full-backs and wing-backs &middot; <b>MID</b> midfielders &middot; <b>FWD</b> forwards and wingers.</div>
   <div class="rg-term"><b>Formation</b> the shape of your XI, rolled at kickoff. <b>Coach</b> a real 2026 World Cup manager, also rolled at kickoff, who counts toward your rating. <b>Bench</b> two outfield subs who cover any outfield role.</div>
   <div class="rg-term"><b>Filled</b> how many of the thirteen drafted spots are set. <b>Draft Drive</b> the meter tracking progress to a full squad.</div>
-  <div class="rg-term"><b>&#128293; Form</b> a live boost for the top scorers in the 2026 World Cup Golden Boot race (+1 to +3), refreshed as the tournament unfolds.</div>
+  <div class="rg-term"><b>&#128293; Form</b> a live boost for the top scorers in the 2026 Golden Boot race (+1 to +3). <b>OUT</b> eliminated from the real tournament (tag only). <b>Chem</b> +1 per extra same-nation teammate, capped at +6.</div>
   <div class="rg-term">Each nation's pool is the best of its official squad; coaches and ratings are an editorial /100 call, hidden until the whistle in Blitz.</div>
 </div></div>
 
@@ -781,7 +791,7 @@ function ratingFromRoster(roster, slots){
   // Squads are full of real internationals, so the raw average always runs high; stretch it
   // onto a full 40-99 club rating so a blind draft bows out in the group and a sharp,
   // reroll-savvy draft can win the whole thing (calibrated to the draft simulator).
-  return Math.max(40, Math.min(99, Math.round(80.37 + (avg - 84) * 3.23)));
+  return Math.max(40, Math.min(99, Math.round(80.4 + (avg - 84) * 4.05)));
 }
 
 // Rating (40-99) -> furthest World Cup stage. Calibrated to the random-draft distribution.
@@ -814,35 +824,35 @@ const DATA = {
   "Colombia":[["Camilo Vargas","GK",78],["David Ospina","GK",78],["Daniel Mu\u00f1oz","DEF",81],["Yerry Mina","DEF",79],["Davinson S\u00e1nchez","DEF",81],["Jhon Lucum\u00ed","DEF",80],["James Rodr\u00edguez","MID",84],["Jefferson Lerma","MID",80],["Richard R\u00edos","MID",81],["Juan Fernando Quintero","MID",80],["Luis D\u00edaz","FWD",89],["Jhon C\u00f3rdoba","FWD",79],["Juan Camilo Hern\u00e1ndez","FWD",79],["Jhon Arias","FWD",82]],
   "Croatia":[["Dominik Livakovi\u0107","GK",80],["Jo\u0161ko Gvardiol","DEF",87],["Josip Stani\u0161i\u0107","DEF",80],["Luka Modri\u0107","MID",86],["Mateo Kova\u010di\u0107","MID",86],["Mario Pa\u0161ali\u0107","MID",80],["Nikola Vla\u0161i\u0107","MID",80],["Luka Su\u010di\u0107","MID",79],["Martin Baturina","MID",79],["Petar Su\u010di\u0107","MID",79],["Ivan Peri\u0161i\u0107","FWD",82],["Andrej Kramari\u0107","FWD",82],["Ante Budimir","FWD",79],["Petar Musa","FWD",79]],
   "Cura\u00e7ao":[["Eloy Room","GK",76],["Riechedly Bazoer","DEF",78],["Joshua Brenet","DEF",76],["Sherel Floranus","DEF",74],["Armando Obispo","DEF",77],["Shurandy Sambo","DEF",75],["Juninho Bacuna","MID",77],["Leandro Bacuna","MID",78],["Livano Comenencia","MID",75],["Tahith Chong","FWD",79],["Kenji Gorr\u00e9","FWD",75],["Sontje Hansen","FWD",76],["Brandley Kuwas","FWD",76],["J\u00fcrgen Locadia","FWD",77]],
-  "Czechia":[["Mat\u011bj Kov\u00e1\u0159","GK",77],["Jind\u0159ich Stan\u011bk","GK",78],["Vladim\u00edr Coufal","DEF",79],["Tom\u00e1\u0161 Hole\u0161","DEF",78],["Robin Hran\u00e1\u010d","DEF",77],["David Jur\u00e1sek","DEF",77],["Ladislav Krej\u010d\u00ed","DEF",81],["Luk\u00e1\u0161 Provod","MID",80],["Tom\u00e1\u0161 Sou\u010dek","MID",83],["Pavel \u0160ulc","MID",80],["Adam Hlo\u017eek","FWD",81],["Tom\u00e1\u0161 Chor\u00fd","FWD",78],["Jan Kuchta","FWD",77],["Patrik Schick","FWD",84]],
+  "Czechia":[["Jind\u0159ich Stan\u011bk","GK",78],["Vladim\u00edr Coufal","DEF",79],["Tom\u00e1\u0161 Hole\u0161","DEF",78],["Robin Hran\u00e1\u010d","DEF",77],["David Jur\u00e1sek","DEF",77],["Ladislav Krej\u010d\u00ed","DEF",81],["David Zima","DEF",76],["Luk\u00e1\u0161 Provod","MID",80],["Tom\u00e1\u0161 Sou\u010dek","MID",83],["Pavel \u0160ulc","MID",80],["Adam Hlo\u017eek","FWD",81],["Tom\u00e1\u0161 Chor\u00fd","FWD",78],["Jan Kuchta","FWD",77],["Patrik Schick","FWD",84]],
   "DR Congo":[["Lionel Mpasi","GK",75],["Aaron Wan-Bissaka","DEF",82],["Arthur Masuaku","DEF",77],["Chancel Mbemba","DEF",80],["Noah Sadiki","MID",79],["Edo Kayembe","MID",77],["Nathan Mukau","MID",77],["Charles Pickel","MID",77],["Th\u00e9o Bongonda","MID",78],["Ga\u00ebl Kakuta","MID",78],["Meschack Elia","FWD",77],["Fiston Mayele","FWD",78],["C\u00e9dric Bakambu","FWD",79],["Simon Banza","FWD",78],["Yoane Wissa","FWD",83]],
   "Ecuador":[["Hern\u00e1n Gal\u00edndez","GK",76],["Willian Pacho","DEF",85],["Piero Hincapi\u00e9","DEF",84],["Joel Ord\u00f3\u00f1ez","DEF",79],["F\u00e9lix Torres","DEF",78],["Pervis Estupi\u00f1\u00e1n","DEF",82],["\u00c1ngelo Preciado","DEF",78],["Mois\u00e9s Caicedo","MID",89],["Alan Franco","MID",78],["Pedro Vite","MID",77],["Kendry P\u00e1ez","MID",81],["Kevin Rodr\u00edguez","FWD",78],["Enner Valencia","FWD",80],["Gonzalo Plata","FWD",80],["Nilson Angulo","FWD",77]],
   "Egypt":[["Mohamed El Shenawy","GK",78],["Mohamed Hani","DEF",76],["Hamdy Fathy","DEF",76],["Rami Rabia","DEF",76],["Yasser Ibrahim","DEF",76],["Mohamed Abdelmonem","DEF",79],["Ahmed Fotouh","DEF",76],["Ahmed Zizo","MID",80],["Emam Ashour","MID",80],["Mahmoud Trezeguet","MID",81],["Ibrahim Adel","MID",78],["Haissem Hassan","MID",76],["Mohamed Salah","FWD",93],["Omar Marmoush","FWD",86]],
   "England":[["Jordan Pickford","GK",84],["Reece James","DEF",83],["Marc Gu\u00e9hi","DEF",83],["John Stones","DEF",84],["Declan Rice","MID",89],["Jude Bellingham","MID",93],["Morgan Rogers","MID",81],["Kobbie Mainoo","MID",82],["Eberechi Eze","MID",84],["Harry Kane","FWD",92],["Ollie Watkins","FWD",83],["Bukayo Saka","FWD",90],["Marcus Rashford","FWD",83],["Anthony Gordon","FWD",82]],
   "France":[["Mike Maignan","GK",85],["Dayot Upamecano","DEF",85],["William Saliba","DEF",88],["Theo Hern\u00e1ndez","DEF",83],["Ibrahima Konat\u00e9","DEF",85],["Jules Kound\u00e9","DEF",85],["N'Golo Kant\u00e9","MID",85],["Adrien Rabiot","MID",84],["Aur\u00e9lien Tchouam\u00e9ni","MID",87],["Kylian Mbapp\u00e9","FWD",97],["Ousmane Demb\u00e9l\u00e9","FWD",90],["Michael Olise","FWD",88],["D\u00e9sir\u00e9 Dou\u00e9","FWD",84],["Marcus Thuram","FWD",84]],
   "Germany":[["Manuel Neuer","GK",84],["Joshua Kimmich","DEF",88],["David Raum","DEF",80],["Antonio R\u00fcdiger","DEF",87],["Nico Schlotterbeck","DEF",83],["Jonathan Tah","DEF",82],["Malick Thiaw","DEF",80],["Leon Goretzka","MID",82],["Jamal Musiala","MID",91],["Aleksandar Pavlovi\u0107","MID",81],["Florian Wirtz","MID",91],["Kai Havertz","FWD",85],["Leroy San\u00e9","FWD",84],["Denis Undav","FWD",81]],
-  "Ghana":[["Lawrence Ati-Zigi","GK",76],["Baba Rahman","DEF",76],["Gideon Mensah","DEF",76],["Alidu Seidu","DEF",77],["Abdul Mumin","DEF",77],["Thomas Partey","MID",84],["Kamaldeen Sulemana","MID",81],["Abdul Fatawu Issahaku","MID",79],["Christopher Bonsu Baah","FWD",76],["Ernest Nuamah","FWD",79],["Antoine Semenyo","FWD",82],["Brandon Thomas-Asante","FWD",76],["I\u00f1aki Williams","FWD",82],["Jordan Ayew","FWD",79]],
+  "Ghana":[["Benjamin Asare","GK",77],["Baba Rahman","DEF",76],["Gideon Mensah","DEF",76],["Alidu Seidu","DEF",77],["Abdul Mumin","DEF",77],["Thomas Partey","MID",84],["Kamaldeen Sulemana","MID",81],["Abdul Fatawu Issahaku","MID",79],["Christopher Bonsu Baah","FWD",76],["Ernest Nuamah","FWD",79],["Antoine Semenyo","FWD",82],["Brandon Thomas-Asante","FWD",76],["I\u00f1aki Williams","FWD",82],["Jordan Ayew","FWD",79]],
   "Haiti":[["Johnny Placide","GK",76],["Carlens Arcus","DEF",75],["Duke Lacroix","DEF",74],["Jean-Kevin Duverne","DEF",76],["Ricardo Ad\u00e9","DEF",74],["Hannes Delcroix","DEF",77],["Leverton Pierre","MID",74],["Jeanricner Bellegarde","MID",80],["Ruben Providence","FWD",76],["Josu\u00e9 Casimir","FWD",75],["Derrick Etienne","FWD",77],["Wilson Isidor","FWD",80],["Duckens Nazon","FWD",76],["Frantzdy Pierrot","FWD",78]],
   "Iran":[["Alireza Beiranvand","GK",77],["Hossein Hosseini","GK",76],["Payam Niazmand","GK",76],["Ehsan Hajsafi","DEF",77],["Shoja Khalilzadeh","DEF",76],["Milad Mohammadi","DEF",76],["Ramin Rezaeian","DEF",77],["Rouzbeh Cheshmi","MID",76],["Saeid Ezatolahi","MID",77],["Mehdi Ghaedi","MID",77],["Saman Ghoddos","MID",78],["Alireza Jahanbakhsh","MID",79],["Mehdi Torabi","MID",77],["Mehdi Taremi","FWD",84]],
   "Iraq":[["Fahad Talib","GK",74],["Hussein Ali","DEF",75],["Rebin Sulaka","DEF",75],["Merchas Doski","DEF",76],["Frans Putros","DEF",75],["Amir Al-Ammari","MID",78],["Kevin Yakob","MID",77],["Zidane Iqbal","MID",78],["Aimar Sher","MID",76],["Ahmed Qasem","MID",78],["Youssef Amyn","MID",76],["Ali Jassim","FWD",78],["Ali Al-Hamadi","FWD",78],["Aymen Hussein","FWD",77],["Mohanad Ali","FWD",78]],
-  "Ivory Coast":[["Alban Lafont","GK",78],["Emmanuel Agbadou","DEF",78],["Ousmane Diomand\u00e9","DEF",82],["Odilon Kossounou","DEF",80],["Evan Ndicka","DEF",82],["Wilfried Singo","DEF",82],["Seko Fofana","MID",80],["Franck Kessi\u00e9","MID",83],["Ibrahim Sangar\u00e9","MID",81],["Simon Adingra","FWD",80],["Ange-Yoan Bonny","FWD",79],["Amad Diallo","FWD",84],["Evann Guessand","FWD",79],["Nicolas P\u00e9p\u00e9","FWD",79]],
+  "Ivory Coast":[["Yahia Fofana","GK",79],["Emmanuel Agbadou","DEF",78],["Ousmane Diomand\u00e9","DEF",82],["Odilon Kossounou","DEF",80],["Evan Ndicka","DEF",82],["Wilfried Singo","DEF",82],["Seko Fofana","MID",80],["Franck Kessi\u00e9","MID",83],["Ibrahim Sangar\u00e9","MID",81],["Simon Adingra","FWD",80],["Ange-Yoan Bonny","FWD",79],["Amad Diallo","FWD",84],["Evann Guessand","FWD",79],["Nicolas P\u00e9p\u00e9","FWD",79]],
   "Japan":[["Zion Suzuki","GK",80],["Takehiro Tomiyasu","DEF",81],["Ko Itakura","DEF",81],["Hiroki Ito","DEF",80],["Yukinari Sugawara","DEF",78],["Daichi Kamada","MID",83],["Ao Tanaka","MID",80],["Wataru Endo","MID",82],["Keito Nakamura","FWD",80],["Ritsu Doan","FWD",83],["Junya Ito","FWD",82],["Takefusa Kubo","FWD",86],["Ayase Ueda","FWD",80],["Daizen Maeda","FWD",81]],
   "Jordan":[["Yazid Abulaila","GK",74],["Mohammad Abualnadi","DEF",75],["Yazan Al-Arab","DEF",76],["Saleem Obaid","DEF",74],["Anas Banawi","DEF",74],["Mohammad Al-Dawoud","MID",75],["Nizar Al-Rashdan","MID",77],["Noor Al-Rawabdeh","MID",75],["Rajaei Ayed","MID",75],["Mousa Al-Taamari","FWD",82],["Odeh Al-Fakhouri","FWD",76],["Mohammad Abu Zrayq","FWD",75],["Ali Azaizeh","FWD",76],["Ali Olwan","FWD",77]],
-  "Mexico":[["Guillermo Ochoa","GK",79],["C\u00e9sar Montes","DEF",80],["Johan V\u00e1squez","DEF",81],["Luis Romo","MID",79],["Orbel\u00edn Pineda","MID",80],["Edson \u00c1lvarez","MID",83],["Gilberto Mora","MID",80],["C\u00e9sar Huerta","MID",79],["\u00c1lvaro Fidalgo","MID",80],["Luis Ch\u00e1vez","MID",79],["Alexis Vega","FWD",80],["Juli\u00e1n Qui\u00f1ones","FWD",80],["Santiago Gim\u00e9nez","FWD",83],["Ra\u00fal Jim\u00e9nez","FWD",81]],
+  "Mexico":[["Ra\u00fal Rangel","GK",79],["C\u00e9sar Montes","DEF",80],["Johan V\u00e1squez","DEF",81],["Luis Romo","MID",79],["Orbel\u00edn Pineda","MID",80],["Edson \u00c1lvarez","MID",83],["Gilberto Mora","MID",80],["C\u00e9sar Huerta","MID",79],["\u00c1lvaro Fidalgo","MID",80],["Luis Ch\u00e1vez","MID",79],["Alexis Vega","FWD",80],["Juli\u00e1n Qui\u00f1ones","FWD",80],["Santiago Gim\u00e9nez","FWD",83],["Ra\u00fal Jim\u00e9nez","FWD",81]],
   "Morocco":[["Yassine Bounou","GK",84],["Noussair Mazraoui","DEF",82],["Nayef Aguerd","DEF",82],["Chadi Riad","DEF",78],["Achraf Hakimi","DEF",89],["Neil El Aynaoui","MID",78],["Sofyan Amrabat","MID",81],["Azzedine Ounahi","MID",80],["Bilal El Khannouss","MID",81],["Ismael Saibari","MID",80],["Abdessamad Ezzalzouli","FWD",80],["Soufiane Rahimi","FWD",78],["Ayoub El Kaabi","FWD",81],["Brahim D\u00edaz","FWD",84]],
   "Netherlands":[["Bart Verbruggen","GK",81],["Nathan Ak\u00e9","DEF",83],["Denzel Dumfries","DEF",84],["Jorrel Hato","DEF",80],["Jurri\u00ebn Timber","DEF",82],["Micky van de Ven","DEF",84],["Virgil van Dijk","DEF",90],["Frenkie de Jong","MID",88],["Ryan Gravenberch","MID",85],["Teun Koopmeiners","MID",82],["Tijjani Reijnders","MID",85],["Memphis Depay","FWD",83],["Cody Gakpo","FWD",86],["Donyell Malen","FWD",81]],
-  "New Zealand":[["Alex Paulsen","GK",75],["Tyler Bindon","DEF",77],["Michael Boxall","DEF",75],["Liberato Cacace","DEF",77],["Finn Surman","DEF",75],["Joe Bell","MID",76],["Marko Stameni\u0107","MID",77],["Alex Rufer","MID",75],["Ryan Thomas","MID",75],["Matt Garbett","FWD",75],["Chris Wood","FWD",82],["Sarpreet Singh","FWD",75],["Kosta Barbarouses","FWD",75],["Ben Old","FWD",77]],
+  "New Zealand":[["Max Crocombe","GK",77],["Alex Paulsen","GK",75],["Tyler Bindon","DEF",77],["Michael Boxall","DEF",75],["Liberato Cacace","DEF",77],["Finn Surman","DEF",75],["Joe Bell","MID",76],["Marko Stameni\u0107","MID",77],["Alex Rufer","MID",75],["Ryan Thomas","MID",75],["Matt Garbett","FWD",75],["Chris Wood","FWD",82],["Sarpreet Singh","FWD",75],["Ben Old","FWD",77]],
   "Norway":[["\u00d8rjan Nyland","GK",78],["Julian Ryerson","DEF",80],["Kristoffer Ajer","DEF",79],["Leo Skiri \u00d8stig\u00e5rd","DEF",79],["Martin \u00d8degaard","MID",89],["Sander Berge","MID",79],["Kristian Thorstvedt","MID",78],["Andreas Schjelderup","MID",78],["Fredrik Aursnes","MID",79],["Erling Haaland","FWD",95],["Alexander S\u00f8rloth","FWD",84],["J\u00f8rgen Strand Larsen","FWD",80],["Oscar Bobb","FWD",79],["Antonio Nusa","FWD",81]],
   "Panama":[["Orlando Mosquera","GK",76],["Luis Mej\u00eda","GK",75],["Amir Murillo","DEF",78],["Fidel Escobar","DEF",75],["Andr\u00e9s Andrade","DEF",77],["Jos\u00e9 C\u00f3rdoba","DEF",78],["Eric Davis","DEF",76],["An\u00edbal Godoy","MID",77],["Adalberto Carrasquilla","MID",79],["Carlos Harvey","MID",76],["Jos\u00e9 Luis Rodr\u00edguez","MID",76],["Yoel B\u00e1rcenas","MID",78],["Alberto Quintero","MID",75],["Ismael D\u00edaz","FWD",78]],
   "Paraguay":[["Gatito Fern\u00e1ndez","GK",77],["Gustavo G\u00f3mez","DEF",82],["J\u00fanior Alonso","DEF",79],["Fabi\u00e1n Balbuena","DEF",78],["Omar Alderete","DEF",80],["Jos\u00e9 Canale","DEF",76],["Miguel Almir\u00f3n","MID",81],["Kaku","MID",78],["Andr\u00e9s Cubas","MID",79],["Ram\u00f3n Sosa","MID",80],["Diego G\u00f3mez","MID",80],["Maur\u00edcio","MID",78],["Antonio Sanabria","FWD",80],["Julio Enciso","FWD",80]],
   "Portugal":[["Diogo Costa","GK",85],["Diogo Dalot","DEF",83],["Jo\u00e3o Cancelo","DEF",84],["Nuno Mendes","DEF",86],["R\u00faben Dias","DEF",88],["Jo\u00e3o Neves","MID",86],["Vitinha","MID",88],["Bruno Fernandes","MID",89],["Bernardo Silva","MID",88],["Jo\u00e3o F\u00e9lix","FWD",82],["Pedro Neto","FWD",83],["Rafael Le\u00e3o","FWD",86],["Gon\u00e7alo Ramos","FWD",82],["Cristiano Ronaldo","FWD",87]],
   "Qatar":[["Salah Zakaria","GK",74],["Meshaal Barsham","GK",76],["Ayoub Alawi","DEF",74],["Boualem Khoukhi","DEF",77],["Pedro Miguel","DEF",76],["Lucas Mendes","DEF",75],["Karim Boudiaf","MID",77],["Abdulaziz Hatem","MID",76],["Assim Madibo","MID",76],["Edmilson Junior","FWD",79],["Almoez Ali","FWD",80],["Akram Afif","FWD",82],["Mohammed Muntari","FWD",75],["Hassan Al-Haydos","FWD",78]],
-  "Saudi Arabia":[["Nawaf Al-Aqidi","GK",76],["Mohammed Al-Owais","GK",76],["Saud Abdulhamid","DEF",78],["Abdulelah Al-Amri","DEF",78],["Hassan Tambakti","DEF",78],["Ali Lajami","DEF",76],["Nasser Al-Dawsari","MID",78],["Mohamed Kanno","MID",79],["Abdullah Al-Khaibari","MID",77],["Musab Al-Juwayr","MID",78],["Salem Al-Dawsari","FWD",83],["Abdullah Al-Hamdan","FWD",78],["Feras Al-Brikan","FWD",78],["Saleh Al-Shehri","FWD",78]],
-  "Scotland":[["Craig Gordon","GK",77],["Angus Gunn","GK",77],["Jack Hendry","DEF",77],["Aaron Hickey","DEF",78],["Nathan Patterson","DEF",77],["Andy Robertson","DEF",85],["John Souttar","DEF",77],["Kieran Tierney","DEF",81],["Ryan Christie","MID",79],["Lewis Ferguson","MID",82],["John McGinn","MID",82],["Scott McTominay","MID",85],["Ch\u00e9 Adams","FWD",79],["Lawrence Shankland","FWD",78]],
+  "Saudi Arabia":[["Mohammed Al-Owais","GK",78],["Saud Abdulhamid","DEF",78],["Abdulelah Al-Amri","DEF",78],["Hassan Tambakti","DEF",78],["Ali Lajami","DEF",76],["Hassan Kadesh","DEF",76],["Nasser Al-Dawsari","MID",78],["Mohamed Kanno","MID",79],["Abdullah Al-Khaibari","MID",77],["Musab Al-Juwayr","MID",78],["Salem Al-Dawsari","FWD",83],["Abdullah Al-Hamdan","FWD",78],["Feras Al-Brikan","FWD",78],["Saleh Al-Shehri","FWD",78]],
+  "Scotland":[["Angus Gunn","GK",78],["Jack Hendry","DEF",77],["Aaron Hickey","DEF",78],["Nathan Patterson","DEF",77],["Andy Robertson","DEF",85],["John Souttar","DEF",77],["Kieran Tierney","DEF",81],["Ryan Christie","MID",79],["Lewis Ferguson","MID",82],["Ben Gannon-Doak","MID",77],["John McGinn","MID",82],["Scott McTominay","MID",85],["Ch\u00e9 Adams","FWD",79],["Lawrence Shankland","FWD",78]],
   "Senegal":[["\u00c9douard Mendy","GK",82],["Kr\u00e9pin Diatta","DEF",79],["Kalidou Koulibaly","DEF",83],["El Hadji Malick Diouf","DEF",78],["Moussa Niakhat\u00e9","DEF",79],["Isma\u00efl Jakobs","DEF",78],["Idrissa Gana Gueye","MID",81],["Lamine Camara","MID",80],["Habib Diarra","MID",80],["Pape Matar Sarr","MID",82],["Sadio Man\u00e9","FWD",85],["Isma\u00efla Sarr","FWD",82],["Iliman Ndiaye","FWD",81],["Nicolas Jackson","FWD",82]],
   "South Africa":[["Ronwen Williams","GK",80],["Khuliso Mudau","DEF",77],["Nkosinathi Sibisi","DEF",75],["Aubrey Modiba","DEF",77],["Teboho Mokoena","MID",79],["Jayden Adams","MID",75],["Thalente Mbatha","MID",75],["Sphephelo Sithole","MID",75],["Oswin Appollis","FWD",77],["Evidence Makgopa","FWD",76],["Lyle Foster","FWD",79],["Iqraam Rayners","FWD",76],["Relebohile Mofokeng","FWD",78],["Themba Zwane","FWD",78]],
   "South Korea":[["Jo Hyeon-woo","GK",79],["Kim Seung-gyu","GK",77],["Kim Min-jae","DEF",87],["Seol Young-woo","DEF",77],["Lee Dong-gyeong","MID",77],["Hwang Hee-chan","MID",83],["Yang Hyun-jun","MID",77],["Hwang In-beom","MID",81],["Lee Jae-sung","MID",80],["Bae Jun-ho","MID",79],["Lee Kang-in","MID",85],["Paik Seung-ho","MID",78],["Cho Gue-sung","FWD",79],["Son Heung-min","FWD",89]],
-  "Spain":[["Unai Sim\u00f3n","GK",83],["David Raya","GK",84],["Marc Cucurella","DEF",83],["Pau Cubars\u00ed","DEF",84],["Aymeric Laporte","DEF",83],["Pedri","MID",90],["Fabi\u00e1n Ruiz","MID",84],["Mart\u00edn Zubimendi","MID",84],["Gavi","MID",84],["Rodri","MID",92],["Mikel Oyarzabal","FWD",84],["Dani Olmo","FWD",86],["Nico Williams","FWD",88],["Lamine Yamal","FWD",94]],
+  "Spain":[["Unai Sim\u00f3n","GK",86],["David Raya","GK",84],["Marc Cucurella","DEF",83],["Pau Cubars\u00ed","DEF",84],["Aymeric Laporte","DEF",83],["Pedri","MID",90],["Fabi\u00e1n Ruiz","MID",84],["Mart\u00edn Zubimendi","MID",84],["Gavi","MID",84],["Rodri","MID",92],["Mikel Oyarzabal","FWD",84],["Dani Olmo","FWD",86],["Nico Williams","FWD",88],["Lamine Yamal","FWD",94]],
   "Sweden":[["Viktor Johansson","GK",77],["Hjalmar Ekdal","DEF",76],["Gabriel Gudmundsson","DEF",78],["Isak Hien","DEF",82],["Victor Lindel\u00f6f","DEF",81],["Carl Starfelt","DEF",77],["Daniel Svensson","DEF",77],["Yasin Ayari","MID",78],["Mattias Svanberg","MID",78],["Lucas Bergvall","MID",80],["Anthony Elanga","FWD",83],["Viktor Gy\u00f6keres","FWD",89],["Alexander Isak","FWD",90],["Benjamin Nygren","FWD",77]],
   "Switzerland":[["Gregor Kobel","GK",84],["Manuel Akanji","DEF",85],["Nico Elvedi","DEF",79],["Ricardo Rodr\u00edguez","DEF",80],["Michel Aebischer","MID",78],["Remo Freuler","MID",80],["Ardon Jashari","MID",80],["Djibril Sow","MID",78],["Granit Xhaka","MID",85],["Denis Zakaria","MID",82],["Breel Embolo","FWD",81],["Dan Ndoye","FWD",82],["Noah Okafor","FWD",79],["Rub\u00e9n Vargas","FWD",79]],
   "Tunisia":[["Aymen Dahmen","GK",77],["Ali Abdi","DEF",76],["Dylan Bronn","DEF",77],["Omar Rekik","DEF",76],["Montassar Talbi","DEF",78],["Yan Valery","DEF",76],["Anis Ben Slimane","MID",77],["Ismael Gharbi","MID",76],["Rani Khedira","MID",78],["Hannibal Mejbri","MID",79],["Ellyes Skhiri","MID",81],["Elias Achouri","FWD",78],["Elias Saad","FWD",78],["Sebastian Tounekti","FWD",77]],
@@ -871,7 +881,7 @@ const COACHES = {
   "England":["Thomas Tuchel",89],
   "France":["Didier Deschamps",91],
   "Germany":["Julian Nagelsmann",88],
-  "Ghana":["Otto Addo",79],
+  "Ghana":["Carlos Queiroz",86],
   "Haiti":["S\u00e9bastien Mign\u00e9",76],
   "Iran":["Amir Ghalenoei",79],
   "Iraq":["Graham Arnold",81],
@@ -879,7 +889,7 @@ const COACHES = {
   "Japan":["Hajime Moriyasu",83],
   "Jordan":["Jamal Sellami",77],
   "Mexico":["Javier Aguirre",84],
-  "Morocco":["Walid Regragui",85],
+  "Morocco":["Mohamed Ouahbi",80],
   "Netherlands":["Ronald Koeman",87],
   "New Zealand":["Darren Bazeley",76],
   "Norway":["St\u00e5le Solbakken",82],
@@ -895,7 +905,7 @@ const COACHES = {
   "Spain":["Luis de la Fuente",88],
   "Sweden":["Graham Potter",84],
   "Switzerland":["Murat Yakin",82],
-  "Tunisia":["Sami Trabelsi",77],
+  "Tunisia":["Herv\u00e9 Renard",86],
   "T\u00fcrkiye":["Vincenzo Montella",82],
   "United States":["Mauricio Pochettino",88],
   "Uruguay":["Marcelo Bielsa",89],
@@ -910,6 +920,37 @@ const FORM = {
   "Jonathan David":1, "Kai Havertz":1, "Yoane Wissa":1, "Julián Quiñones":1, "Ismael Saibari":1, "Folarin Balogun":1
 };
 function formBoost(name){ return FORM[name] || 0; }
+
+// Eliminated from the real 2026 World Cup (cosmetic OUT tag; refresh as results land).
+// Group stage: 16 exits. Round of 32 exits through July 3 incl. Switzerland's win over Algeria.
+const OUT = [
+  "South Korea","Czechia","Qatar","Scotland","Haiti","T\u00fcrkiye","Cura\u00e7ao","Tunisia",
+  "Iran","New Zealand","Uruguay","Saudi Arabia","Iraq","Jordan","Uzbekistan","Panama",
+  "South Africa","Japan","Germany","Netherlands","Ivory Coast","Sweden","Ecuador",
+  "DR Congo","Senegal","Bosnia and Herzegovina","Austria","Croatia","Algeria"
+];
+function isOut(team){ return OUT.indexOf(team) !== -1; }
+
+// Nation chemistry: +1 for each extra drafted player from the same nation, capped at +6.
+// Counts the 13 drafted slots only (the rolled coach does not add chemistry).
+const CHEM_CAP = 6;
+function chemPoints(roster, slots){
+  var counts = {};
+  for (var k = 0; k < slots.length; k++){
+    var s = slots[k]; if (s.key === "COACH") continue;
+    var p = roster[s.key]; if (!p || !p.team) continue;
+    counts[p.team] = (counts[p.team] || 0) + 1;
+  }
+  var pts = 0;
+  for (var t in counts) if (counts[t] > 1) pts += counts[t] - 1;
+  return Math.min(CHEM_CAP, pts);
+}
+// Final club rating: weighted stretch over the 14 graded slots, plus chemistry, capped at 99.
+function finalRating(roster, slots){
+  var base = ratingFromRoster(roster, slots);
+  if (!base) return 0;
+  return Math.min(99, base + chemPoints(roster, slots));
+}
 
 /* ============================================================
    WORLD XI — interaction layer (adapted from Diamond Kings)
@@ -1008,9 +1049,9 @@ function activeSlots(){ return SLOTS; }
 
 function $(id){ return document.getElementById(id); }
 var el = {
-  lineup:$("lineup"), led:$("ledSigned"), ledForm:$("ledForm"), meter:$("meterFill"),
+  lineup:$("lineup"), led:$("ledSigned"), ledForm:$("ledForm"), ledChem:$("ledChem"), meter:$("meterFill"),
   formReel:$("formReel"), formFace:$("formFace"), coachReel:$("coachReel"), coachFace:$("coachFace"), teamReel:$("teamReel"), teamFace:$("teamFace"),
-  rollBtn:$("rollBtn"), restartBtn:$("restartBtn"), rerollBtn:$("rerollBtn"), drawHint:$("drawHint"), hand:$("hand"), wire:$("wireFeed"),
+  rollBtn:$("rollBtn"), restartBtn:$("restartBtn"), drawHint:$("drawHint"), hand:$("hand"), wire:$("wireFeed"),
   gradeBtn:$("gradeBtn"), gradeHint:$("gradeHint"), results:$("results"), sheet:$("resSheet"),
   formationPanel:$("formationPanel"), formationToggle:$("formationToggle"), pipStrip:$("pipStrip"), fSig:$("fSig")
 };
@@ -1124,6 +1165,7 @@ function renderPips(){
 /* ---- status / roll gating ---- */
 function renderStatus(){
   el.led.textContent=pad(picks)+"/"+TOTAL;
+  if(el.ledChem) el.ledChem.textContent="+"+(SLOTS.length?chemPoints(roster,SLOTS):0);
   el.meter.style.width=(picks/TOTAL*100)+"%";
   el.gradeBtn.disabled=(picks!==TOTAL);
   el.gradeHint.textContent=(picks===TOTAL)?"The squad is set — blow the whistle.":"Fill all "+TOTAL+" spots to blow the final whistle";
@@ -1134,20 +1176,16 @@ function updateRollState(){
   if(rolling) return;
   if(!formation){
     el.rollBtn.disabled=false; el.rollBtn.innerHTML='<span>&#9654; Roll Formation &amp; Coach</span>'; show(el.rollBtn,true);
-    show(el.rerollBtn,false);
     el.drawHint.textContent="First, roll your formation and head coach";
   } else if(picks>=TOTAL){
     el.rollBtn.disabled=true; el.rollBtn.innerHTML='<span>Squad Complete</span>'; show(el.rollBtn,true);
-    show(el.rerollBtn,false);
     el.drawHint.textContent="All "+TOTAL+" filled — blow the final whistle below";
   } else if(hand){
     show(el.rollBtn,false);
-    show(el.rerollBtn,true); el.rerollBtn.disabled=false;
-    el.drawHint.textContent="Draft a player from this nation, or reroll for another";
+    el.drawHint.textContent="No takebacks \u2014 draft one from this nation to continue";
   } else {
     el.rollBtn.disabled=false; el.rollBtn.innerHTML='<span>&#9654; Roll the Draw</span>'; show(el.rollBtn,true);
-    show(el.rerollBtn,false);
-    el.drawHint.textContent="Roll a nation — every team comes up with equal odds";
+    el.drawHint.textContent="Roll a nation — you draft what the dice give you";
   }
 }
 
@@ -1182,8 +1220,11 @@ function rollFormation(){   // kickoff: rolls the formation AND the head coach
 function rollNation(){
   if(rolling||!formation||picks>=TOTAL) return;
   hand=null; renderHand();
-  rolling=true; el.rollBtn.disabled=true; if(el.rerollBtn) el.rerollBtn.disabled=true;
-  var team=pick(TEAMS);                       // uniform over all 48, no filtering
+  rolling=true; el.rollBtn.disabled=true;
+  var fitting=TEAMS.filter(function(t){
+    return poolFor(t).some(function(r){ return !isUsed(r[0]) && eligibleSlotsFor(r[1]).length>0; });
+  });
+  var team=pick(fitting.length?fitting:TEAMS);   // uniform among nations that can fill an open spot
   el.teamReel.classList.remove("locked"); el.teamReel.classList.add("spin"); el.teamReel.removeAttribute("style");
   var t=0, iv=setInterval(function(){
     el.teamFace.textContent=pick(TEAMS);
@@ -1191,7 +1232,7 @@ function rollNation(){
       clearInterval(iv);
       el.teamReel.classList.remove("spin"); el.teamReel.classList.add("locked");
       el.teamReel.setAttribute("style",colorVars(team));
-      el.teamFace.innerHTML=teamCrest(team)+'<span class="rl-name">'+esc(team)+'</span>';
+      el.teamFace.innerHTML=teamCrest(team)+'<span class="rl-name">'+esc(team)+'</span>'+(isOut(team)?'<span class="outchip">OUT</span>':'');
       rolling=false;
       revealHand(team);
     }
@@ -1221,7 +1262,7 @@ function renderHand(){
   var legend=(mode==="rookie")?' &middot; <span class="legend-star">&#9733; elite</span>':'';
   var sub=eligCount? (eligCount+' can fill an open spot') : 'no fit for your open spots &mdash; reroll';
   var html='<div style="'+colorVars(hand.team)+'">'
-    +'<div class="hand-head">'+esc(hand.team)+' <span class="era">'+abbr(hand.team)+'</span></div>'
+    +'<div class="hand-head">'+esc(hand.team)+' <span class="era">'+abbr(hand.team)+'</span>'+(isOut(hand.team)?'<span class="outchip" title="Eliminated from the 2026 World Cup">OUT</span>':'')+'</div>'
     +'<div class="hand-sub">'+sub+legend+'</div><div class="cards">';
   hand.players.forEach(function(p){
     var used=isUsed(p.name), elig=!used && eligibleSlotsFor(p.pos).length>0, isElite=(mode==="rookie"&&p.grade>=ELITE);
@@ -1281,7 +1322,7 @@ function prependTick(html){
 /* ---- final whistle ---- */
 function grade(){
   if(picks!==TOTAL) return;
-  var R=ratingFromRoster(roster, allSlots(formation));
+  var R=finalRating(roster, allSlots(formation));
   showResults(R,seasonOutcome(R));
 }
 function showResults(R,out){
@@ -1289,7 +1330,7 @@ function showResults(R,out){
   var html='<div class="final-tag">&#9679; Full Time &#9679;</div>'
     +'<div class="tier-line '+tc+'">'+out.tier+'</div>'
     +'<div class="score-wrap"><span class="score '+tc+'" id="scoreNum">0.0</span><span class="of '+tc+'"> / 100</span></div>'
-    +'<div class="record-line"><b>'+formation+'</b> &middot; group '+out.rec+' &middot; '+out.finish+'</div>'
+    +'<div class="record-line"><b>'+formation+'</b> &middot; group '+out.rec+' &middot; '+out.finish+' &middot; chemistry <b>+'+chemPoints(roster,allSlots(formation))+'</b></div>'
     +'<div id="hsEntryWrap"></div><hr class="jumbo-rule">'
     +boxscore()
     +'<div class="share"><div class="share-label">&#9654; The team sheet &mdash; share your squad</div>'
@@ -1305,59 +1346,64 @@ function showResults(R,out){
   maybeHighScore(R);
 }
 
-/* ---- hall of fame: one shared board, this game posts board id "worldxi". Blitz only. ---- */
+/* ---- hall of fame v2: two arcade-wide boards (daily ET + all-time), fed by every game ---- */
 var LB_API="https://gridiron-hof.joeysamowitz.workers.dev";
-var LB_KEY="worldXiHOF", LB_MAX=5, lbScope="", lbMem={};
+var LB_MAX=5, LB_TAG="WXI", lbScope="", lbMem={}, lbTab="day";
 function lbBoard(){ return "worldxi"; }
 function lbEligible(){ return mode==="blitz"; }
 function lbSort(b){ b.sort(function(a,c){ return c.s-a.s; }); return b; }
-async function lbLoad(){
-  var bd=lbBoard(), mk=LB_KEY+":"+bd;
+async function lbFetch(scope){
+  var key="g:"+scope;
   if(LB_API){
-    try{ var r=await fetch(LB_API+"?b="+encodeURIComponent(bd),{cache:"no-store"}); if(r.ok){ lbScope="global"; lbMem[bd]=(await r.json()).slice(); return lbMem[bd].slice(); } }catch(e){}
-    lbScope="offline"; return (lbMem[bd]||[]).slice();
-  }
-  if(window.storage && window.storage.get){ lbScope="shared";
-    try{ var s=await window.storage.get(mk,true); return (s&&s.value)?JSON.parse(s.value):[]; }catch(e){ return []; } }
-  try{ if(window.localStorage){ lbScope="device"; var v=localStorage.getItem(mk); return v?JSON.parse(v):[]; } }catch(e){}
-  lbScope="session"; return (lbMem[bd]||[]).slice();
-}
-async function lbSubmit(entry){
-  var bd=lbBoard(), mk=LB_KEY+":"+bd;
-  if(LB_API){
-    try{ var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({b:bd,i:entry.i,s:entry.s})});
-      if(r.ok){ lbScope="global"; var b=await r.json(); lbMem[bd]=b.slice(); return b; } }catch(e){}
+    try{ var r=await fetch(LB_API+"?b=global"+(scope==="day"?"&scope=day":""),{cache:"no-store"});
+      if(r.ok){ lbScope="global"; lbMem[key]=(await r.json()).slice(); return lbMem[key].slice(); } }catch(e){}
     lbScope="offline";
   }
-  var board=lbSort(await lbLoad()); board.push({i:entry.i,s:entry.s,t:Date.now()});
-  board=lbSort(board).slice(0,LB_MAX); lbMem[bd]=board.slice();
-  try{ if(window.storage && window.storage.set){ await window.storage.set(mk,JSON.stringify(board),true); return board; } }catch(e){}
-  try{ if(window.localStorage){ localStorage.setItem(mk,JSON.stringify(board)); } }catch(e){}
-  return board;
+  return (lbMem[key]||[]).slice();
 }
-async function renderHiScores(board){
+async function lbSubmit(entry){
+  if(LB_API){
+    try{ var r=await fetch(LB_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({b:lbBoard(),i:entry.i,s:entry.s})});
+      if(r.ok){ lbScope="global"; await r.json(); return true; } }catch(e){}
+    lbScope="offline";
+  }
+  ["day","all"].forEach(function(scope){
+    var key="g:"+scope, b=lbSort((lbMem[key]||[]).slice());
+    b.push({i:entry.i,s:entry.s,t:Date.now(),g:LB_TAG});
+    lbMem[key]=lbSort(b).slice(0,LB_MAX);
+  });
+  return false;
+}
+async function renderHiScores(){
   var list=$("hsList"); if(!list) return;
-  board=lbSort((board||await lbLoad()).slice());
-  if(!board.length){ list.innerHTML='<span class="hs-empty">No scores yet &mdash; be the first to make the board</span>'; }
+  var d=$("hsTabDay"), a=$("hsTabAll");
+  if(d){ d.classList.toggle("on",lbTab==="day"); a.classList.toggle("on",lbTab==="all"); }
+  var board=lbSort(await lbFetch(lbTab));
+  if(!board.length){ list.innerHTML='<span class="hs-empty">'+(lbTab==="day"?"No scores yet today \u2014 set the pace":"No scores yet \u2014 be the first on the board")+'</span>'; }
   else{
     var ord=["1ST","2ND","3RD","4TH","5TH"];
     list.innerHTML=board.slice(0,LB_MAX).map(function(e,i){
-      return '<span class="hs-row'+(i===0?' top1':'')+'"><b class="hs-rank">'+ord[i]+'</b><b class="hs-init">'+esc(e.i)+'</b><span class="hs-score">'+(+e.s).toFixed(1)+'</span></span>';
+      return '<span class="hs-row'+(i===0?' top1':'')+'"><b class="hs-rank">'+ord[i]+'</b><b class="hs-init">'+esc(e.i)+'</b><i class="hs-g">'+esc(e.g||"")+'</i><span class="hs-score">'+(+e.s).toFixed(1)+'</span></span>';
     }).join("");
   }
   var sc=$("hsScope");
-  if(sc){ var scopeL=({global:"saved globally",offline:"offline \u2014 not saved",shared:"shared",device:"this device",session:"this session"})[lbScope]||"";
-    sc.textContent="Blitz"+(scopeL?" \u00b7 "+scopeL:""); }
+  if(sc){ var scopeL=({global:"whole arcade",offline:"offline \u2014 not saved"})[lbScope]||"whole arcade";
+    sc.textContent=(lbTab==="day"?"Today (ET)":"All-Time")+" \u00b7 "+scopeL+" \u00b7 Blitz runs post"; }
+}
+function initHsTabs(){
+  var d=$("hsTabDay"), a=$("hsTabAll"); if(!d||!a) return;
+  d.addEventListener("click",function(){ if(lbTab!=="day"){ lbTab="day"; renderHiScores(); } });
+  a.addEventListener("click",function(){ if(lbTab!=="all"){ lbTab="all"; renderHiScores(); } });
 }
 async function maybeHighScore(R){
   var wrap=$("hsEntryWrap"); if(!wrap) return;
-  if(!lbEligible()){ wrap.innerHTML='<div class="hs-entry note"><div class="sub">Hall of Fame logs <b>Blitz</b> runs only.</div></div>'; return; }
-  var board=lbSort(await lbLoad());
+  if(!lbEligible()){ wrap.innerHTML='<div class="hs-entry note"><div class="sub">The boards log <b>Blitz</b> runs only.</div></div>'; return; }
+  var board=lbSort(await lbFetch("day"));
   var qualifies=board.length<LB_MAX || R>board[board.length-1].s;
   if(!qualifies) return;
   var rank=board.filter(function(e){ return e.s>R; }).length+1;
-  wrap.innerHTML='<div class="hs-entry"><div class="hl">New High Score &middot; #'+rank+'</div>'
-    +'<div class="sub">'+R.toFixed(1)+' / 100 &mdash; enter your initials for the Hall of Fame</div>'
+  wrap.innerHTML='<div class="hs-entry"><div class="hl">Today\u2019s Board &middot; #'+rank+'</div>'
+    +'<div class="sub">'+R.toFixed(1)+' / 100 \u2014 enter your initials for the arcade boards</div>'
     +'<div class="row"><input id="hsInit" maxlength="3" placeholder="AAA" autocomplete="off" spellcheck="false"><button id="hsSave">Enter</button></div></div>';
   var inp=$("hsInit"), btn=$("hsSave");
   inp.addEventListener("input",function(){ inp.value=inp.value.replace(/[^A-Za-z]/g,"").toUpperCase().slice(0,3); });
@@ -1366,11 +1412,14 @@ async function maybeHighScore(R){
     if(btn.disabled) return;
     var ini=(inp.value||"").replace(/[^A-Za-z]/g,"").toUpperCase().slice(0,3)||"AAA";
     btn.disabled=true; var sc=Math.round(R*10)/10;
-    lbSubmit({i:ini,s:sc}).then(function(b){
-      renderHiScores(b);
-      var pos=b.findIndex(function(e){ return e.i===ini&&e.s===sc; })+1;
-      var note=lbScope==="offline"?'<div class="sub">saved on this device only &mdash; global board unreachable</div>':'';
-      wrap.innerHTML='<div class="hs-entry"><div class="done">&#10003; '+esc(ini)+' enshrined at #'+(pos||1)+'</div>'+note+'</div>';
+    lbSubmit({i:ini,s:sc}).then(function(){
+      lbFetch("day").then(function(b){
+        lbSort(b);
+        var pos=b.filter(function(e){ return e.s>sc; }).length+1;
+        renderHiScores();
+        var note=lbScope==="offline"?'<div class="sub">saved on this device only \u2014 arcade boards unreachable</div>':'';
+        wrap.innerHTML='<div class="hs-entry"><div class="done">&#10003; '+esc(ini)+' on today\u2019s board at #'+pos+'</div>'+note+'</div>';
+      });
     });
   }
   btn.addEventListener("click",submit);
@@ -1398,14 +1447,14 @@ function shareText(R,out){
   var L=[];
   L.push("WORLD XI \u2014 "+formation+"  \u00b7  2026 WORLD CUP DRAFT");
   L.push("FINAL: "+R.toFixed(1)+"/100  \u00b7  "+out.tier);
-  L.push("Group "+out.rec+"  \u00b7  "+out.finish);
+  L.push("Group "+out.rec+"  \u00b7  "+out.finish+"  \u00b7  chemistry +"+chemPoints(roster,allSlots(formation)));
   L.push("--------------------------------");
   allSlots(formation).forEach(function(s){
     var p=roster[s.key]; if(!p) return; var tag=(chipLabel(s.key)+"     ").slice(0,5), fb=formBoost(p.name);
     L.push(tag+" "+p.name+"  ("+abbr(p.team)+")  "+effGrade(p)+(fb>0?"  (form +"+fb+")":""));
   });
   L.push("--------------------------------");
-  L.push("Nations reroll with equal odds. bankregbro.github.io");
+  L.push("No rerolls. Chemistry counts. bankregbro.github.io");
   return L.join("\n");
 }
 function copyShare(){
@@ -1460,7 +1509,6 @@ function boot(){
   applyView(currentView());
   el.rollBtn.addEventListener("click",function(){ if(!formation) rollFormation(); else rollNation(); });
   if(el.restartBtn) el.restartBtn.addEventListener("click",handleRestart);
-  if(el.rerollBtn) el.rerollBtn.addEventListener("click",rollNation);
   el.gradeBtn.addEventListener("click",grade);
   el.results.addEventListener("click",function(e){ if(e.target===el.results) el.results.classList.remove("show"); });
   Array.prototype.forEach.call(document.querySelectorAll(".dt-seg"),function(b){ b.addEventListener("click",function(){ setMode(b.getAttribute("data-mode")); }); });
@@ -1472,6 +1520,7 @@ function boot(){
   if(rulesOv) rulesOv.addEventListener("click",function(e){ if(e.target===rulesOv) rulesOv.classList.remove("show"); });
   document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&rulesOv) rulesOv.classList.remove("show"); });
   window.addEventListener("resize",autoView);
+  initHsTabs();
   renderHiScores();
   newGame();
 }
@@ -1482,7 +1531,8 @@ else boot();
 window.__WX__={ rollFormation:function(){return rollFormation();}, rollNation:function(){return rollNation();},
   state:function(){return {formation:formation,picks:picks,hand:hand,rolling:rolling};},
   draftFirst:function(){ if(!hand) return false; var c=el.hand.querySelector(".card.elig"); if(!c) return false; c.click(); return true; },
-  grade:function(){return grade();}, rating:function(){return ratingFromRoster(roster,allSlots(formation));} };
+  grade:function(){return grade();}, rating:function(){return finalRating(roster,allSlots(formation));},
+  chem:function(){return SLOTS.length?chemPoints(roster,SLOTS):0} };
 
 })();
 
