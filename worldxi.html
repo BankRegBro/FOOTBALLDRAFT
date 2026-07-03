@@ -516,6 +516,12 @@ h1.title .b{
 .reel .face.dec{font-size:clamp(15px,3.6vw,23px);letter-spacing:.04em}
 .field.pitch{border-radius:8px;display:block}
 .led.amber #ledForm{letter-spacing:.02em}
+.arcade-btn.restart{margin-top:9px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.20);box-shadow:none}
+.arcade-btn.restart span{color:#c9d3e3;text-shadow:none;font-size:14px;letter-spacing:.05em}
+.arcade-btn.restart:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.34)}
+.arcade-btn.restart:active{transform:translateY(1px)}
+.arcade-btn.restart.arm{background:linear-gradient(180deg,#ffb42a,#c07500);border-color:#8a5600}
+.arcade-btn.restart.arm span{color:#1c1000;text-shadow:none;font-weight:700}
 .reels{flex-wrap:wrap}
 #coachReel .face{font-size:clamp(12px,2.6vw,17px)}
 #coachReel .rl-name{font-size:clamp(11px,2.4vw,15px)}
@@ -578,6 +584,7 @@ h1.title .b{
         </div>
         <button class="arcade-btn red pulse" id="rollBtn"><span>&#9654; Roll Formation &amp; Coach</span></button>
         <button class="arcade-btn reroll" id="rerollBtn" hidden><span>&#8635; Reroll Nation</span></button>
+        <button class="arcade-btn restart" id="restartBtn" type="button"><span>&#8635; Restart</span></button>
         <div class="draw-hint" id="drawHint">First, roll your formation to set the shape</div>
         <div class="hand" id="hand"></div>
       </div>
@@ -968,6 +975,7 @@ var roster = {};           // slotKey -> {name,pos,grade,team}
 var picks  = 0;
 var hand   = null;         // { team, players:[{name,pos,grade,idx}] }
 var rolling= false;
+var _restartArmed=false,_restartTimer=null;
 var mode   = "blitz";      // "blitz" hides ratings | "rookie" stars the elite
 var ELITE  = 90;
 
@@ -988,7 +996,7 @@ function $(id){ return document.getElementById(id); }
 var el = {
   lineup:$("lineup"), led:$("ledSigned"), ledForm:$("ledForm"), meter:$("meterFill"),
   formReel:$("formReel"), formFace:$("formFace"), coachReel:$("coachReel"), coachFace:$("coachFace"), teamReel:$("teamReel"), teamFace:$("teamFace"),
-  rollBtn:$("rollBtn"), rerollBtn:$("rerollBtn"), drawHint:$("drawHint"), hand:$("hand"), wire:$("wireFeed"),
+  rollBtn:$("rollBtn"), restartBtn:$("restartBtn"), rerollBtn:$("rerollBtn"), drawHint:$("drawHint"), hand:$("hand"), wire:$("wireFeed"),
   gradeBtn:$("gradeBtn"), gradeHint:$("gradeHint"), results:$("results"), sheet:$("resSheet"),
   formationPanel:$("formationPanel"), formationToggle:$("formationToggle"), pipStrip:$("pipStrip"), fSig:$("fSig")
 };
@@ -1394,7 +1402,18 @@ function copyShare(){
 }
 
 /* ---- new game ---- */
+function disarmRestart(){ _restartArmed=false; clearTimeout(_restartTimer); if(el.restartBtn){ el.restartBtn.classList.remove("arm"); el.restartBtn.innerHTML='<span>&#8635; Restart</span>'; } }
+function handleRestart(){
+  if(rolling) return;
+  if(picks>0 && !_restartArmed){
+    _restartArmed=true;
+    if(el.restartBtn){ el.restartBtn.classList.add("arm"); el.restartBtn.innerHTML='<span>&#8635; Tap again to restart</span>'; }
+    clearTimeout(_restartTimer); _restartTimer=setTimeout(disarmRestart,2600); return;
+  }
+  disarmRestart(); newGame();
+}
 function newGame(){
+  disarmRestart();
   formation=null; SLOTS=[]; SLOT_BY_KEY={}; FIELD=[]; BENCH_KEYS=[];
   roster={}; picks=0; hand=null; rolling=false;
   el.results.classList.remove("show");
@@ -1426,6 +1445,7 @@ function toggleFormation(){ el.formationPanel.classList.toggle("open"); }
 function boot(){
   applyView(currentView());
   el.rollBtn.addEventListener("click",function(){ if(!formation) rollFormation(); else rollNation(); });
+  if(el.restartBtn) el.restartBtn.addEventListener("click",handleRestart);
   if(el.rerollBtn) el.rerollBtn.addEventListener("click",rollNation);
   el.gradeBtn.addEventListener("click",grade);
   el.results.addEventListener("click",function(e){ if(e.target===el.results) el.results.classList.remove("show"); });
