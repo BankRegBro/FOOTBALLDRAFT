@@ -445,6 +445,12 @@ h1.title .b{
 .view-mobile .name{font-size:17px}
 .view-mobile .cname{font-size:16px}
 .view-mobile .cpos{font-size:14px}
+.arcade-btn.restart{margin-top:9px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.20);box-shadow:none}
+.arcade-btn.restart span{color:#c9d3e3;text-shadow:none;font-size:14px;letter-spacing:.05em}
+.arcade-btn.restart:hover{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.34)}
+.arcade-btn.restart:active{transform:translateY(1px)}
+.arcade-btn.restart.arm{background:linear-gradient(180deg,#ffb42a,#c07500);border-color:#8a5600}
+.arcade-btn.restart.arm span{color:#1c1000;text-shadow:none;font-weight:700}
 .view-mobile .arcade-btn{font-size:18px;padding:15px 12px}
 .view-mobile .draw-hint{font-size:8px}
 .view-mobile .slot{grid-template-columns:46px 1fr auto;gap:10px;padding:10px}
@@ -599,6 +605,7 @@ html.league-college #gradeBtn:not(:disabled):active{box-shadow:inset 0 2px 0 rgb
           <div class="reel" id="decadeReel"><div class="tag" id="decadeReelTag">Era</div><div class="face dec" id="decadeFace">&mdash;</div></div>
         </div>
         <button class="arcade-btn red pulse" id="rollBtn"><span>&#9654; Roll the Draw</span></button>
+        <button class="arcade-btn restart" id="restartBtn" type="button"><span>&#8635; Restart</span></button>
         <div class="draw-hint" id="drawHint">No takebacks &mdash; you draft what the dice give you</div>
         <div class="hand" id="hand"></div>
       </div>
@@ -1580,6 +1587,7 @@ var roster = {};   // slotKey -> {name,pos,grade,note,team,decade}
 var picks  = 0;
 var hand   = null; // { team, decade, players:[{name,pos,grade,note,idx}] }
 var rolling = false;
+var _restartArmed=false,_restartTimer=null;
 var mode   = "blitz";  // "blitz" (ratings fully hidden) | "rookie" (star marks 90+)
 var era    = "all";    // key into the active league's eras map
 var squad  = "offense"; // "offense" (12 slots) | "fullsquad" (12 offense + 4 defense)
@@ -1624,7 +1632,7 @@ function $(id){ return document.getElementById(id); }
 var el = {
   lineup:$("lineup"), led:$("ledSigned"), meter:$("meterFill"),
   teamReel:$("teamReel"), decadeReel:$("decadeReel"), teamFace:$("teamFace"), decadeFace:$("decadeFace"),
-  rollBtn:$("rollBtn"), drawHint:$("drawHint"), hand:$("hand"), wire:$("wireFeed"),
+  rollBtn:$("rollBtn"), restartBtn:$("restartBtn"), drawHint:$("drawHint"), hand:$("hand"), wire:$("wireFeed"),
   gradeBtn:$("gradeBtn"), gradeHint:$("gradeHint"), results:$("results"), sheet:$("resSheet"),
   formationPanel:$("formationPanel"), formationToggle:$("formationToggle"), pipStrip:$("pipStrip"), fSig:$("fSig")
 };
@@ -2058,7 +2066,18 @@ function copyShare(){
 }
 
 /* ---- new game ---- */
+function disarmRestart(){ _restartArmed=false; clearTimeout(_restartTimer); if(el.restartBtn){ el.restartBtn.classList.remove("arm"); el.restartBtn.innerHTML='<span>&#8635; Restart</span>'; } }
+function handleRestart(){
+  if(rolling) return;                                  // never restart mid-spin
+  if(picks>0 && !_restartArmed){                       // arm on first tap when there is a squad to lose
+    _restartArmed=true;
+    if(el.restartBtn){ el.restartBtn.classList.add("arm"); el.restartBtn.innerHTML='<span>&#8635; Tap again to restart</span>'; }
+    clearTimeout(_restartTimer); _restartTimer=setTimeout(disarmRestart,2600); return;
+  }
+  disarmRestart(); newGame();                          // fresh board, or confirmed second tap
+}
 function newGame(){
+  disarmRestart();
   TOTAL=activeSlots().length;
   roster={}; picks=0; hand=null; rolling=false;
   el.results.classList.remove("show");
@@ -2162,6 +2181,7 @@ function toggleFormation(){ el.formationPanel.classList.toggle("open"); }
 function boot(){
   applyView(currentView());
   el.rollBtn.addEventListener("click",doRoll);
+  if(el.restartBtn) el.restartBtn.addEventListener("click",handleRestart);
   el.gradeBtn.addEventListener("click",grade);
   el.results.addEventListener("click",function(e){ if(e.target===el.results) el.results.classList.remove("show"); });
   Array.prototype.forEach.call(document.querySelectorAll(".dt-seg"),function(b){
